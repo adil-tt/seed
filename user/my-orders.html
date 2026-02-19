@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Ceramico</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">CERAMICO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-icons">
+                    <a href="search.html" class="icon-link"><i class="bi bi-search"></i></a>
+                    <a href="wishlist.html" class="icon-link"><i class="bi bi-heart"></i></a>
+                    <a href="cart.html" class="icon-link"><i class="bi bi-bag"></i></a>
+                    <a href="account.html" class="icon-link active"><i class="bi bi-person-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Account Dashboard -->
+    <div class="container dashboard-container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="account-sidebar">
+                    <div class="user-profile-summary">
+                        <div class="user-avatar">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h5 class="mb-1">John Doe</h5>
+                        <small class="text-muted">john.doe@example.com</small>
+                        <div class="mt-3">
+                            <a href="login.html" class="btn btn-outline-danger btn-sm w-100">Logout</a>
+                        </div>
+                    </div>
+                    <nav class="nav flex-column sidebar-nav">
+                        <a class="nav-link" href="account.html"><i class="bi bi-grid"></i> Dashboard</a>
+                        <a class="nav-link active" href="my-orders.html"><i class="bi bi-box-seam"></i> My Orders</a>
+                        <a class="nav-link" href="address-book.html"><i class="bi bi-geo-alt"></i> Addresses</a>
+                        <a class="nav-link" href="payment-methods.html"><i class="bi bi-credit-card"></i> Payment
+                            Methods</a>
+                        <a class="nav-link" href="wishlist.html"><i class="bi bi-heart"></i> Wishlist</a>
+                        <a class="nav-link" href="account-settings.html"><i class="bi bi-gear"></i> Account Settings</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-lg-9 dashboard-content">
+                <div class="mb-4">
+                    <a href="account.html" class="text-decoration-none text-muted mb-2 d-inline-block"><i
+                            class="bi bi-arrow-left"></i> Back to Account</a>
+                    <h3>Order History</h3>
+                    <p class="text-muted">View and track your previous orders</p>
+                </div>
+
+                <!-- Order 1 -->
+                <div class="order-item-card bg-white">
+                    <div class="order-header">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-box-seam fs-4 text-secondary"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold d-block">Order #SEED1001</span>
+                                <small class="text-muted">Placed on February 15, 2026</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-muted small">Total</div>
+                            <div class="fw-bold fs-5">$234.00</div>
+                            <span class="order-status delivered mt-1 d-inline-block">Delivered</span>
+                        </div>
+                    </div>
+
+                    <!-- Products in Order -->
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="images/ceramic-cup.jpg" class="rounded me-3" width="60" height="60"
+                                style="object-fit: cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Minimal Ceramic Plate</h6>
+                                <small class="text-muted">Quantity: 2</small>
+                            </div>
+                            <div class="fw-bold">$96.00</div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <img src="images/ceramic-cup.jpg" class="rounded me-3" width="60" height="60"
+                                style="object-fit:cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Artisan Pottery Bowl</h6>
+                                <small class="text-muted">Quantity: 1</small>
+                            </div>
+                            <div class="fw-bold">$52.00</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                        <div class="small text-muted"><i class="bi bi-truck me-2"></i> Track Order: TRK1234567890</div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i>
+                                Invoice</button>
+                            <button class="btn btn-sm btn-outline-navy">Buy Again</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order 2 -->
+                <div class="order-item-card bg-white">
+                    <div class="order-header">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-box-seam fs-4 text-secondary"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold d-block">Order #SEED1002</span>
+                                <small class="text-muted">Placed on February 10, 2026</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-muted small">Total</div>
+                            <div class="fw-bold fs-5">$186.00</div>
+                            <span class="order-status delivered mt-1 d-inline-block">Delivered</span>
+                        </div>
+                    </div>
+
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="images/ceramic-cup.jpg" class="rounded me-3" width="60" height="60"
+                                style="object-fit: cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Ceramic Coffee Cup</h6>
+                                <small class="text-muted">Quantity: 2</small>
+                            </div>
+                            <div class="fw-bold">$68.00</div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <img src="images/ceramic-cup.jpg" class="rounded me-3" width="60" height="60"
+                                style="object-fit: cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Tea Cup Set</h6>
+                                <small class="text-muted">Quantity: 1</small>
+                            </div>
+                            <div class="fw-bold">$92.00</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                        <div class="small text-muted"><i class="bi bi-truck me-2"></i> Track Order: TRK0987654321</div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i>
+                                Invoice</button>
+                            <button class="btn btn-sm btn-outline-navy">Buy Again</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Order 3 -->
+                <div class="order-item-card bg-white">
+                    <div class="order-header">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-3 bg-light rounded">
+                                <i class="bi bi-box-seam fs-4 text-secondary"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold d-block">Order #SEED1003</span>
+                                <small class="text-muted">Placed on February 5, 2026</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-muted small">Total</div>
+                            <div class="fw-bold fs-5">$120.00</div>
+                            <span class="order-status shipped mt-1 d-inline-block">Shipped</span>
+                        </div>
+                    </div>
+
+                    <div class="border-bottom pb-3 mb-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="images/ceramic-cup.jpg" class="rounded me-3" width="60" height="60"
+                                style="object-fit: cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Minimalist White Vase</h6>
+                                <small class="text-muted">Quantity: 1</small>
+                            </div>
+                            <div class="fw-bold">$68.00</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded">
+                        <div class="small text-muted"></div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i>
+                                Invoice</button>
+                            <button class="btn btn-sm btn-outline-navy">Buy Again</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center text-white-50">
+            <p>&copy; 2026 Ceramico. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

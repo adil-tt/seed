@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Dinner Plate - Ceramico</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/single-product.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">CERAMICO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-icons">
+                    <a href="search.html" class="icon-link"><i class="bi bi-search"></i></a>
+                    <a href="wishlist.html" class="icon-link"><i class="bi bi-heart"></i></a>
+                    <a href="cart.html" class="icon-link"><i class="bi bi-bag"></i></a>
+                    <a href="account.html" class="icon-link"><i class="bi bi-person"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <div class="container mt-5 pt-5 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="product.html">Shop</a></li>
+                <li class="breadcrumb-item"><a href="product.html">Plates</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Minimalist Dinner Plate</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Product Details -->
+    <section class="container mb-5">
+        <div class="row">
+            <!-- Gallery -->
+            <div class="col-lg-6 mb-4">
+                <div class="product-gallery-main">
+                    <img src="images/ceramic-cup.jpg" id="mainImage"
+                        class="img-fluid w-100" alt="Product Main">
+                </div>
+                <div class="product-gallery-thumbs">
+                    <img src="images/ceramic-cup.jpg" class="thumb-img active"
+                        onclick="changeImage(this)" alt="Thumb 1">
+                    <img src="images/ceramic-cup.jpg" class="thumb-img"
+                        onclick="changeImage(this)" alt="Thumb 2">
+                    <img src="images/ceramic-cup.jpg" class="thumb-img"
+                        onclick="changeImage(this)" alt="Thumb 3">
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="col-lg-6">
+                <h1 class="mb-2">Minimalist Dinner Plate</h1>
+                <div class="mb-3">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-half text-warning"></i>
+                    <span class="text-muted ms-2">(12 Reviews)</span>
+                </div>
+                <div class="product-price-large">$24.00</div>
+                <p class="text-secondary mb-4">
+                    Hand-thrown ceramic dinner plate with a matte white glaze. Durable, dishwasher safe, and perfect for
+                    everyday use.
+                    Each piece is unique and features subtle irregularities that celebrate the handmade process.
+                </p>
+
+                <div class="mb-4">
+                    <label class="form-label d-block fw-bold">Color</label>
+                    <div class="d-flex gap-2">
+                        <div class="form-check p-0">
+                            <input type="radio" name="color" id="color1" class="btn-check" checked>
+                            <label class="btn btn-outline-secondary rounded-circle p-2" for="color1"
+                                style="width: 30px; height: 30px; background-color: #fff;"></label>
+                        </div>
+                        <div class="form-check p-0">
+                            <input type="radio" name="color" id="color2" class="btn-check">
+                            <label class="btn btn-outline-secondary rounded-circle p-2" for="color2"
+                                style="width: 30px; height: 30px; background-color: #D7CCC8;"></label>
+                        </div>
+                        <div class="form-check p-0">
+                            <input type="radio" name="color" id="color3" class="btn-check">
+                            <label class="btn btn-outline-secondary rounded-circle p-2" for="color3"
+                                style="width: 30px; height: 30px; background-color: #5D4037;"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="quantity-control">
+                        <button class="quantity-btn" onclick="decreaseQty()">-</button>
+                        <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+                        <button class="quantity-btn" onclick="increaseQty()">+</button>
+                    </div>
+                    <button class="btn btn-primary btn-lg flex-grow-1"><i class="bi bi-bag-plus me-2"></i> Add to
+                        Cart</button>
+                    <button class="btn btn-outline-secondary btn-lg"><i class="bi bi-heart"></i></button>
+                </div>
+
+                <ul class="list-unstyled text-secondary small">
+                    <li><span class="fw-bold text-dark">SKU:</span> CER-PL-001</li>
+                    <li><span class="fw-bold text-dark">Category:</span> Plates, Dinner Sets</li>
+                    <li><span class="fw-bold text-dark">Tags:</span> Minimalist, Handmade, White</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs: Description & Reviews -->
+    <section class="container mb-5">
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button"
+                    role="tab">Description</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+                    role="tab">Additional Info</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button"
+                    role="tab">Reviews (12)</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="desc" role="tabpanel">
+                <p>This minimalist dinner plate is crafted from high-quality stoneware clay, fired at 1200°C for maximum
+                    durability. The matte glaze provides a smooth, tactile finish that is pleasing to the touch. The
+                    slight rim ensures that sauces and dressings stay on the plate.</p>
+                <p>Dimensions: 10.5 inches diameter.</p>
+            </div>
+            <div class="tab-pane fade" id="info" role="tabpanel">
+                <table class="table table-bordered w-auto">
+                    <tbody>
+                        <tr>
+                            <td class="bg-light fw-bold">Weight</td>
+                            <td>0.8 kg</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-light fw-bold">Dimensions</td>
+                            <td>26 x 26 x 2 cm</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-light fw-bold">Materials</td>
+                            <td>Stoneware Clay</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <div class="review-item d-flex">
+                    <div class="review-avatar"><i class="bi bi-person-fill"></i></div>
+                    <div>
+                        <h6 class="mb-1">Jane Doe</h6>
+                        <div class="mb-2 text-warning small">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="text-secondary mb-0">Absolutely love these plates! They are heavy, sturdy, and look
+                            beautiful on my table.</p>
+                    </div>
+                </div>
+                <!-- Add Review Form -->
+                <div class="mt-4">
+                    <h5>Write a Review</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <select class="form-select w-auto">
+                                <option>5 Stars</option>
+                                <option>4 Stars</option>
+                                <option>3 Stars</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="3" placeholder="Your review..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="container mb-5">
+        <h3 class="mb-4">Related Products</h3>
+        <div class="row">
+            <!-- Product 1 -->
+            <div class="col-md-3 col-6">
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="images/ceramic-cup.jpg" class="product-img"
+                            alt="Product">
+                        <div class="product-actions">
+                            <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                            <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i class="bi bi-eye"></i>
+                                View</a>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title"><a href="single-product.html">Side Plate</a></h3>
+                        <div class="product-price">$18.00</div>
+                    </div>
+                </div>
+            </div>
+            <!-- More related... -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center text-white-50">
+            <p>&copy; 2026 Ceramico. Same footer as other pages.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/single-product.js"></script>
+</body>
+
+</html>

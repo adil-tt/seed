@@ -1,0 +1,52 @@
+/* Home Page Specific Styles */
+
+.hero-section {
+    background: url('https://placehold.co/1920x800/D7CCC8/8D6E63?text=Handcrafted+Ceramics') no-repeat center center/cover;
+    height: 80vh;
+    min-height: 500px;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.3);
+    /* Overlay */
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.category-card {
+    display: block;
+    text-align: center;
+}
+
+.cat-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    transition: 0.3s;
+}
+
+.category-card:hover .cat-img-wrapper {
+    transform: scale(0.95);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.category-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.category-card:hover h3 {
+    color: var(--primary-color);
+}

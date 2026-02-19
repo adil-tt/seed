@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Placed - Ceramico</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            /* Light grey/neutral bg */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            /* Dim overlay */
+            backdrop-filter: blur(4px);
+            /* Slight blur */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+        }
+
+        .success-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background-color: #d1e7dd;
+            /* Light green bg */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .success-icon-wrapper i {
+            font-size: 40px;
+            color: #198754;
+            /* Bootstrap success green */
+        }
+
+        .order-id {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            font-family: monospace;
+            /* Monospaced for ID look */
+        }
+
+        .btn-view-orders {
+            background-color: #0d6efd;
+            color: white;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view-orders:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+            color: white;
+        }
+
+        .btn-continue {
+            color: #6c757d;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
+            padding: 10px 30px;
+            border-radius: 8px;
+            display: block;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-continue:hover {
+            background-color: #f8f9fa;
+            border-color: #ccc;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="success-overlay">
+        <div class="success-card">
+            <div class="success-icon-wrapper">
+                <i class="bi bi-check-lg"></i>
+            </div>
+
+            <h2 class="fw-bold mb-2">Order Placed!</h2>
+            <p class="text-secondary mb-3">Thank you for your purchase.</p>
+
+            <div class="order-id" id="orderIdText">Order ID: #GENERATING...</div>
+
+            <div class="d-grid gap-2">
+                <a href="my-orders.html" class="btn btn-view-orders">View Orders</a>
+                <a href="home.html" class="btn btn-continue">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to Generate Order ID -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Generate random Order ID
+            const timestamp = Date.now().toString(36).toUpperCase();
+            const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
+            const orderId = `#ORD-${timestamp}-${randomPart}`;
+
+            // Set Order ID text
+            document.getElementById('orderIdText').textContent = `Order ID: ${orderId}`;
+
+            // Optional: Store order in local storage or clear cart simulation
+            console.log('Order placed successfully:', orderId);
+        });
+    </script>
+</body>
+
+</html>

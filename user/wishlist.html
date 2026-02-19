@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - Ceramico</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">CERAMICO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-icons">
+                    <a href="search.html" class="icon-link"><i class="bi bi-search"></i></a>
+                    <a href="wishlist.html" class="icon-link active"><i class="bi bi-heart-fill"></i></a>
+                    <a href="cart.html" class="icon-link"><i class="bi bi-bag"></i></a>
+                    <a href="account.html" class="icon-link"><i class="bi bi-person"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Account Dashboard -->
+    <div class="container dashboard-container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="account-sidebar">
+                    <div class="user-profile-summary">
+                        <div class="user-avatar">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h5 class="mb-1">John Doe</h5>
+                        <small class="text-muted">john.doe@example.com</small>
+                        <div class="mt-3">
+                            <a href="login.html" class="btn btn-outline-danger btn-sm w-100">Logout</a>
+                        </div>
+                    </div>
+                    <nav class="nav flex-column sidebar-nav">
+                        <a class="nav-link" href="account.html"><i class="bi bi-grid"></i> Dashboard</a>
+                        <a class="nav-link" href="my-orders.html"><i class="bi bi-box-seam"></i> My Orders</a>
+                        <a class="nav-link" href="address-book.html"><i class="bi bi-geo-alt"></i> Addresses</a>
+                        <a class="nav-link" href="payment-methods.html"><i class="bi bi-credit-card"></i> Payment
+                            Methods</a>
+                        <a class="nav-link active" href="wishlist.html"><i class="bi bi-heart"></i> Wishlist</a>
+                        <a class="nav-link" href="account-settings.html"><i class="bi bi-gear"></i> Account Settings</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-lg-9 dashboard-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <a href="account.html" class="text-decoration-none text-muted mb-2 d-inline-block"><i
+                                class="bi bi-arrow-left"></i> Back to Account</a>
+                        <h3>My Wishlist</h3>
+                        <p class="text-muted mb-0">Saved items for later</p>
+                    </div>
+                    <a href="product.html" class="btn btn-outline-navy">Continue Shopping</a>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Wishlist Item 1 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="wishlist-card">
+                            <button class="wishlist-remove-btn" title="Remove from Wishlist">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <img src="images/ceramic-cup.jpg" alt="Product" class="wishlist-img">
+                            <div class="wishlist-body">
+                                <h6 class="wishlist-title">Geometric Flower Vase</h6>
+                                <p class="text-muted small mb-2">Category: Vases</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="wishlist-price">$45.00</span>
+                                    <div class="text-warning small">
+                                        <i class="bi bi-star-fill"></i> 4.5
+                                    </div>
+                                </div>
+                                <button class="btn btn-navy w-100 btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Item 2 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="wishlist-card">
+                            <button class="wishlist-remove-btn" title="Remove from Wishlist">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <img src="images/ceramic-cup.jpg" alt="Product" class="wishlist-img">
+                            <div class="wishlist-body">
+                                <h6 class="wishlist-title">Minimalist Coffee Mug</h6>
+                                <p class="text-muted small mb-2">Category: Cups</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="wishlist-price">$22.00</span>
+                                    <div class="text-warning small">
+                                        <i class="bi bi-star-fill"></i> 4.8
+                                    </div>
+                                </div>
+                                <button class="btn btn-navy w-100 btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Item 3 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="wishlist-card">
+                            <button class="wishlist-remove-btn" title="Remove from Wishlist">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <img src="images/ceramic-cup.jpg" alt="Product" class="wishlist-img">
+                            <div class="wishlist-body">
+                                <h6 class="wishlist-title">Ceramic Serving Plate</h6>
+                                <p class="text-muted small mb-2">Category: Plates</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="wishlist-price">$38.00</span>
+                                    <div class="text-warning small">
+                                        <i class="bi bi-star-fill"></i> 4.7
+                                    </div>
+                                </div>
+                                <button class="btn btn-navy w-100 btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Item 4 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="wishlist-card">
+                            <button class="wishlist-remove-btn" title="Remove from Wishlist">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                            <img src="images/ceramic-cup.jpg" alt="Product" class="wishlist-img">
+                            <div class="wishlist-body">
+                                <h6 class="wishlist-title">Textured Clay Pot</h6>
+                                <p class="text-muted small mb-2">Category: Decor</p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="wishlist-price">$55.00</span>
+                                    <div class="text-warning small">
+                                        <i class="bi bi-star-fill"></i> 4.9
+                                    </div>
+                                </div>
+                                <button class="btn btn-navy w-100 btn-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">CERAMICO</h5>
+                    <p class="text-white-50">Handcrafted ceramics made with love and care. Bringing warmth and style to
+                        your home.</p>
+                </div>
+                <!-- ... Footer Same ... -->
+                <div class="col-lg-2 col-6 mb-4">
+                    <h5>Shop</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="product.html">All Products</a></li>
+                        <li><a href="product.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6 mb-4">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li><i class="bi bi-geo-alt me-2"></i> 123 Ceramic Lane, Art City</li>
+                        <li><i class="bi bi-envelope me-2"></i> hello@ceramico.com</li>
+                        <li><i class="bi bi-telephone me-2"></i> +1 234 567 890</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="text-center text-white-50">
+                <p>&copy; 2026 Ceramico. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

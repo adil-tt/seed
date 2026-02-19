@@ -1,0 +1,42 @@
+/* Product Page Styles */
+.sidebar {
+    background-color: #fff;
+    padding: 20px;
+    border-right: 1px solid #eee;
+    height: 100%;
+}
+
+.sidebar h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.filter-group {
+    margin-bottom: 2rem;
+}
+
+.filter-list {
+    list-style: none;
+    padding: 0;
+}
+
+.filter-list li {
+    margin-bottom: 0.5rem;
+}
+
+.filter-list a {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.filter-list a:hover {
+    color: var(--primary-color);
+    padding-left: 5px;
+}
+
+/* Range Slider (Visual Only) */
+.price-range {
+    width: 100%;
+}

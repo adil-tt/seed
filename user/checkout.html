@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Ceramico</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart-checkout.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">CERAMICO</a>
+            <div class="ms-auto">
+                <a href="cart.html" class="text-dark me-2">Back to Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="bg-light py-5 mb-5 mt-5">
+        <div class="container text-center">
+            <h1 class="display-4">Checkout</h1>
+        </div>
+    </div>
+
+    <!-- Checkout Content -->
+    <div class="container mb-5">
+        <form action="order-success.html" method="GET"> <!-- Redirect to success page -->
+            <div class="row">
+                <div class="col-lg-7 mb-4">
+                    <h4 class="mb-4">Billing Details</h4>
+                    <div class="row g-3 checkout-form">
+                        <div class="col-sm-6">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="1234 Main St" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">Country</label>
+                            <select class="form-select" required>
+                                <option value="">Choose...</option>
+                                <option>United States</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">State</label>
+                            <select class="form-select" required>
+                                <option value="">Choose...</option>
+                                <option>California</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Zip</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="same-address">
+                                <label class="form-check-label" for="same-address">Shipping address is the same as my
+                                    billing address</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="save-info">
+                                <label class="form-check-label" for="save-info">Save this information for next
+                                    time</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="cart-summary shadow-sm bg-white rounded-3 p-4">
+                        <h4 class="mb-4">Order Summary</h4>
+
+                        <!-- Product Item -->
+                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                            <img src="images/ceramic-cup.jpg" class="rounded"
+                                style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;" alt="Product">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold">Minimalist Dinner Plate</h6>
+                                <small class="text-muted">Qty: 2</small>
+                            </div>
+                            <span class="fw-bold">₹4,000</span>
+                        </div>
+
+                        <!-- Product Item -->
+                        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                            <img src="images/ceramic-cup.jpg" class="rounded"
+                                style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;" alt="Product">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold">Artisan Coffee Mug</h6>
+                                <small class="text-muted">Qty: 1</small>
+                            </div>
+                            <span class="fw-bold">₹1,350</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span class="fw-bold">₹5,350</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Shipping</span>
+                            <span class="text-success fw-bold">₹150</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <h5 class="mb-0 fw-bold">Total</h5>
+                            <h4 class="mb-0 text-primary fw-bold">₹5,500</h4>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="mt-5">
+                            <h5 class="mb-3 text-uppercase fs-6 text-muted fw-bold">Payment Method</h5>
+
+                            <!-- Wallet -->
+                            <div class="payment-option mb-3">
+                                <div class="form-check d-flex align-items-center w-100">
+                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="wallet"
+                                        disabled>
+                                    <label class="form-check-label flex-grow-1" for="wallet">
+                                        <span class="d-block fw-bold">My Wallet</span>
+                                        <small class="text-muted">Balance: ₹0.00 <span
+                                                class="text-danger">(Insufficient)</span></small>
+                                    </label>
+                                    <i class="bi bi-wallet2 fs-5 text-primary"></i>
+                                </div>
+                            </div>
+
+                            <!-- Razorpay/UPI/Card -->
+                            <div class="payment-option mb-3 selected">
+                                <div class="form-check d-flex align-items-center w-100">
+                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="razorpay"
+                                        checked>
+                                    <label class="form-check-label flex-grow-1 fw-bold" for="razorpay">
+                                        Razorpay / UPI / Card
+                                    </label>
+                                    <i class="bi bi-credit-card-2-front fs-5 text-dark"></i>
+                                </div>
+                            </div>
+
+                            <!-- COD -->
+                            <div class="payment-option mb-3">
+                                <div class="form-check d-flex align-items-center w-100">
+                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="cod">
+                                    <label class="form-check-label flex-grow-1 fw-bold" for="cod">
+                                        Cash on Delivery
+                                    </label>
+                                    <i class="bi bi-cash-stack fs-5 text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-place-order w-100 btn-lg mt-4 shadow-sm">PLACE
+                            ORDER</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center text-white-50">
+            <p>&copy; 2026 Ceramico. Same footer as other pages.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Use basic js -->
+</body>
+
+</html>

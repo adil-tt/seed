@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - Admin</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>CERAMICO</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a href="order-management.html" class="active"><i class="bi bi-cart"></i> Orders</a></li>
+                <li><a href="all-products.html"><i class="bi bi-box-seam"></i> Products</a></li>
+                <li><a href="customers.html"><i class="bi bi-people"></i> Customers</a></li>
+                <li><a href="categories.html"><i class="bi bi-tags"></i> Categories</a></li>
+                <li><a href="coupon.html"><i class="bi bi-ticket-perforated"></i> Coupons</a></li>
+                <li><a href="banner.html"><i class="bi bi-images"></i> Banners</a></li>
+                <li><a href="admin-role.html"><i class="bi bi-shield-lock"></i> Roles</a></li>
+                <li><a href="transaction.html"><i class="bi bi-credit-card"></i> Transactions</a></li>
+                <li><a href="login.html"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="admin-header">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Order Management</h4>
+                </div>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Home</a></li>
+                            <li class="breadcrumb-item active">Orders</li>
+                        </ol>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="container-fluid p-0">
+                <div class="table-card">
+                    <div class="row mb-4 align-items-center">
+                        <div class="col-md-6">
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="Search orders..."
+                                    aria-label="Search">
+                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                            <div class="btn-group">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown">
+                                    <i class="bi bi-filter"></i> Filter Status
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">All</a></li>
+                                    <li><a class="dropdown-item" href="#">Pending</a></li>
+                                    <li><a class="dropdown-item" href="#">Completed</a></li>
+                                    <li><a class="dropdown-item" href="#">Cancelled</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#ORD-4589</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                style="width: 32px; height: 32px;">JD</div>
+                                            <div>
+                                                <div class="fw-bold">John Doe</div>
+                                                <div class="small text-muted">john@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Oct 12, 2026</td>
+                                    <td class="fw-bold">$125.00</td>
+                                    <td><span class="text-secondary"><i class="bi bi-credit-card"></i> Card</span></td>
+                                    <td><span class="badge bg-warning text-dark bg-opacity-10">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-action btn-light text-primary" title="View"><i
+                                                class="bi bi-eye"></i></button>
+                                        <button class="btn btn-action btn-light text-success" title="Approve"><i
+                                                class="bi bi-check-lg"></i></button>
+                                        <button class="btn btn-action btn-light text-danger" title="Cancel"><i
+                                                class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-4588</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                style="width: 32px; height: 32px;">AS</div>
+                                            <div>
+                                                <div class="fw-bold">Alice Smith</div>
+                                                <div class="small text-muted">alice@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Oct 11, 2026</td>
+                                    <td class="fw-bold">$450.00</td>
+                                    <td><span class="text-secondary"><i class="bi bi-paypal"></i> PayPal</span></td>
+                                    <td><span class="badge bg-success text-white">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-action btn-light text-primary" title="View"><i
+                                                class="bi bi-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-4587</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                style="width: 32px; height: 32px;">RJ</div>
+                                            <div>
+                                                <div class="fw-bold">Robert Johnson</div>
+                                                <div class="small text-muted">robert@test.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Oct 10, 2026</td>
+                                    <td class="fw-bold">$85.50</td>
+                                    <td><span class="text-secondary"><i class="bi bi-cash"></i> COD</span></td>
+                                    <td><span class="badge bg-danger text-white">Cancelled</span></td>
+                                    <td>
+                                        <button class="btn btn-action btn-light text-primary" title="View"><i
+                                                class="bi bi-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar Toggle for Mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+            });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth < 992) {
+                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

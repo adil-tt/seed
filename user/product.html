@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Ceramico</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product.css">
+</head>
+
+<body>
+
+    <!-- Navbar (Copy of Home) -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">CERAMICO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="navbar-icons">
+                    <a href="search.html" class="icon-link"><i class="bi bi-search"></i></a>
+                    <a href="wishlist.html" class="icon-link"><i class="bi bi-heart"></i></a>
+                    <a href="cart.html" class="icon-link"><i class="bi bi-bag"></i></a>
+                    <a href="account.html" class="icon-link"><i class="bi bi-person"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="bg-light py-5 mb-5">
+        <div class="container text-center">
+            <h1 class="display-4">Shop</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <button class="btn btn-outline-dark d-lg-none mb-3 w-100" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#shopSidebar" aria-controls="shopSidebar">
+                    <i class="bi bi-funnel"></i> Filter
+                </button>
+                <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="shopSidebar"
+                    aria-labelledby="shopSidebarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="shopSidebarLabel">Filters</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                            data-bs-target="#shopSidebar" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body p-0">
+                        <div class="sidebar w-100">
+                            <div class="filter-group">
+                                <h4>Categories</h4>
+                                <ul class="filter-list">
+                                    <li><a href="#">Dinner Sets (12)</a></li>
+                                    <li><a href="#">Plates (24)</a></li>
+                                    <li><a href="#">Bowls (18)</a></li>
+                                    <li><a href="#">Mugs & Cups (30)</a></li>
+                                    <li><a href="#">Vases (8)</a></li>
+                                    <li><a href="#">Decor (15)</a></li>
+                                </ul>
+                            </div>
+                            <div class="filter-group">
+                                <h4>Filter by Price</h4>
+                                <input type="range" class="form-range price-range" min="0" max="200" step="10">
+                                <div class="d-flex justify-content-between">
+                                    <span>$0</span>
+                                    <span>$200</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="col-lg-9">
+                <!-- Toolbar -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="mb-0">Showing 1–9 of 24 results</p>
+                    <select class="form-select w-auto">
+                        <option selected>Default sorting</option>
+                        <option value="1">Sort by popularity</option>
+                        <option value="2">Sort by average rating</option>
+                        <option value="3">Sort by latest</option>
+                        <option value="4">Sort by price: low to high</option>
+                        <option value="5">Sort by price: high to low</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <!-- Product 1 -->
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="images/ceramic-cup.jpg" class="product-img" alt="Product">
+                                <div class="product-actions">
+                                    <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                                    <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i
+                                            class="bi bi-eye"></i> View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><a href="single-product.html">Minimalist Dinner Plate</a></h3>
+                                <div class="product-price">$24.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="images/ceramic-cup.jpg" class="product-img" alt="Product">
+                                <div class="product-actions">
+                                    <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                                    <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i
+                                            class="bi bi-eye"></i> View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><a href="single-product.html">Rustic Soup Bowl</a></h3>
+                                <div class="product-price">$18.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="images/ceramic-cup.jpg" class="product-img" alt="Product">
+                                <span class="position-absolute top-0 start-0 badge bg-danger m-2">Sale</span>
+                                <div class="product-actions">
+                                    <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                                    <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i
+                                            class="bi bi-eye"></i> View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><a href="single-product.html">Artisan Coffee Mug</a></h3>
+                                <div class="product-price"><span
+                                        class="text-decoration-line-through text-muted me-2">$20.00</span>$16.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="images/ceramic-cup.jpg" class="product-img" alt="Product">
+                                <div class="product-actions">
+                                    <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                                    <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i
+                                            class="bi bi-eye"></i> View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><a href="single-product.html">Tall Flower Vase</a></h3>
+                                <div class="product-price">$45.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="images/ceramic-cup.jpg" class="product-img" alt="Product">
+                                <div class="product-actions">
+                                    <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                                    <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i
+                                            class="bi bi-eye"></i> View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><a href="single-product.html">Large Salad Bowl</a></h3>
+                                <div class="product-price">$38.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <img src="images/ceramic-cup.jpg" class="product-img" alt="Product">
+                                <div class="product-actions">
+                                    <a href="#" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
+                                    <a href="single-product.html" class="btn btn-sm btn-outline-dark"><i
+                                            class="bi bi-eye"></i> View</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><a href="single-product.html">Espresso Set</a></h3>
+                                <div class="product-price">$28.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (Copy of Home) -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">CERAMICO</h5>
+                    <p class="text-white-50">Handcrafted ceramics made with love and care. Bringing warmth and style to
+                        your home.</p>
+                </div>
+                <!-- ... (Footer content same as home for consistency) ... -->
+                <div class="col-lg-2 col-6 mb-4">
+                    <h5>Shop</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="product.html">All Products</a></li>
+                        <li><a href="product.html">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6 mb-4">
+                    <h5>Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li><i class="bi bi-geo-alt me-2"></i> 123 Ceramic Lane, Art City</li>
+                        <li><i class="bi bi-envelope me-2"></i> hello@ceramico.com</li>
+                        <li><i class="bi bi-telephone me-2"></i> +1 234 567 890</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="text-center text-white-50">
+                <p>&copy; 2026 Ceramico. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/product.js"></script>
+</body>
+
+</html>

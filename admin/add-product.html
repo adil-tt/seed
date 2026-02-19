@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Admin</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>CERAMICO</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a href="order-management.html"><i class="bi bi-cart"></i> Orders</a></li>
+                <li><a href="all-products.html" class="active"><i class="bi bi-box-seam"></i> Products</a></li>
+                <li><a href="customers.html"><i class="bi bi-people"></i> Customers</a></li>
+                <li><a href="categories.html"><i class="bi bi-tags"></i> Categories</a></li>
+                <li><a href="coupon.html"><i class="bi bi-ticket-perforated"></i> Coupons</a></li>
+                <li><a href="banner.html"><i class="bi bi-images"></i> Banners</a></li>
+                <li><a href="admin-role.html"><i class="bi bi-shield-lock"></i> Roles</a></li>
+                <li><a href="transaction.html"><i class="bi bi-credit-card"></i> Transactions</a></li>
+                <li><a href="login.html"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="admin-header">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Add Product</h4>
+                </div>
+                <div>
+                    <a href="all-products.html" class="btn btn-outline-secondary btn-sm"><i
+                            class="bi bi-arrow-left"></i> Back to List</a>
+                </div>
+            </header>
+
+            <div class="container-fluid p-0">
+                <form action="#" method="POST"> <!-- Backend action here -->
+                    <div class="row g-4">
+                        <div class="col-lg-8">
+                            <div class="form-card mb-4">
+                                <h5 class="mb-4">Product Information</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" placeholder="e.g. Ceramic Vase" required
+                                        name="product_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" rows="5" placeholder="Enter product description..."
+                                        name="description"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">SKU</label>
+                                        <input type="text" class="form-control" placeholder="e.g. CER-001" name="sku">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Stock Quantity</label>
+                                        <input type="number" class="form-control" placeholder="0" name="stock">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-card">
+                                <h5 class="mb-4">Media</h5>
+                                <div class="border border-dashed p-5 text-center rounded bg-light">
+                                    <i class="bi bi-cloud-upload fs-1 text-secondary"></i>
+                                    <p class="mt-2 mb-0">Drag and drop details here, or click to select</p>
+                                    <input type="file" class="d-none" id="productImage">
+                                    <button type="button" class="btn btn-primary mt-3"
+                                        onclick="document.getElementById('productImage').click()">Browse Files</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-card mb-4">
+                                <h5 class="mb-4">Pricing</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Base Price ($)</label>
+                                    <input type="number" class="form-control" placeholder="0.00" name="price"
+                                        step="0.01">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Discount Price ($)</label>
+                                    <input type="number" class="form-control" placeholder="0.00" name="discount_price"
+                                        step="0.01">
+                                </div>
+                            </div>
+
+                            <div class="form-card mb-4">
+                                <h5 class="mb-4">Organization</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category">
+                                        <option selected>Select Category</option>
+                                        <option value="1">Vases</option>
+                                        <option value="2">Bowls</option>
+                                        <option value="3">Plates</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="published" selected>Published</option>
+                                        <option value="draft">Draft</option>
+                                        <option value="archived">Archived</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">Save Product</button>
+                                <button type="button" class="btn btn-outline-secondary btn-lg">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar Toggle for Mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+            });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth < 992) {
+                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

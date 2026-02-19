@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="sidebar-brand">DEALP<span>RT</span> <i class="bi bi-cart3"></i></a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link active">
+                            <i class="bi bi-house-door"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Product</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="add-product.html" class="nav-link">
+                            <i class="bi bi-plus-circle"></i> Add Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-images"></i> Product Media
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="all-products.html" class="nav-link">
+                            <i class="bi bi-box-seam"></i> Product List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-chat-left-text"></i> Product Reviews
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Dealport</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                    <a href="#" class="ms-auto text-muted"><i class="bi bi-box-arrow-right"></i></a>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="admin-header">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Dashboard</h4>
+                </div>
+                <div class="search-bar d-none d-md-block">
+                    <form>
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search data, users, or reports">
+                    </form>
+                </div>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="text-secondary me-3"><i class="bi bi-bell fs-5"></i></a>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                            <span class="ms-2 fw-bold d-none d-sm-block">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <div class="container-fluid p-0">
+                <!-- Row 1: Key Metrics -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stat-card">
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h5 class="text-secondary mb-0">Total Sales</h5>
+                                    <i class="bi bi-three-dots-vertical text-muted"></i>
+                                </div>
+                                <h2 class="display-6 fw-bold mb-2">$350,000</h2>
+                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 10.4% <span
+                                        class="text-muted">vs last 7 days</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stat-card">
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h5 class="text-secondary mb-0">Total Orders</h5>
+                                    <i class="bi bi-three-dots-vertical text-muted"></i>
+                                </div>
+                                <h2 class="display-6 fw-bold mb-2">10,700</h2>
+                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 14.4% <span
+                                        class="text-muted">vs last 7 days</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stat-card">
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h5 class="text-secondary mb-0">Pending & Canceled</h5>
+                                    <i class="bi bi-three-dots-vertical text-muted"></i>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-end">
+                                    <div>
+                                        <small class="text-muted d-block">Pending</small>
+                                        <h4 class="fw-bold text-dark">509</h4>
+                                    </div>
+                                    <div class="text-end">
+                                        <small class="text-muted d-block">Canceled</small>
+                                        <h4 class="fw-bold text-danger">94</h4>
+                                        <small class="text-danger small"><i class="bi bi-arrow-down-short"></i>
+                                            14.4%</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Customer Overview -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <div class="stat-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold text-dark mb-0">Customer Overview</h5>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-secondary me-1">This Week</button>
+                                    <button class="btn btn-sm btn-light text-secondary">Last Week</button>
+                                </div>
+                            </div>
+                            <div class="row text-center g-4">
+                                <div class="col-md-3 col-6 border-end">
+                                    <h3 class="fw-bold mb-1">25k</h3>
+                                    <p class="text-secondary small">Active Customers</p>
+                                </div>
+                                <div class="col-md-3 col-6 border-end">
+                                    <h3 class="fw-bold mb-1">5.6k</h3>
+                                    <p class="text-secondary small">Repeat Customers</p>
+                                </div>
+                                <div class="col-md-3 col-6 border-end">
+                                    <h3 class="fw-bold mb-1">250k</h3>
+                                    <p class="text-secondary small">Shop Visitors</p>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <h3 class="fw-bold mb-1">5.5%</h3>
+                                    <p class="text-secondary small">Conversion Rate</p>
+                                </div>
+                            </div>
+                            <!-- Chart Placeholder -->
+                            <div class="mt-5 text-center bg-light rounded p-5">
+                                <p class="text-muted fst-italic">Sales Chart Area (Highcharts / Chart.js placeholder)
+                                </p>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="opacity: 0.3;">
+                                    <path fill="#0d6efd" fill-opacity="1"
+                                        d="M0,224L80,192C160,160,320,96,480,106.7C640,117,800,203,960,208C1120,213,1280,139,1360,101.3L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Recent Orders Table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">Recent Orders</h5>
+                                <a href="order-management.html" class="btn btn-sm btn-primary">View All</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Amount</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#1234</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                        style="width: 30px; height: 30px;">J</div>
+                                                    <span>John Doe</span>
+                                                </div>
+                                            </td>
+                                            <td>Today</td>
+                                            <td><span
+                                                    class="badge bg-soft-warning text-warning bg-opacity-10">Pending</span>
+                                            </td>
+                                            <td>$120.00</td>
+                                            <td>
+                                                <button class="btn btn-action btn-light text-secondary"><i
+                                                        class="bi bi-eye"></i></button>
+                                                <button class="btn btn-action btn-light text-secondary"><i
+                                                        class="bi bi-pencil"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#1233</td>
+                                            <td>Jane Smith</td>
+                                            <td>Yesterday</td>
+                                            <td><span
+                                                    class="badge bg-success bg-opacity-10 text-success">Completed</span>
+                                            </td>
+                                            <td>$450.00</td>
+                                            <td>
+                                                <button class="btn btn-action btn-light text-secondary"><i
+                                                        class="bi bi-eye"></i></button>
+                                                <button class="btn btn-action btn-light text-secondary"><i
+                                                        class="bi bi-pencil"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar Toggle for Mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.add('active');
+            });
+        }
+
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function () {
+                sidebar.classList.remove('active');
+            });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth < 992) {
+                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
