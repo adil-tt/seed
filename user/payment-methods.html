@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Methods - Ceramico</title>
+    <title>Payment Options - Ceramico</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -63,7 +63,7 @@
                         <a class="nav-link" href="my-orders.html"><i class="bi bi-box-seam"></i> My Orders</a>
                         <a class="nav-link" href="address-book.html"><i class="bi bi-geo-alt"></i> Addresses</a>
                         <a class="nav-link active" href="payment-methods.html"><i class="bi bi-credit-card"></i> Payment
-                            Methods</a>
+                            Options</a>
                         <a class="nav-link" href="wishlist.html"><i class="bi bi-heart"></i> Wishlist</a>
                         <a class="nav-link" href="account-settings.html"><i class="bi bi-gear"></i> Account Settings</a>
                     </nav>
@@ -76,45 +76,144 @@
                     <div>
                         <a href="account.html" class="text-decoration-none text-muted mb-2 d-inline-block"><i
                                 class="bi bi-arrow-left"></i> Back to Account</a>
-                        <h3>Payment Methods</h3>
+                        <h3>Payment Options</h3>
                         <p class="text-muted mb-0">Manage your saved cards</p>
                     </div>
-                    <button class="btn btn-navy"><i class="bi bi-plus-lg me-2"></i> Add New Card</button>
+                    <!-- Button removed -->
                 </div>
 
-                <div class="row g-4">
-                    <!-- Visa Card -->
-                    <div class="col-md-6">
-                        <div class="dashboard-card h-100 mb-0">
-                            <div class="d-flex justify-content-between align-items-start mb-4">
-                                <i class="bi bi-credit-card-2-front fs-1 text-primary"></i>
-                                <span class="badge bg-light text-dark border">Default</span>
-                            </div>
-                            <h5 class="mb-1">Visa ending in 4242</h5>
-                            <p class="text-muted">Expires 12/28</p>
-                            <div class="mt-4 pt-3 border-top d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                <button class="btn btn-sm btn-outline-danger">Remove</button>
+                <!-- Wallet Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="wallet-card">
+                            <div class="wallet-content">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="wallet-chip"></div>
+                                        <div class="wallet-balance-label">Total Balance</div>
+                                        <div class="wallet-balance">$2,450.00</div>
+                                        <div class="d-flex align-items-center gap-2 mt-3">
+                                            <span class="badge bg-white bg-opacity-25 fw-normal px-3 py-2">Active
+                                                Wallet</span>
+                                            <span class="small opacity-75 ms-2">ID: **** 8890</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <i class="bi bi-wallet2 fs-1 text-white opacity-50"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-2 d-flex gap-3 wallet-actions">
+                                    <button class="btn btn-light"><i class="bi bi-plus-lg me-2"></i> Add Fund</button>
+                                    <button class="btn btn-outline-light"><i class="bi bi-arrow-left-right me-2"></i>
+                                        Transfer</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Mastercard -->
-                    <div class="col-md-6">
-                        <div class="dashboard-card h-100 mb-0">
-                            <div class="d-flex justify-content-between align-items-start mb-4">
-                                <i class="bi bi-credit-card-2-front fs-1 text-warning"></i>
-                                <!-- <span class="badge bg-light text-dark border">Default</span> -->
-                            </div>
-                            <h5 class="mb-1">Mastercard ending in 8899</h5>
-                            <p class="text-muted">Expires 05/27</p>
-                            <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-outline-secondary">Set Default</button>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger">Remove</button>
-                                </div>
-                            </div>
+                <!-- Transaction History -->
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+                    <h4 class="mb-0">Transaction History</h4>
+                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-2"></i> Download
+                        Statement</button>
+                </div>
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0 align-middle">
+                                <thead class="bg-light border-bottom">
+                                    <tr>
+                                        <th class="border-0 py-3 ps-4 text-secondary fw-medium">Date</th>
+                                        <th class="border-0 py-3 text-secondary fw-medium">Description</th>
+                                        <th class="border-0 py-3 text-secondary fw-medium">Reference</th>
+                                        <th class="border-0 py-3 text-secondary fw-medium">Status</th>
+                                        <th class="border-0 py-3 text-end pe-4 text-secondary fw-medium">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="ps-4 text-nowrap">Oct 24, 2026</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3 d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-arrow-down-left text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 text-dark">Wallet Top-up</h6>
+                                                    <small class="text-muted">Credit Card</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-muted">#REF-889922</td>
+                                        <td><span
+                                                class="badge bg-success bg-opacity-10 text-success px-3 rounded-pill">Completed</span>
+                                        </td>
+                                        <td class="text-end pe-4 fw-bold text-success">+$500.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ps-4 text-nowrap">Oct 21, 2026</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-danger bg-opacity-10 p-2 me-3 d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-bag text-danger"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 text-dark">Purchase</h6>
+                                                    <small class="text-muted">Order #ORD-7721</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-muted">#REF-772155</td>
+                                        <td><span
+                                                class="badge bg-success bg-opacity-10 text-success px-3 rounded-pill">Completed</span>
+                                        </td>
+                                        <td class="text-end pe-4 fw-bold text-dark">-$125.50</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ps-4 text-nowrap">Oct 15, 2026</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-danger bg-opacity-10 p-2 me-3 d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-bag text-danger"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 text-dark">Purchase</h6>
+                                                    <small class="text-muted">Order #ORD-7710</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-muted">#REF-771099</td>
+                                        <td><span
+                                                class="badge bg-success bg-opacity-10 text-success px-3 rounded-pill">Completed</span>
+                                        </td>
+                                        <td class="text-end pe-4 fw-bold text-dark">-$89.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ps-4 text-nowrap">Oct 10, 2026</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3 d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    <i class="bi bi-arrow-down-left text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 text-dark">Refund</h6>
+                                                    <small class="text-muted">Order #ORD-7650</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-muted">#REF-765022</td>
+                                        <td><span
+                                                class="badge bg-primary bg-opacity-10 text-primary px-3 rounded-pill">Processed</span>
+                                        </td>
+                                        <td class="text-end pe-4 fw-bold text-success">+$45.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

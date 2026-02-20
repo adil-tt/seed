@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product - Admin</title>
+    <title>Add Product - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -21,20 +21,113 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3>CERAMICO</h3>
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="order-management.html"><i class="bi bi-cart"></i> Orders</a></li>
-                <li><a href="all-products.html" class="active"><i class="bi bi-box-seam"></i> Products</a></li>
-                <li><a href="customers.html"><i class="bi bi-people"></i> Customers</a></li>
-                <li><a href="categories.html"><i class="bi bi-tags"></i> Categories</a></li>
-                <li><a href="coupon.html"><i class="bi bi-ticket-perforated"></i> Coupons</a></li>
-                <li><a href="banner.html"><i class="bi bi-images"></i> Banners</a></li>
-                <li><a href="admin-role.html"><i class="bi bi-shield-lock"></i> Roles</a></li>
-                <li><a href="transaction.html"><i class="bi bi-credit-card"></i> Transactions</a></li>
-                <li><a href="login.html"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-            </ul>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="bi bi-grid-fill"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sales-offers.html" class="nav-link">
+                            <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="purchase-list.html" class="nav-link">
+                            <i class="bi bi-bag-check"></i> Purchase List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-purchase.html" class="nav-link">
+                            <i class="bi bi-bag-plus"></i> Add Purchase
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="batch-management.html" class="nav-link">
+                            <i class="bi bi-upc-scan"></i> Batch Implementation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="supplier.html" class="nav-link">
+                            <i class="bi bi-truck"></i> Suppliers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stock-report.html" class="nav-link">
+                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                        </a>
+                    </li>
+                </ul>
+
+
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-shield-lock"></i> Control Authority
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
         </nav>
 
         <!-- Main Content -->
@@ -44,119 +137,121 @@
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <h4>Add Product</h4>
                 </div>
-                <div>
-                    <a href="all-products.html" class="btn btn-outline-secondary btn-sm"><i
-                            class="bi bi-arrow-left"></i> Back to List</a>
+                <div class="d-flex align-items-center ms-auto gap-3">
+                    <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </header>
 
             <div class="container-fluid p-0">
-                <form action="#" method="POST"> <!-- Backend action here -->
-                    <div class="row g-4">
-                        <div class="col-lg-8">
-                            <div class="form-card mb-4">
-                                <h5 class="mb-4">Product Information</h5>
-                                <div class="mb-3">
-                                    <label class="form-label">Product Name</label>
-                                    <input type="text" class="form-control" placeholder="e.g. Ceramic Vase" required
-                                        name="product_name">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="5" placeholder="Enter product description..."
-                                        name="description"></textarea>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">SKU</label>
-                                        <input type="text" class="form-control" placeholder="e.g. CER-001" name="sku">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Stock Quantity</label>
-                                        <input type="number" class="form-control" placeholder="0" name="stock">
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="form-card">
-                                <h5 class="mb-4">Media</h5>
-                                <div class="border border-dashed p-5 text-center rounded bg-light">
-                                    <i class="bi bi-cloud-upload fs-1 text-secondary"></i>
-                                    <p class="mt-2 mb-0">Drag and drop details here, or click to select</p>
-                                    <input type="file" class="d-none" id="productImage">
-                                    <button type="button" class="btn btn-primary mt-3"
-                                        onclick="document.getElementById('productImage').click()">Browse Files</button>
+                <!-- Action Bar -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <h5 class="fw-bold mb-0">Add New Product</h5>
+                </div>
+                <!-- This creates product master record only -->
+
+                <div class="row g-4">
+                    <!-- Left Column: Details -->
+                    <div class="col-lg-8">
+                        <!-- Basic Details -->
+                        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
+                            <h5 class="fw-bold mb-4">Basic Details</h5>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Ceramic Product Name</label>
+                                <input type="text" class="form-control" name="product_name"
+                                    placeholder="Ceramic Vase (e.g.)">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Brand (Optional)</label>
+                                <input type="text" class="form-control" name="brand" placeholder="Brand Name">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Product Description</label>
+                                <textarea class="form-control" name="description" rows="4"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="mt-4 text-end">
+                                <button class="btn btn-white border me-2"><i class="bi bi-save me-1"></i> Save to
+                                    draft</button>
+                                <button class="btn btn-primary">Create Product Master</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- Right Column: Images & Meta -->
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
+                            <h5 class="fw-bold mb-4">Upload Product Image</h5>
+                            <label class="form-label fw-medium mb-3">Product Image</label>
+
+                            <!-- Main Preview (Using existing ceramic image) -->
+                            <div class="upload-preview-container border rounded mb-3 position-relative">
+                                <img src="images/ceramic-cup.jpg" alt="Preview">
+                                <div class="position-absolute bottom-0 start-0 m-3">
+                                    <button class="btn btn-sm btn-white border"><i class="bi bi-image me-1"></i>
+                                        Browse</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
-                            <div class="form-card mb-4">
-                                <h5 class="mb-4">Pricing</h5>
-                                <div class="mb-3">
-                                    <label class="form-label">Base Price ($)</label>
-                                    <input type="number" class="form-control" placeholder="0.00" name="price"
-                                        step="0.01">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Discount Price ($)</label>
-                                    <input type="number" class="form-control" placeholder="0.00" name="discount_price"
-                                        step="0.01">
-                                </div>
-                            </div>
+                        <div class="card border-0 shadow-sm p-4" style="border-radius: 12px;">
+                            <h5 class="fw-bold mb-4">Categories</h5>
 
-                            <div class="form-card mb-4">
-                                <h5 class="mb-4">Organization</h5>
-                                <div class="mb-3">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-select" name="category">
-                                        <option selected>Select Category</option>
-                                        <option value="1">Vases</option>
-                                        <option value="2">Bowls</option>
-                                        <option value="3">Plates</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Status</label>
-                                    <select class="form-select" name="status">
-                                        <option value="published" selected>Published</option>
-                                        <option value="draft">Draft</option>
-                                        <option value="archived">Archived</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Product Categories</label>
+                                <select class="form-select" name="category">
+                                    <option selected>Select Category</option>
+                                    <option value="vases">Vases</option>
+                                    <option value="bowls">Bowls</option>
+                                    <option value="plates">Plates</option>
+                                    <option value="cups">Cups</option>
+                                    <option value="mugs">Mugs</option>
+                                    <option value="decor">Decor Items</option>
+                                    <option value="others">Others</option>
+                                </select>
 
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">Save Product</button>
-                                <button type="button" class="btn btn-outline-secondary btn-lg">Cancel</button>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Sidebar Toggle for Mobile
         const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
         const sidebar = document.querySelector('.sidebar');
-
         if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', function () {
-                sidebar.classList.toggle('active');
-            });
+            sidebarToggle.addEventListener('click', () => sidebar.classList.add('active'));
         }
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function (event) {
-            if (window.innerWidth < 992) {
-                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
-                    sidebar.classList.remove('active');
-                }
-            }
-        });
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
+        }
     </script>
 </body>
 

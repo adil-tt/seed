@@ -1,16 +1,27 @@
-/* Admin Dashboard Variables */
 :root {
-    --primary-color: #0d6efd;
-    --secondary-color: #6c757d;
-    --success-color: #198754;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #0dcaf0;
-    --light-bg: #f8f9fa;
-    --dark-text: #212529;
+    --primary-color: #334155;
+    /* Slate 700 */
+    --primary-hover: #1E293B;
+    /* Slate 800 */
+    --accent-color: #0EA5E9;
+    /* Sky 500 */
+    --secondary-color: #64748b;
+    /* Slate 500 */
+    --success-color: #10b981;
+    /* Emerald 500 - Valid Success Color */
+    --danger-color: #ef4444;
+    /* Red 500 */
+    --warning-color: #f59e0b;
+    /* Amber 500 */
+    --info-color: #3b82f6;
+    /* Blue 500 */
+    --light-bg: #f1f5f9;
+    /* Slate 100 */
+    --dark-text: #0f172a;
+    /* Slate 900 */
     --sidebar-width: 260px;
-    --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    --border-radius: 10px;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --border-radius: 12px;
 }
 
 body {
@@ -50,17 +61,19 @@ body {
 }
 
 .sidebar-brand {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--success-color);
-    /* Green brand color as per image/theme */
+    color: #B08968;
+    /* Earthy brown brand color */
     text-decoration: none;
-    letter-spacing: 0.5px;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    /* No icon gap needed */
 }
 
-.sidebar-brand span {
-    color: var(--dark-text);
-}
+/* Removed .sidebar-brand span as consistent color is desired */
 
 .sidebar-content {
     flex: 1;
@@ -101,9 +114,13 @@ body {
 }
 
 .nav-link.active {
-    background-color: var(--success-color);
+    background-color: var(--primary-color);
     color: #fff;
-    box-shadow: 0 4px 6px rgba(25, 135, 84, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(51, 65, 85, 0.4);
+}
+
+.nav-link.active i {
+    color: var(--accent-color);
 }
 
 .nav-link i {
@@ -352,4 +369,458 @@ body {
     .search-bar form {
         min-width: auto;
     }
+}
+
+/* Custom Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+    color: #fff;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: #fff;
+}
+
+/* Utility Classes for Theme */
+.bg-soft-success {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: var(--success-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.bg-soft-primary {
+    background-color: rgba(51, 65, 85, 0.1) !important;
+    color: var(--primary-color) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+
+.bg-soft-warning {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+    color: var(--warning-color) !important;
+}
+
+.bg-soft-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    color: var(--danger-color) !important;
+}
+
+/* Custom Checkbox */
+.form-check-input:checked {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+    border-color: var(--success-color);
+}
+
+/* Filter Tabs */
+.filter-tabs {
+    background: #f8f9fa;
+    padding: 5px;
+    border-radius: 8px;
+    display: inline-flex;
+}
+
+.filter-tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    background: transparent;
+}
+
+.filter-tab.active {
+    background-color: #fff;
+    color: var(--dark-text);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.filter-tab:hover:not(.active) {
+    color: var(--dark-text);
+}
+
+/* Table Styling Overrides */
+.table-card .table thead th {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: var(--dark-text);
+    font-weight: 600;
+    text-transform: none;
+    border-bottom: none;
+    white-space: nowrap;
+}
+
+.table-card .table tbody td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Pagination Custom */
+.pagination .page-link {
+    border: 1px solid #eee;
+    color: var(--secondary-color);
+    margin: 0 4px;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: rgba(25, 135, 84, 0.2);
+    color: var(--success-color);
+    border-color: transparent;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    color: var(--success-color);
+}
+
+/* Product Badge in Table */
+.product-img-small {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+/* Category Cards (Discover Section) */
+.category-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s;
+    height: 100%;
+    border: 1px solid transparent;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(25, 135, 84, 0.2);
+}
+
+.category-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.category-icon-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-name {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* Advanced Filter Tabs */
+.filter-bar {
+    background: #eff2f7;
+    /* Very light grey for bar */
+    padding: 5px;
+    border-radius: 8px;
+    display: inline-flex;
+    gap: 5px;
+}
+
+.filter-tab-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.filter-tab-btn.active {
+    background-color: #fff;
+    color: var(--success-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Icon Button Group */
+.icon-btn-group .btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.icon-btn-group .btn:hover {
+    background-color: #f8f9fa;
+    color: var(--dark-text);
+}
+
+/* Transaction Page Specifics */
+.metric-card {
+    padding: 20px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: var(--card-shadow);
+    height: 100%;
+}
+
+.payment-card-visual {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    /* Slate Gradient */
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.payment-card-visual .card-logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.payment-card-visual .card-chip {
+    width: 40px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.payment-card-visual .card-number {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    font-family: monospace;
+}
+
+.payment-card-visual .card-holder {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.payment-card-visual .card-expiry {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.status-dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Add Product Page Specifics */
+.image-upload-area {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.upload-preview-container {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.upload-preview-container img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.gallery-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.add-image-box {
+    width: 100%;
+    /* Fill the column width */
+    height: 60px;
+    border: 1px dashed var(--accent-color);
+    /* Accent dashed border */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    cursor: pointer;
+    background: rgba(14, 165, 233, 0.05);
+    /* Soft Accent BG */
+}
+
+.color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    /* Square with rounded corners as per image */
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.color-swatch:hover,
+.color-swatch.active {
+    border-color: var(--dark-text);
+    transform: scale(1.1);
+}
+
+.rich-text-toolbar {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+.input-icon-right {
+    position: relative;
+}
+
+.input-icon-right i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+/* Admin Role Page Specifics */
+.profile-card {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.profile-avatar-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.social-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+    transition: all 0.2s;
+}
+
+.social-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.avatar-upload-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar-upload-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
 }

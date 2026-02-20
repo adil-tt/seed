@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roles - Admin</title>
+    <title>Admin Role - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -21,63 +21,332 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3>CERAMICO</h3>
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="admin-role.html" class="active"><i class="bi bi-shield-lock"></i> Roles</a></li>
-                <!-- ... -->
-            </ul>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="bi bi-grid-fill"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sales-offers.html" class="nav-link">
+                            <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="purchase-list.html" class="nav-link">
+                            <i class="bi bi-bag-check"></i> Purchase List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-purchase.html" class="nav-link">
+                            <i class="bi bi-bag-plus"></i> Add Purchase
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="batch-management.html" class="nav-link">
+                            <i class="bi bi-upc-scan"></i> Batch Implementation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="supplier.html" class="nav-link">
+                            <i class="bi bi-truck"></i> Suppliers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stock-report.html" class="nav-link">
+                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                        </a>
+                    </li>
+                </ul>
+
+
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link active">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-shield-lock"></i> Control Authority
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content">
             <header class="admin-header">
-                <div>
-                    <h4>Admin Roles</h4>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Admin role</h4>
                 </div>
-                <div><span class="me-3">Admin User</span><img src="images/ceramic-cup.jpg" class="rounded-circle">
+                <div class="search-bar d-none d-md-block">
+                    <form>
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search data, users, or reports">
+                    </form>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" checked>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </header>
 
             <div class="container-fluid p-0">
-                <div class="table-card">
-                    <div class="d-flex justify-content-between mb-4">
-                        <h5 class="mb-0">Staff Members</h5>
-                        <button class="btn btn-primary"><i class="bi bi-plus"></i> Add New Staff</button>
+                <h5 class="fw-bold mb-4">About section</h5>
+
+                <div class="row g-4">
+                    <!-- Left Column: Profile Card & Password -->
+                    <div class="col-lg-4">
+                        <!-- Profile Card -->
+                        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
+                            <div class="card-body profile-card">
+                                <div class="d-flex justify-content-between w-100 mb-2">
+                                    <h5 class="fw-bold mb-0">Profile</h5>
+                                    <div>
+                                        <button class="btn btn-sm btn-light border-0"><i
+                                                class="bi bi-grid"></i></button>
+                                        <button class="btn btn-sm btn-light border-0"><i
+                                                class="bi bi-share"></i></button>
+                                    </div>
+                                </div>
+
+                                <img src="images/ceramic-cup.jpg" alt="Profile" class="profile-avatar-large">
+                                <h5 class="fw-bold mb-1">Mark The Designer</h5>
+                                <p class="text-muted small mb-3">mark.designer@example.com <i
+                                        class="bi bi-copy ms-1"></i>
+                                </p>
+
+                                <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                                    <small class="text-muted">Linked with Social media</small>
+                                </div>
+
+                                <div class="social-links">
+                                    <a href="#" class="social-btn"><i class="bi bi-google"></i></a>
+                                    <a href="#" class="social-btn"><i class="bi bi-twitter"></i></a>
+                                    <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
+                                    <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
+                                </div>
+                                <button class="btn btn-white border mt-3 w-100 rounded-pill"><i
+                                        class="bi bi-plus-circle me-1"></i> Social media</button>
+
+                            </div>
+                        </div>
+
+                        <!-- Change Password -->
+                        <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h5 class="fw-bold mb-0">Change Password</h5>
+                                    <a href="#" class="small text-primary text-decoration-none">Need help <i
+                                            class="bi bi-question-circle"></i></a>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">Current Password</label>
+                                    <div class="input-icon-right">
+                                        <input type="password" class="form-control" placeholder="Enter password">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </div>
+                                    <a href="#" class="small text-primary text-decoration-none mt-1 d-block">Forgot
+                                        Current Password? Click here</a>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small text-muted">New Password</label>
+                                    <div class="input-icon-right">
+                                        <input type="password" class="form-control" placeholder="Enter password">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label small text-muted">Re-enter Password</label>
+                                    <div class="input-icon-right">
+                                        <input type="password" class="form-control" placeholder="Enter password">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Super Admin</td>
-                                    <td>admin@ceramico.com</td>
-                                    <td><span class="badge bg-dark">Super Admin</span></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Editor User</td>
-                                    <td>editor@ceramico.com</td>
-                                    <td><span class="badge bg-info">Editor</span></td>
-                                    <td><button class="btn btn-sm btn-outline-danger"><i
-                                                class="bi bi-trash"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                    <!-- Right Column: Profile Update -->
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="fw-bold mb-0">Profile Update</h5>
+                                    <button class="btn btn-white border"><i class="bi bi-pencil me-1"></i> Edit</button>
+                                </div>
+
+                                <div class="avatar-upload-area mb-4">
+                                    <img src="images/ceramic-cup.jpg" alt="Thumb" class="avatar-upload-thumb">
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary btn-sm px-3">Upload New</button>
+                                        <button class="btn btn-white border btn-sm px-3">Delete</button>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-medium">First Name</label>
+                                        <input type="text" class="form-control" value="Mark">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-medium">Last Name</label>
+                                        <input type="text" class="form-control" value="The Designer">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-medium">Password</label>
+                                        <div class="input-icon-right">
+                                            <input type="password" class="form-control" value="password123">
+                                            <i class="bi bi-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-medium">Phone Number</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control border-end-0" value="(603) 555-0123">
+                                            <span class="input-group-text bg-white border-start-0"><img
+                                                    src="https://flagcdn.com/w20/us.png" width="20"> <i
+                                                    class="bi bi-chevron-down ms-2 small"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-medium">E-mail</label>
+                                        <input type="email" class="form-control" value="mark.designer@example.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-medium">Date of Birth</label>
+                                        <div class="input-icon-right">
+                                            <input type="text" class="form-control" value="12- January- 1999">
+                                            <i class="bi bi-calendar"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-medium">Location</label>
+                                        <input type="text" class="form-control"
+                                            value="2972 Westheimer Rd. Santa Ana, Illinois 85486">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-medium">Credit Card</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i
+                                                    class="bi bi-credit-card-2-front text-warning fs-5"></i></span>
+                                            <input type="text" class="form-control border-start-0 border-end-0"
+                                                value="845-4359-4546">
+                                            <span class="input-group-text bg-white"><i class="bi bi-dash"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-medium">Biography</label>
+                                        <div class="rich-text-toolbar text-secondary">
+                                            <small>Enter a biography about you</small>
+                                        </div>
+                                        <textarea class="form-control border-top-0 rounded-0 rounded-bottom"
+                                            style="margin-top: -9px;" rows="3"></textarea>
+                                        <div class="text-end mt-2">
+                                            <button class="btn btn-sm btn-light btn-action"><i
+                                                    class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-sm btn-light btn-action"><i
+                                                    class="bi bi-magic"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => sidebar.classList.add('active'));
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
+        }
+    </script>
 </body>
 
 </html>

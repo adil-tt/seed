@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coupon Code - Ceramico Admin</title>
+    <title>Purchase List - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="coupon.html" class="nav-link active">
+                        <a href="coupon.html" class="nav-link">
                             <i class="bi bi-ticket-perforated"></i> Coupon Code
                         </a>
                     </li>
@@ -73,7 +73,7 @@
                 <div class="nav-section-label">Purchase</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a href="purchase-list.html" class="nav-link">
+                        <a href="purchase-list.html" class="nav-link active">
                             <i class="bi bi-bag-check"></i> Purchase List
                         </a>
                     </li>
@@ -135,7 +135,7 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Coupon Code</h4>
+                    <h4>Purchase List</h4>
                 </div>
                 <div class="search-bar d-none d-md-block">
                     <form>
@@ -165,90 +165,60 @@
             </header>
 
             <div class="container-fluid p-0">
-                <div class="row g-4 mb-4">
-                    <div class="col-xl-3 col-md-6">
-                        <div class="stat-card">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6 class="fw-bold fs-6 mb-0">Total Coupon</h6>
-                                <i class="bi bi-ticket-perforated text-primary fs-4"></i>
-                            </div>
-                            <h3 class="fw-bold mb-1">20</h3>
-                            <p class="small text-muted mb-0">Total Coupons Created</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="stat-card">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6 class="fw-bold fs-6 mb-0">Active Coupon</h6>
-                                <i class="bi bi-check-circle text-success fs-4"></i>
-                            </div>
-                            <h3 class="fw-bold mb-1">15</h3>
-                            <p class="small text-muted mb-0">Currently Active</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="stat-card">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6 class="fw-bold fs-6 mb-0">Expired Coupon</h6>
-                                <i class="bi bi-x-circle text-danger fs-4"></i>
-                            </div>
-                            <h3 class="fw-bold mb-1">5</h3>
-                            <p class="small text-muted mb-0">Expired / Disabled</p>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="stat-card">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6 class="fw-bold fs-6 mb-0">Total Usage</h6>
-                                <i class="bi bi-bar-chart text-info fs-4"></i>
-                            </div>
-                            <h3 class="fw-bold mb-1">1,250</h3>
-                            <p class="small text-muted mb-0">Times Coupons Used</p>
-                        </div>
-                    </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Total Purchase (45)</h5>
+                    <a href="add-purchase.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>
+                        Add Purchase</a>
                 </div>
 
                 <div class="table-card">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                        <h5 class="fw-bold mb-0">Coupon List</h5>
                         <div class="d-flex gap-2">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0"><i
                                         class="bi bi-search text-muted"></i></span>
-                                <input type="text" class="form-control border-start-0 ps-0" placeholder="Search Coupon">
+                                <input type="text" class="form-control border-start-0 ps-0"
+                                    placeholder="Search purchase...">
                             </div>
-                            <a href="add-coupon.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add
-                                Coupon</a>
+                            <button class="btn btn-white border"><i class="bi bi-filter"></i> Filter</button>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <button class="btn btn-primary"><i class="bi bi-file-earmark-excel me-1"></i>
+                                Export</button>
                         </div>
                     </div>
 
                     <div class="table-responsive">
-                        <!-- Dynamic coupon data will be loaded here -->
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Coupon Code</th>
-                                    <th>Discount Type</th>
-                                    <th>Value</th>
-                                    <th>Min Order Amount</th>
-                                    <th>Expiry Date</th>
-                                    <th>Usage Limit</th>
-                                    <th>Used Count</th>
-                                    <th>Status</th>
+                                    <th>Purchase ID</th>
+                                    <th>Supplier Name</th>
+                                    <th>Invoice No</th>
+                                    <th>Date</th>
+                                    <th>Total Amount</th>
+                                    <th>Payment Status</th>
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><span class="fw-bold">SUMMER25</span></td>
-                                    <td>Percentage</td>
-                                    <td>25%</td>
-                                    <td>$50.00</td>
-                                    <td>2025-08-31</td>
-                                    <td>1000</td>
-                                    <td>450</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
+                                    <td>#PUR-00125</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+                                                style="width:35px; height:35px; font-weight:bold; color:#198754;">GS
+                                            </div>
+                                            <span>Global Supplier Inc.</span>
+                                        </div>
+                                    </td>
+                                    <td>INV-2025-001</td>
+                                    <td>12 Oct 2025</td>
+                                    <td class="fw-bold">$5,400.00</td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success">Paid</span></td>
                                     <td class="text-end">
+                                        <button class="btn btn-sm btn-white border"><i class="bi bi-eye"></i></button>
                                         <button class="btn btn-sm btn-white border"><i
                                                 class="bi bi-pencil"></i></button>
                                         <button class="btn btn-sm btn-white border text-danger"><i
@@ -256,15 +226,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span class="fw-bold">WELCOME10</span></td>
-                                    <td>Flat</td>
-                                    <td>$10.00</td>
-                                    <td>$20.00</td>
-                                    <td>2025-12-31</td>
-                                    <td>Unlimited</td>
-                                    <td>125</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
+                                    <td>#PUR-00126</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+                                                style="width:35px; height:35px; font-weight:bold; color:#198754;">KC
+                                            </div>
+                                            <span>Kitchen Ceramics Ltd.</span>
+                                        </div>
+                                    </td>
+                                    <td>INV-2025-002</td>
+                                    <td>15 Oct 2025</td>
+                                    <td class="fw-bold">$1,250.00</td>
+                                    <td><span class="badge bg-warning bg-opacity-10 text-warning">Pending</span></td>
                                     <td class="text-end">
+                                        <button class="btn btn-sm btn-white border"><i class="bi bi-eye"></i></button>
                                         <button class="btn btn-sm btn-white border"><i
                                                 class="bi bi-pencil"></i></button>
                                         <button class="btn btn-sm btn-white border text-danger"><i
@@ -272,32 +248,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span class="fw-bold">FLASH50</span></td>
-                                    <td>Percentage</td>
-                                    <td>50%</td>
-                                    <td>$100.00</td>
-                                    <td>2024-12-25</td>
-                                    <td>50</td>
-                                    <td>50</td>
-                                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary">Expired</span>
+                                    <td>#PUR-00127</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2"
+                                                style="width:35px; height:35px; font-weight:bold; color:#198754;">AC
+                                            </div>
+                                            <span>Artistic Clay Works</span>
+                                        </div>
                                     </td>
+                                    <td>INV-2025-003</td>
+                                    <td>18 Oct 2025</td>
+                                    <td class="fw-bold">$3,800.00</td>
+                                    <td><span class="badge bg-danger bg-opacity-10 text-danger">Unpaid</span></td>
                                     <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold">VIP20</span></td>
-                                    <td>Percentage</td>
-                                    <td>20%</td>
-                                    <td>$200.00</td>
-                                    <td>2026-01-01</td>
-                                    <td>100</td>
-                                    <td>0</td>
-                                    <td><span class="badge bg-danger bg-opacity-10 text-danger">Disabled</span></td>
-                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-white border"><i class="bi bi-eye"></i></button>
                                         <button class="btn btn-sm btn-white border"><i
                                                 class="bi bi-pencil"></i></button>
                                         <button class="btn btn-sm btn-white border text-danger"><i
@@ -310,11 +275,13 @@
 
                     <!-- Pagination -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
-                        <small class="text-muted">Showing 1 to 4 of 4 entries</small>
+                        <small class="text-muted">Showing 1 to 3 of 45 entries</small>
                         <nav aria-label="Page navigation">
                             <ul class="pagination mb-0">
                                 <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                                 <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
                             </ul>
                         </nav>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories - Admin</title>
+    <title>Categories - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -13,6 +13,52 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-card {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+            /* Consistent light background */
+        }
+
+        .category-card:hover,
+        .category-card.active {
+            border-color: var(--primary-color);
+            background-color: #eef2f6;
+            /* Subtle bg change on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-card i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .category-card h6 {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,109 +67,378 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3>CERAMICO</h3>
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="order-management.html"><i class="bi bi-cart"></i> Orders</a></li>
-                <li><a href="all-products.html"><i class="bi bi-box-seam"></i> Products</a></li>
-                <li><a href="customers.html"><i class="bi bi-people"></i> Customers</a></li>
-                <li><a href="categories.html" class="active"><i class="bi bi-tags"></i> Categories</a></li>
-                <!-- ... -->
-            </ul>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="bi bi-grid-fill"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link active">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sales-offers.html" class="nav-link">
+                            <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="purchase-list.html" class="nav-link">
+                            <i class="bi bi-bag-check"></i> Purchase List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-purchase.html" class="nav-link">
+                            <i class="bi bi-bag-plus"></i> Add Purchase
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="batch-management.html" class="nav-link">
+                            <i class="bi bi-upc-scan"></i> Batch Implementation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="supplier.html" class="nav-link">
+                            <i class="bi bi-truck"></i> Suppliers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stock-report.html" class="nav-link">
+                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                        </a>
+                    </li>
+                </ul>
+
+
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-shield-lock"></i> Control Authority
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content">
             <header class="admin-header">
-                <div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <h4>Categories</h4>
                 </div>
-                <div><span class="me-3">Admin User</span><img src="images/ceramic-cup.jpg" class="rounded-circle">
+                <div class="search-bar d-none d-md-block">
+                    <form>
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search data, users, or reports">
+                    </form>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" checked>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </header>
 
             <div class="container-fluid p-0">
-                <div class="row">
-                    <!-- Add Category Form -->
-                    <div class="col-md-4">
-                        <div class="table-card">
-                            <h5 class="mb-4">Add New Category</h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Name</label>
-                                    <input type="text" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Slug</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Parent Category</label>
-                                    <select class="form-select">
-                                        <option value="">None</option>
-                                        <option>Tableware</option>
-                                        <option>Decor</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="3"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">Add Category</button>
-                            </form>
+                <!-- Discover Section -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Discover by Category</h5>
+                    <a href="#" class="text-decoration-none text-muted small">Show All Categories</a>
+                </div>
+
+                <div class="category-grid">
+                    <div class="category-card active">
+                        <i class="bi bi-flower1"></i>
+                        <h6>Vases</h6>
+                    </div>
+                    <div class="category-card">
+                        <i class="bi bi-cup-hot"></i>
+                        <h6>Cups</h6>
+                    </div>
+                    <div class="category-card">
+                        <i class="bi bi-cup"></i>
+                        <h6>Mugs</h6>
+                    </div>
+                    <div class="category-card">
+                        <i class="bi bi-circle"></i>
+                        <h6>Bowls</h6>
+                    </div>
+                    <div class="category-card">
+                        <i class="bi bi-lamp"></i>
+                        <h6>Decor Items</h6>
+                    </div>
+                    <div class="category-card">
+                        <i class="bi bi-disc"></i>
+                        <h6>Plates</h6>
+                    </div>
+                </div>
+
+
+                <!-- Category Table -->
+                <div class="table-card mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-white border px-3">All Category</button>
+                            <button class="btn btn-white border px-3">Sub Category</button>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i
+                                        class="bi bi-search text-muted"></i></span>
+                                <input type="text" class="form-control border-start-0 ps-0"
+                                    placeholder="Search Category">
+                            </div>
+                            <button class="btn btn-primary" onclick="window.location.href='add-category.html'"><i
+                                    class="bi bi-plus-lg me-1"></i> Add Category</button>
                         </div>
                     </div>
 
-                    <!-- Category List -->
-                    <div class="col-md-8">
-                        <div class="table-card">
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Slug</th>
-                                            <th>Count</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-bold">Plates</td>
-                                            <td>Dinner places, side plates...</td>
-                                            <td>plates</td>
-                                            <td>24</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-secondary"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-sm btn-outline-danger"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Bowls</td>
-                                            <td>Soup bowls, salad bowls...</td>
-                                            <td>bowls</td>
-                                            <td>18</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-secondary"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-sm btn-outline-danger"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><input class="form-check-input" type="checkbox"></th>
+                                    <th scope="col">Categories</th>
+                                    <th scope="col">Starting Price</th>
+                                    <th scope="col">Create by</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Product Stock</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded p-1 me-2"
+                                                style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                                                <img src="images/ceramic-cup.jpg"
+                                                    style="width: 30px; height: 30px; object-fit: contain;" alt="Cat">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 text-sm">Vases</h6>
+                                                <small class="text-muted" style="font-size: 10px;">DECOR</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>$45.00</td>
+                                    <td>Admin</td>
+                                    <td>#CAT-001</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress flex-grow-1" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                    style="width: 75%;" aria-valuenow="75" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                            <small>150</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light" type="button"
+                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Edit</a></li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded p-1 me-2"
+                                                style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                                                <img src="images/ceramic-cup.jpg"
+                                                    style="width: 30px; height: 30px; object-fit: contain;" alt="Cat">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 text-sm">Mugs</h6>
+                                                <small class="text-muted" style="font-size: 10px;">KITCHEN</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>$15.00</td>
+                                    <td>Admin</td>
+                                    <td>#CAT-002</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress flex-grow-1" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                    style="width: 45%;" aria-valuenow="45" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                            <small>320</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light" type="button"
+                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Edit</a></li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded p-1 me-2"
+                                                style="width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;">
+                                                <img src="images/ceramic-cup.jpg"
+                                                    style="width: 30px; height: 30px; object-fit: contain;" alt="Cat">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 text-sm">Plates</h6>
+                                                <small class="text-muted" style="font-size: 10px;">DINING</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>$25.00</td>
+                                    <td>Admin</td>
+                                    <td>#CAT-003</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="progress flex-grow-1" style="height: 6px;">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                    style="width: 80%;" aria-valuenow="80" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                            <small>500</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light" type="button"
+                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"><i
+                                                            class="bi bi-pencil me-2"></i>Edit</a></li>
+                                                <li><a class="dropdown-item text-danger" href="#"><i
+                                                            class="bi bi-trash me-2"></i>Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <button class="btn btn-white border px-3">← Previous</button>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination mb-0">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><span class="mx-2 text-muted">...</span></li>
+                                <li class="page-item"><a class="page-link" href="#">24</a></li>
+                            </ul>
+                        </nav>
+                        <button class="btn btn-white border px-3">Next →</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => sidebar.classList.add('active'));
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
+        }
+    </script>
 </body>
 
 </html>

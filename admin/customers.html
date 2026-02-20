@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers - Admin</title>
+    <title>Customers - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -21,76 +21,535 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3>CERAMICO</h3>
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="order-management.html"><i class="bi bi-cart"></i> Orders</a></li>
-                <li><a href="all-products.html"><i class="bi bi-box-seam"></i> Products</a></li>
-                <li><a href="customers.html" class="active"><i class="bi bi-people"></i> Customers</a></li>
-                <!-- ... -->
-            </ul>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="bi bi-grid-fill"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link active">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sales-offers.html" class="nav-link">
+                            <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="purchase-list.html" class="nav-link">
+                            <i class="bi bi-bag-check"></i> Purchase List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-purchase.html" class="nav-link">
+                            <i class="bi bi-bag-plus"></i> Add Purchase
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="batch-management.html" class="nav-link">
+                            <i class="bi bi-upc-scan"></i> Batch Implementation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="supplier.html" class="nav-link">
+                            <i class="bi bi-truck"></i> Suppliers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stock-report.html" class="nav-link">
+                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                        </a>
+                    </li>
+                </ul>
+
+
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-shield-lock"></i> Control Authority
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content">
             <header class="admin-header">
-                <div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
                     <h4>Customers</h4>
                 </div>
-                <div><span class="me-3">Admin User</span><img src="images/ceramic-cup.jpg" class="rounded-circle">
+                <div class="search-bar d-none d-md-block">
+                    <form>
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search data, users, or reports">
+                    </form>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" checked>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </header>
 
             <div class="container-fluid p-0">
-                <div class="table-card">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Customer</th>
-                                    <th>Email</th>
-                                    <th>Orders</th>
-                                    <th>Total Spend</th>
-                                    <th>Registration Date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="customer-details.html" class="fw-bold text-dark">John Doe</a></td>
-                                    <td>john.doe@example.com</td>
-                                    <td>12</td>
-                                    <td>$1,250.00</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>
-                                        <a href="customer-details.html" class="btn btn-sm btn-outline-secondary"><i
-                                                class="bi bi-eye"></i></a>
-                                        <button class="btn btn-sm btn-outline-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><a href="customer-details.html" class="fw-bold text-dark">Jane Smith</a></td>
-                                    <td>jane.smith@example.com</td>
-                                    <td>5</td>
-                                    <td>$450.00</td>
-                                    <td>Feb 20, 2025</td>
-                                    <td>
-                                        <a href="customer-details.html" class="btn btn-sm btn-outline-secondary"><i
-                                                class="bi bi-eye"></i></a>
-                                        <button class="btn btn-sm btn-outline-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <!-- Top Row: Stats + Chart -->
+                <div class="row g-4 mb-4">
+                    <!-- Left: Mini Stats -->
+                    <div class="col-lg-3 d-flex flex-column gap-4">
+                        <div class="stat-card h-auto flex-grow-1 d-block">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="fw-bold fs-6 mb-0">Total Customer</h6>
+                                <i class="bi bi-three-dots-vertical text-muted"></i>
+                            </div>
+                            <h3 class="fw-bold mb-1">45,230</h3>
+                            <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 14.4% <span
+                                    class="text-muted">Last 7 days</span></p>
+                        </div>
+                        <div class="stat-card h-auto flex-grow-1 d-block">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="fw-bold fs-6 mb-0">Active Customer</h6>
+                                <i class="bi bi-three-dots-vertical text-muted"></i>
+                            </div>
+                            <h3 class="fw-bold mb-1">11,400</h3>
+                            <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 25% <span
+                                    class="text-muted">Last 7 days</span></p>
+                        </div>
+                        <div class="stat-card h-auto flex-grow-1 d-block">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="fw-bold fs-6 mb-0">New Customer</h6>
+                                <i class="bi bi-three-dots-vertical text-muted"></i>
+                            </div>
+                            <h3 class="fw-bold mb-1">2,370</h3>
+                            <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 28% <span
+                                    class="text-muted">Last 7 days</span></p>
+                        </div>
+                        <div class="stat-card h-auto flex-grow-1 d-block">
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6 class="fw-bold fs-6 mb-0">Visitor</h6>
+                                <i class="bi bi-three-dots-vertical text-muted"></i>
+                            </div>
+                            <h3 class="fw-bold mb-1">250k</h3>
+                            <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 25% <span
+                                    class="text-muted">Last 7 days</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Customer Overview Chart -->
+                    <div class="col-lg-9">
+                        <div class="stat-card h-100 d-block">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">Customer Overview</h5>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-success active">This week</button>
+                                    <button class="btn btn-outline-light text-secondary border">Last week</button>
+                                </div>
+                            </div>
+
+                            <!-- Key Metrics in Chart Header -->
+                            <div class="d-flex gap-5 mb-4">
+                                <div>
+                                    <h4 class="fw-bold mb-0">25k</h4>
+                                    <small class="text-secondary">active Customer</small>
+                                </div>
+                                <div>
+                                    <h4 class="fw-bold mb-0">5.6k</h4>
+                                    <small class="text-secondary">Repeat Customers</small>
+                                </div>
+                                <div>
+                                    <h4 class="fw-bold mb-0">250k</h4>
+                                    <small class="text-secondary">Shop Visitor</small>
+                                </div>
+                                <div>
+                                    <h4 class="fw-bold mb-0">5.5%</h4>
+                                    <small class="text-secondary">Conversion Rate</small>
+                                </div>
+                            </div>
+
+                            <div style="height: 250px; width: 100%;">
+                                <canvas id="customerChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- BOTTOM SECTION: Table & Details -->
+                <div class="row g-4">
+                    <!-- Left: Customer Table -->
+                    <div class="col-lg-8">
+                        <div class="table-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">Customer Details</h5>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer Id</th>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Order Count</th>
+                                            <th>Total Spend</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>John Doe</td>
+                                            <td>+1234567890</td>
+                                            <td>15</td>
+                                            <td>3,450.00</td>
+                                            <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Active</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>John Doe</td>
+                                            <td>+1234567890</td>
+                                            <td>15</td>
+                                            <td>3,450.00</td>
+                                            <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Active</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>John Doe</td>
+                                            <td>+1234567890</td>
+                                            <td>25</td>
+                                            <td>3,450.00</td>
+                                            <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Active</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>John Doe</td>
+                                            <td>+1234567890</td>
+                                            <td>25</td>
+                                            <td>3,450.00</td>
+                                            <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Active</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>Jane Smith</td>
+                                            <td>+1234567890</td>
+                                            <td>5</td>
+                                            <td>250.00</td>
+                                            <td><span class="text-danger small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Inactive</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>Emily Davis</td>
+                                            <td>+1234567890</td>
+                                            <td>30</td>
+                                            <td>4,600.00</td>
+                                            <td><span class="text-warning small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> VIP</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>Jane Smith</td>
+                                            <td>+1234567890</td>
+                                            <td>5</td>
+                                            <td>250.00</td>
+                                            <td><span class="text-danger small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Inactive</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>John Doe</td>
+                                            <td>+1234567890</td>
+                                            <td>25</td>
+                                            <td>3,450.00</td>
+                                            <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Active</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>Emily Davis</td>
+                                            <td>+1234567890</td>
+                                            <td>30</td>
+                                            <td>4,600.00</td>
+                                            <td><span class="text-warning small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> VIP</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>Jane Smith</td>
+                                            <td>+1234567890</td>
+                                            <td>5</td>
+                                            <td>250.00</td>
+                                            <td><span class="text-danger small fw-bold"><i class="bi bi-circle-fill"
+                                                        style="font-size: 6px;"></i> Inactive</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-envelope"></i></button>
+                                                <button class="btn btn-action btn-light btn-sm"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <button class="btn btn-white border px-3">← Previous</button>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination mb-0">
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        <li class="page-item"><span class="mx-2 text-muted">...</span></li>
+                                        <li class="page-item"><a class="page-link" href="#">24</a></li>
+                                    </ul>
+                                </nav>
+                                <button class="btn btn-white border px-3">Next →</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Customer Info Side Panel -->
+                    <div class="col-lg-4">
+                        <div class="stat-card h-100 d-block">
+                            <div class="text-end mb-3">
+                                <a href="#" class="text-primary"><i class="bi bi-pencil-square"></i></a>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-4">
+                                <img src="images/ceramic-cup.jpg" class="rounded-circle me-3" width="60" height="60"
+                                    style="object-fit: cover;" alt="User">
+                                <div>
+                                    <h5 class="fw-bold mb-0">John Doe</h5>
+                                    <small class="text-secondary">john.doe@example.com</small>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="text-secondary small mb-3">Customer Info</h6>
+                                <div class="mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                                class="bi bi-telephone"></i></span>
+                                        <input type="text" class="form-control border-start-0 ps-0" value="+1234567890"
+                                            disabled>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                                class="bi bi-geo-alt"></i></span>
+                                        <input type="text" class="form-control border-start-0 ps-0"
+                                            value="123 Main St, NY" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="text-secondary small mb-3">Social Media</h6>
+                                <div class="d-flex gap-2">
+                                    <a href="#" class="btn btn-sm btn-light text-primary rounded-circle"
+                                        style="width: 32px; height: 32px; display:flex; align-items:center; justify-content:center;"><i
+                                            class="bi bi-facebook"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light text-success rounded-circle"
+                                        style="width: 32px; height: 32px; display:flex; align-items:center; justify-content:center;"><i
+                                            class="bi bi-whatsapp"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light text-info rounded-circle"
+                                        style="width: 32px; height: 32px; display:flex; align-items:center; justify-content:center;"><i
+                                            class="bi bi-twitter"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light text-primary rounded-circle"
+                                        style="width: 32px; height: 32px; display:flex; align-items:center; justify-content:center;"><i
+                                            class="bi bi-linkedin"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light text-danger rounded-circle"
+                                        style="width: 32px; height: 32px; display:flex; align-items:center; justify-content:center;"><i
+                                            class="bi bi-instagram"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="text-secondary small mb-3">Activity</h6>
+                                <p class="small text-muted mb-1">Registration: 12.01.2023</p>
+                                <p class="small text-muted">Last purchase: 12.01.2023</p>
+                            </div>
+
+                            <div>
+                                <h6 class="text-secondary small mb-3">Order overview</h6>
+                                <div class="row g-2 text-center">
+                                    <div class="col-4">
+                                        <div class="border rounded p-2">
+                                            <h5 class="fw-bold mb-0">150</h5>
+                                            <small class="text-primary" style="font-size: 10px;">Total order</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="border rounded p-2">
+                                            <h5 class="fw-bold mb-0">140</h5>
+                                            <small class="text-success" style="font-size: 10px;">Completed</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="border rounded p-2">
+                                            <h5 class="fw-bold mb-0">10</h5>
+                                            <small class="text-danger" style="font-size: 10px;">Canceled</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/customers.js"></script>
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => sidebar.classList.add('active'));
+        }
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
+        }
+    </script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Offers - Ceramico Admin</title>
+    <title>Add Purchase - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="sales-offers.html" class="nav-link active">
+                        <a href="sales-offers.html" class="nav-link">
                             <i class="bi bi-percent"></i> Sales Offers
                         </a>
                     </li>
@@ -78,7 +78,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="add-purchase.html" class="nav-link">
+                        <a href="add-purchase.html" class="nav-link active">
                             <i class="bi bi-bag-plus"></i> Add Purchase
                         </a>
                     </li>
@@ -135,19 +135,10 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Sales & Offers</h4>
+                    <h4>Add Purchase</h4>
                 </div>
-                <div class="search-bar d-none d-md-block">
-                    <form>
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Search data, users, or reports">
-                    </form>
-                </div>
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center ms-auto gap-3">
                     <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" checked>
-                    </div>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
                             <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
@@ -165,83 +156,125 @@
             </header>
 
             <div class="container-fluid p-0">
-                <div class="row mb-4">
+
+                <div class="row">
                     <div class="col-12">
-                        <div class="table-card">
+                        <div class="card border-0 shadow-sm p-4" style="border-radius: 12px;">
+                            <!-- When purchase is saved:
+                            1. Create batch entry
+                            2. Update product stock
+                            -->
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="fw-bold mb-0">Active Offers</h5>
-                                <div class="d-flex gap-2">
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white border-end-0"><i
-                                                class="bi bi-search text-muted"></i></span>
-                                        <input type="text" class="form-control border-start-0 ps-0"
-                                            placeholder="Search Offer...">
-                                    </div>
-                                    <button class="btn btn-primary" onclick="window.location.href='add-offer.html'"><i
-                                            class="bi bi-plus-lg me-1"></i> Add Offer</button>
+                                <h5 class="fw-bold mb-0">Supplier Information</h5>
+                                <a href="add-product.html" class="btn btn-outline-primary btn-sm"><i
+                                        class="bi bi-plus-lg me-1"></i> Add New Product</a>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">Supplier Name</label>
+                                    <select class="form-select">
+                                        <option selected>Select Supplier</option>
+                                        <option>Global Supplier Inc.</option>
+                                        <option>Kitchen Ceramics Ltd.</option>
+                                        <option>Artistic Clay Works</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">Invoice Number</label>
+                                    <input type="text" class="form-control" placeholder="Enter Invoice No">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-medium">Purchase Date</label>
+                                    <input type="date" class="form-control">
                                 </div>
                             </div>
 
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
+                            <h5 class="fw-bold mb-3">Product Details</h5>
+
+                            <div class="table-responsive mb-4">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="bg-light">
                                         <tr>
-                                            <th>Offer Name</th>
-                                            <th>Discount</th>
-                                            <th>Applies To</th>
-                                            <th>Duration</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Product Name</th>
+                                            <th>Batch No</th>
+                                            <th style="width: 100px;">Quantity</th>
+                                            <th>Purchase Price</th>
+                                            <th>Selling Price</th>
+                                            <th>Expiry Date</th>
+                                            <th>Subtotal</th>
+                                            <th style="width: 50px;"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="purchaseTableBody">
                                         <tr>
-                                            <td>Summer Sale</td>
-                                            <td><span class="fw-bold text-success">50% OFF</span></td>
-                                            <td>Category: Fashion</td>
                                             <td>
-                                                <small class="d-block text-muted">Start: Jun 01, 2023</small>
-                                                <small class="d-block text-muted">End: Jun 30, 2023</small>
+                                                <select class="form-select border-0">
+                                                    <option selected>Select Product</option>
+                                                    <option>Ceramic Vase</option>
+                                                    <option>Clay Bowl</option>
+                                                </select>
                                             </td>
-                                            <td><span
-                                                    class="badge bg-secondary bg-opacity-10 text-secondary">Expired</span>
+                                            <td><input type="text" class="form-control border-0" placeholder="Batch No">
                                             </td>
-                                            <td>
-                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
-                                                        class="bi bi-trash"></i></button>
+                                            <td><input type="number" class="form-control border-0 quantity" value="1">
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Black Friday Deal</td>
-                                            <td><span class="fw-bold text-success">30% OFF</span></td>
-                                            <td>All Products</td>
-                                            <td>
-                                                <small class="d-block text-muted">Start: Nov 24, 2023</small>
-                                                <small class="d-block text-muted">End: Nov 27, 2023</small>
+                                            <td><input type="number" class="form-control border-0 price"
+                                                    placeholder="0.00">
                                             </td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success">Scheduled</span>
+                                            <td><input type="number" class="form-control border-0" placeholder="0.00">
                                             </td>
-                                            <td>
-                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
+                                            <td><input type="date" class="form-control border-0"></td>
+                                            <td><input type="text" class="form-control border-0 bg-light subtotal"
+                                                    value="0.00" readonly></td>
+                                            <td><button class="btn btn-sm text-danger remove-row"><i
+                                                        class="bi bi-trash"></i></button></td>
                                         </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr class="table-light fw-bold">
+                                            <td colspan="6" class="text-end">Total Amount:</td>
+                                            <td colspan="2">$0.00</td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
+                                <button class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus-lg me-1"></i> Add
+                                    Item</button>
                             </div>
+
+                            <div class="row justify-content-end">
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Subtotal:</span>
+                                        <span class="fw-bold">$0.00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Tax (10%):</span>
+                                        <span class="fw-bold">$0.00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3 border-top pt-2">
+                                        <span class="fw-bold fs-5">Total Amount:</span>
+                                        <span class="fw-bold fs-5 text-success">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-end mt-4">
+                                <button class="btn btn-white border me-2">Cancel</button>
+                                <button class="btn btn-primary px-4"><i class="bi bi-check-circle me-1"></i> Save
+                                    Purchase</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/purchase.js"></script>
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebarClose = document.getElementById('sidebarClose');

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brands - Admin</title>
+    <title>Add Brand - Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -20,40 +20,167 @@
     <div class="admin-wrapper">
         <!-- Sidebar -->
         <nav class="sidebar">
-            <!-- Same sidebar... -->
             <div class="sidebar-header">
-                <h3>CERAMICO</h3>
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="all-products.html"><i class="bi bi-box-seam"></i> Products</a></li>
-                <li><a href="add-brand.html" class="active"><i class="bi bi-tag-fill"></i> Brands</a></li>
-                <!-- ... -->
-            </ul>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="bi bi-house-door"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sales-offers.html" class="nav-link">
+                            <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="purchase-list.html" class="nav-link">
+                            <i class="bi bi-bag-check"></i> Purchase List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-purchase.html" class="nav-link">
+                            <i class="bi bi-bag-plus"></i> Add Purchase
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="batch-management.html" class="nav-link">
+                            <i class="bi bi-upc-scan"></i> Batch Implementation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="supplier.html" class="nav-link">
+                            <i class="bi bi-truck"></i> Suppliers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stock-report.html" class="nav-link">
+                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                        </a>
+                    </li>
+                </ul>
+
+
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content">
             <header class="admin-header">
-                <div>
-                    <h4>Brands</h4>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Add Brand</h4>
                 </div>
-                <div><span class="me-3">Admin User</span><img src="images/ceramic-cup.jpg" class="rounded-circle">
+                <div class="d-flex align-items-center ms-auto">
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                            <span class="ms-2 fw-bold d-none d-sm-block">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </header>
 
             <div class="container-fluid p-0">
-                <div class="row">
-                    <!-- Add Brand Form -->
-                    <div class="col-md-4">
-                        <div class="table-card">
-                            <h5 class="mb-4">Add New Brand</h5>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="form-card">
+                            <h5 class="fw-bold mb-4">Brand Information</h5>
                             <form>
                                 <div class="mb-3">
                                     <label class="form-label">Brand Name</label>
-                                    <input type="text" class="form-control" required>
+                                    <input type="text" class="form-control" name="brand_name"
+                                        placeholder="Enter brand name">
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">Add Brand</button>
+                                <div class="mb-3">
+                                    <label class="form-label">Logo</label>
+                                    <div class="border border-2 border-dashed rounded p-4 text-center">
+                                        <i class="bi bi-image fs-3 text-muted"></i>
+                                        <p class="small text-muted mb-0">Upload Logo</p>
+                                        <input type="file" class="d-none">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="statusSwitch" checked>
+                                        <label class="form-check-label" for="statusSwitch">Active</label>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary">Save Brand</button>
+                                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -61,7 +188,35 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar Toggle for Mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.add('active');
+            });
+        }
+
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function () {
+                sidebar.classList.remove('active');
+            });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth < 992) {
+                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

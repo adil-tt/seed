@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Offers - Ceramico Admin</title>
+    <title>Add Coupon - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="coupon.html" class="nav-link">
+                        <a href="coupon.html" class="nav-link active">
                             <i class="bi bi-ticket-perforated"></i> Coupon Code
                         </a>
                     </li>
@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="sales-offers.html" class="nav-link active">
+                        <a href="sales-offers.html" class="nav-link">
                             <i class="bi bi-percent"></i> Sales Offers
                         </a>
                     </li>
@@ -135,7 +135,7 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Sales & Offers</h4>
+                    <h4>Add Coupon</h4>
                 </div>
                 <div class="search-bar d-none d-md-block">
                     <form>
@@ -143,14 +143,19 @@
                         <input type="text" placeholder="Search data, users, or reports">
                     </form>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" checked>
-                    </div>
+                <div class="d-flex align-items-center">
+                    <a href="#" class="text-secondary me-3 position-relative">
+                        <i class="bi bi-bell fs-5"></i>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    </a>
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown">
                             <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                            <span class="ms-2 fw-bold d-none d-sm-block">Admin</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
@@ -165,74 +170,88 @@
             </header>
 
             <div class="container-fluid p-0">
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <div class="table-card">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="fw-bold mb-0">Active Offers</h5>
-                                <div class="d-flex gap-2">
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white border-end-0"><i
-                                                class="bi bi-search text-muted"></i></span>
-                                        <input type="text" class="form-control border-start-0 ps-0"
-                                            placeholder="Search Offer...">
-                                    </div>
-                                    <button class="btn btn-primary" onclick="window.location.href='add-offer.html'"><i
-                                            class="bi bi-plus-lg me-1"></i> Add Offer</button>
-                                </div>
-                            </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-4">Coupon Details</h5>
+                                <form>
+                                    <div class="row g-3">
+                                        <!-- Coupon Code -->
+                                        <div class="col-md-12">
+                                            <label for="couponCode" class="form-label fw-medium">Coupon Code</label>
+                                            <input type="text" class="form-control" id="couponCode" name="couponCode"
+                                                placeholder="e.g. SUMMER2026" required>
+                                        </div>
 
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Offer Name</th>
-                                            <th>Discount</th>
-                                            <th>Applies To</th>
-                                            <th>Duration</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Summer Sale</td>
-                                            <td><span class="fw-bold text-success">50% OFF</span></td>
-                                            <td>Category: Fashion</td>
-                                            <td>
-                                                <small class="d-block text-muted">Start: Jun 01, 2023</small>
-                                                <small class="d-block text-muted">End: Jun 30, 2023</small>
-                                            </td>
-                                            <td><span
-                                                    class="badge bg-secondary bg-opacity-10 text-secondary">Expired</span>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Black Friday Deal</td>
-                                            <td><span class="fw-bold text-success">30% OFF</span></td>
-                                            <td>All Products</td>
-                                            <td>
-                                                <small class="d-block text-muted">Start: Nov 24, 2023</small>
-                                                <small class="d-block text-muted">End: Nov 27, 2023</small>
-                                            </td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success">Scheduled</span>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        <!-- Discount Type -->
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-medium d-block">Discount Type</label>
+                                            <div class="d-flex gap-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="discountType"
+                                                        id="typePercentage" value="percentage" checked>
+                                                    <label class="form-check-label" for="typePercentage">Percentage
+                                                        (%)</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="discountType"
+                                                        id="typeFixed" value="fixed">
+                                                    <label class="form-check-label" for="typeFixed">Fixed Amount</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Discount Value -->
+                                        <div class="col-md-6">
+                                            <label for="discountValue" class="form-label fw-medium">Discount
+                                                Value</label>
+                                            <input type="number" class="form-control" id="discountValue"
+                                                name="discountValue" placeholder="0" min="0" required>
+                                        </div>
+
+                                        <!-- Minimum Order Amount -->
+                                        <div class="col-md-6">
+                                            <label for="minOrderAmount" class="form-label fw-medium">Minimum Order
+                                                Amount <span class="text-muted fw-normal">(Optional)</span></label>
+                                            <input type="number" class="form-control" id="minOrderAmount"
+                                                name="minOrderAmount" placeholder="0" min="0">
+                                        </div>
+
+                                        <!-- Usage Limit -->
+                                        <div class="col-md-6">
+                                            <label for="usageLimit" class="form-label fw-medium">Usage Limit</label>
+                                            <input type="number" class="form-control" id="usageLimit" name="usageLimit"
+                                                placeholder="Total times can be used" min="1">
+                                        </div>
+
+                                        <!-- Expiry Date -->
+                                        <div class="col-md-6">
+                                            <label for="expiryDate" class="form-label fw-medium">Expiry Date</label>
+                                            <input type="date" class="form-control" id="expiryDate" name="expiryDate"
+                                                required>
+                                        </div>
+
+                                        <!-- Status Toggle -->
+                                        <div class="col-md-6 d-flex align-items-center mb-1">
+                                            <div class="form-check form-switch mt-4">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="couponStatus" name="couponStatus" checked>
+                                                <label class="form-check-label fw-medium ms-2" for="couponStatus">Active
+                                                    Status</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-4">
+                                            <hr class="text-muted opacity-25">
+                                            <div class="d-flex gap-2 justify-content-end">
+                                                <a href="coupon.html" class="btn btn-light border px-4">Cancel</a>
+                                                <button type="submit" class="btn btn-primary px-4 bg-navy">Save
+                                                    Coupon</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -242,17 +261,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebarClose = document.getElementById('sidebarClose');
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => sidebar.classList.add('active'));
-        }
-        if (sidebarClose) {
-            sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
-        }
-    </script>
+    <script src="js/dashboard.js"></script>
 </body>
 
 </html>

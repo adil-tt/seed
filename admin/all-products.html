@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Products - Admin</title>
+    <title>All Products - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -21,86 +21,315 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3>CERAMICO</h3>
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
             </div>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="order-management.html"><i class="bi bi-cart"></i> Orders</a></li>
-                <li><a href="all-products.html" class="active"><i class="bi bi-box-seam"></i> Products</a></li>
-                <li><a href="customers.html"><i class="bi bi-people"></i> Customers</a></li>
-                <li><a href="categories.html"><i class="bi bi-tags"></i> Categories</a></li>
-                <li><a href="coupon.html"><i class="bi bi-ticket-perforated"></i> Coupons</a></li>
-                <li><a href="banner.html"><i class="bi bi-images"></i> Banners</a></li>
-                <li><a href="admin-role.html"><i class="bi bi-shield-lock"></i> Roles</a></li>
-                <li><a href="transaction.html"><i class="bi bi-credit-card"></i> Transactions</a></li>
-                <li><a href="login.html"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-            </ul>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="bi bi-grid-fill"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <i class="bi bi-cart"></i> Order Management
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customers.html" class="nav-link">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coupon.html" class="nav-link">
+                            <i class="bi bi-ticket-perforated"></i> Coupon Code
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="categories.html" class="nav-link">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transaction.html" class="nav-link">
+                            <i class="bi bi-credit-card"></i> Transaction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sales-offers.html" class="nav-link">
+                            <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="purchase-list.html" class="nav-link">
+                            <i class="bi bi-bag-check"></i> Purchase List
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-purchase.html" class="nav-link">
+                            <i class="bi bi-bag-plus"></i> Add Purchase
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="batch-management.html" class="nav-link">
+                            <i class="bi bi-upc-scan"></i> Batch Implementation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="supplier.html" class="nav-link">
+                            <i class="bi bi-truck"></i> Suppliers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="stock-report.html" class="nav-link">
+                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                        </a>
+                    </li>
+                </ul>
+
+
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="admin-role.html" class="nav-link">
+                            <i class="bi bi-person-badge"></i> Admin Role
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-shield-lock"></i> Control Authority
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content">
             <header class="admin-header">
-                <div>
-                    <h4>Products</h4>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Product List</h4>
                 </div>
-                <div><span class="me-3">Admin User</span><img src="images/ceramic-cup.jpg" class="rounded-circle">
+                <div class="d-flex align-items-center ms-auto">
+                    <a href="add-product.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add
+                        Product</a>
+                    <a href="#" class="text-secondary ms-3 me-3"><i class="bi bi-bell fs-5"></i></a>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
             </header>
 
             <div class="container-fluid p-0">
-                <div class="d-flex justify-content-between mb-4">
-                    <input type="text" class="form-control w-25" placeholder="Search products...">
-                    <a href="add-product.html" class="btn btn-primary"><i class="bi bi-plus"></i> Add Product</a>
-                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="table-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                <div class="d-flex gap-2">
+                                    <select class="form-select w-auto" aria-label="Category Filter">
+                                        <option selected>All Categories</option>
+                                        <option value="vases">Vases</option>
+                                        <option value="bowls">Bowls</option>
+                                        <option value="plates">Plates</option>
+                                        <option value="cups">Cups</option>
+                                        <option value="mugs">Mugs</option>
+                                        <option value="decor">Decor Items</option>
+                                    </select>
+                                    <select class="form-select w-auto" aria-label="Status Filter">
+                                        <option selected>All Status</option>
+                                        <option value="instock">In Stock</option>
+                                        <option value="outstock">Out of Stock</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <input type="text" class="form-control" placeholder="Search Product...">
+                                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
 
-                <div class="table-card">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Stock</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><img src="images/ceramic-cup.jpg" class="rounded"></td>
-                                    <td>Minimalist Dinner Plate</td>
-                                    <td>Plates</td>
-                                    <td>$24.00</td>
-                                    <td><span class="badge bg-success">In Stock</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-secondary"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="images/ceramic-cup.jpg" class="rounded"></td>
-                                    <td>Ceramic Vase</td>
-                                    <td>Vases</td>
-                                    <td>$45.00</td>
-                                    <td><span class="badge bg-warning text-dark">Low Stock</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-secondary"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-outline-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Category</th>
+                                            <th>Brand</th>
+                                            <th>Total Stock</th>
+                                            <th>Status</th>
+                                            <th>Last Purchase Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="images/ceramic-cup.jpg" class="rounded me-2" width="40"
+                                                        height="40" style="object-fit: cover;">
+                                                    <div class="d-flex flex-column">
+                                                        <span class="fw-medium">Ceramic Coffee Cup</span>
+                                                        <small class="text-muted">ID: #PROD-001</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Home & Kitchen</td>
+                                            <td>Ceramico</td>
+                                            <!-- Total stock = sum of all batch quantities -->
+                                            <td>120</td>
+                                            <td><span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                                            </td>
+                                            <td>2023-10-25</td>
+                                            <td>
+                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
+                                                        class="bi bi-pencil"></i></button>
+                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center"
+                                                        style="width: 40px; height: 40px; color: #ccc;"><i
+                                                            class="bi bi-image"></i></div>
+                                                    <div class="d-flex flex-column">
+                                                        <span class="fw-medium">Clay Bowl Set</span>
+                                                        <small class="text-muted">ID: #PROD-002</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Kitchen</td>
+                                            <td>Ceramico</td>
+                                            <!-- Total stock = sum of all batch quantities -->
+                                            <td>0</td>
+                                            <td><span
+                                                    class="badge bg-secondary bg-opacity-10 text-secondary">Inactive</span>
+                                            </td>
+                                            <td>-</td>
+                                            <td>
+                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
+                                                        class="bi bi-pencil"></i></button>
+                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center"
+                                                        style="width: 40px; height: 40px; color: #ccc;"><i
+                                                            class="bi bi-image"></i></div>
+                                                    <div class="d-flex flex-column">
+                                                        <span class="fw-medium">Ceramic Vase</span>
+                                                        <small class="text-muted">ID: #PROD-003</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Decor</td>
+                                            <td>Ceramico</td>
+                                            <!-- Total stock = sum of all batch quantities -->
+                                            <td>50</td>
+                                            <td><span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                                            </td>
+                                            <td>2023-10-20</td>
+                                            <td>
+                                                <button class="btn btn-action btn-light text-secondary" title="Edit"><i
+                                                        class="bi bi-pencil"></i></button>
+                                                <button class="btn btn-action btn-light text-danger" title="Delete"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <nav aria-label="Page navigation" class="mt-4">
+                                <ul class="pagination justify-content-end mb-0">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar Toggle for Mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.add('active');
+            });
+        }
+
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', function () {
+                sidebar.classList.remove('active');
+            });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth < 992) {
+                if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
