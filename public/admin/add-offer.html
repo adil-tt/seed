@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Brand - Admin</title>
+    <title>Add Offer - Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="sales-offers.html" class="nav-link">
+                        <a href="sales-offers.html" class="nav-link active">
                             <i class="bi bi-percent"></i> Sales Offers
                         </a>
                     </li>
@@ -94,7 +94,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="stock-report.html" class="nav-link">
-                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                            <i class="bi bi-bar-chart-line"></i> Inventory Management
                         </a>
                     </li>
                 </ul>
@@ -130,7 +130,7 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Add Brand</h4>
+                    <h4>Add Offer</h4>
                 </div>
                 <div class="d-flex align-items-center ms-auto">
                     <div class="dropdown">
@@ -153,33 +153,45 @@
 
             <div class="container-fluid p-0">
                 <div class="row g-4 justify-content-center">
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="form-card">
-                            <h5 class="fw-bold mb-4">Brand Information</h5>
+                            <h5 class="fw-bold mb-4">Offer Information</h5>
                             <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Brand Name</label>
-                                    <input type="text" class="form-control" name="brand_name"
-                                        placeholder="Enter brand name">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Logo</label>
-                                    <div class="border border-2 border-dashed rounded p-4 text-center">
-                                        <i class="bi bi-image fs-3 text-muted"></i>
-                                        <p class="small text-muted mb-0">Upload Logo</p>
-                                        <input type="file" class="d-none">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Offer Name</label>
+                                        <input type="text" class="form-control" placeholder="e.g. Summer Sale">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Discount Value (%)</label>
+                                        <input type="number" class="form-control" placeholder="e.g. 50">
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Status</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="statusSwitch" checked>
-                                        <label class="form-check-label" for="statusSwitch">Active</label>
+                                    <label class="form-label">Applies To</label>
+                                    <select class="form-select">
+                                        <option selected>All Products</option>
+                                        <option value="category">Specific Category</option>
+                                        <option value="product">Specific Product</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="date" class="form-control">
                                     </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">End Date</label>
+                                        <input type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" rows="3" placeholder="Offer details..."></textarea>
                                 </div>
                                 <div class="d-flex gap-2 mt-4">
-                                    <button type="submit" class="btn btn-primary">Save Brand</button>
-                                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Create Offer</button>
+                                    <a href="sales-offers.html" class="btn btn-outline-secondary">Cancel</a>
                                 </div>
                             </form>
                         </div>

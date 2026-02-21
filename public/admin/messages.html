@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Ceramico Admin</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .msg-preview {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .status-unread {
+            color: var(--bs-primary);
+            font-weight: 600;
+        }
+
+        .status-replied {
+            color: var(--bs-success);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
+                <div class="d-none d-lg-block">
+                    <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-lg-none">
+                    <i class="bi bi-x-lg text-muted fs-4" id="sidebarClose"></i>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="nav-section-label">Main menu</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="bi bi-grid-fill"></i>
+                            Dashboard</a></li>
+                    <li class="nav-item"><a href="order-management.html" class="nav-link"><i class="bi bi-cart"></i>
+                            Order Management</a></li>
+                    <li class="nav-item"><a href="customers.html" class="nav-link"><i class="bi bi-people"></i>
+                            Customers</a></li>
+                    <li class="nav-item"><a href="messages.html" class="nav-link active"><i
+                                class="bi bi-chat-dots-fill"></i> Messages</a></li>
+                    <li class="nav-item"><a href="coupon.html" class="nav-link"><i class="bi bi-ticket-perforated"></i>
+                            Coupon Code</a></li>
+                    <li class="nav-item"><a href="categories.html" class="nav-link"><i class="bi bi-tags"></i>
+                            Categories</a></li>
+                    <li class="nav-item"><a href="transaction.html" class="nav-link"><i class="bi bi-credit-card"></i>
+                            Transaction</a></li>
+                    <li class="nav-item"><a href="sales-offers.html" class="nav-link"><i class="bi bi-percent"></i>
+                            Sales Offers</a></li>
+                </ul>
+
+                <div class="nav-section-label">Purchase</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="purchase-list.html" class="nav-link"><i class="bi bi-bag-check"></i>
+                            Purchase List</a></li>
+                    <li class="nav-item"><a href="add-purchase.html" class="nav-link"><i class="bi bi-bag-plus"></i> Add
+                            Purchase</a></li>
+                    <li class="nav-item"><a href="batch-management.html" class="nav-link"><i class="bi bi-upc-scan"></i>
+                            Batch Implementation</a></li>
+                    <li class="nav-item"><a href="supplier.html" class="nav-link"><i class="bi bi-truck"></i>
+                            Suppliers</a></li>
+                    <li class="nav-item"><a href="stock-report.html" class="nav-link"><i
+                                class="bi bi-bar-chart-line"></i> Inventory Management</a></li>
+                </ul>
+
+                <div class="nav-section-label">Admin</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="admin-role.html" class="nav-link"><i class="bi bi-person-badge"></i>
+                            Admin Role</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/ceramic-cup.jpg" alt="Admin" class="user-avatar">
+                    <div class="user-info">
+                        <h6>Ceramico</h6>
+                        <small>Mark@thedesigner...</small>
+                    </div>
+                </div>
+                <a href="#" class="btn-shop">
+                    <i class="bi bi-shop"></i> Your Shop <i class="bi bi-box-arrow-up-right ms-auto"></i>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="admin-header">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                    <h4>Messages</h4>
+                </div>
+                <div class="search-bar d-none d-md-block">
+                    <form>
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search messages...">
+                    </form>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="messages.html" class="text-secondary position-relative">
+                        <i class="bi bi-chat-dots fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="unreadBadge">
+                            0
+                        </span>
+                    </a>
+                    <a href="#" class="text-secondary"><i class="bi bi-bell fs-5"></i></a>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                            <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-role.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <div class="container-fluid p-0">
+                <div class="table-card mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">User Submissions</h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-white border btn-sm"><i class="bi bi-filter"></i> Filter</button>
+                            <button class="btn btn-white border btn-sm"><i class="bi bi-download"></i> Export</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Message Preview</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messageTableBody">
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <small class="text-muted">Showing 1-10 of 50 messages</small>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Detail Modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="messageModalLabel">Message Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-3">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="small text-muted mb-1">From</label>
+                            <p class="fw-bold mb-0" id="modalUserName"></p>
+                            <small class="text-secondary" id="modalUserEmail"></small>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <label class="small text-muted mb-1">Date Received</label>
+                            <p class="mb-0" id="modalDate"></p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="small text-muted mb-1">Subject</label>
+                        <h6 class="fw-bold" id="modalSubject"></h6>
+                    </div>
+                    <div class="mb-4 p-3 bg-light rounded">
+                        <label class="small text-muted mb-1">Message</label>
+                        <p class="mb-0 text-dark" id="modalFullMessage"></p>
+                    </div>
+
+                    <div id="replySection">
+                        <label class="small text-muted mb-2">Your Reply</label>
+                        <textarea class="form-control mb-3" id="replyTextarea" rows="4"
+                            placeholder="Type your response here..."></textarea>
+                        <div class="text-end">
+                            <button class="btn btn-primary px-4 py-2" id="sendReplyBtn">
+                                <i class="bi bi-send me-1"></i> Send Reply
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="repliedSection" style="display: none;">
+                        <div class="alert alert-success border-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                                <div>
+                                    <p class="mb-0 fw-bold">Replied</p>
+                                    <small id="repliedInfo"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 border rounded mt-3">
+                            <label class="small text-muted mb-1">Sent Response</label>
+                            <p class="mb-0" id="sentReplyContent"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/messages.js"></script>
+    <script>
+        // Basic sidebar toggle logic
+        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.add('active');
+        });
+        document.getElementById('sidebarClose')?.addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.remove('active');
+        });
+    </script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Details - Admin</title>
+    <title>Add Brand - Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="customers.html" class="nav-link active">
+                        <a href="customers.html" class="nav-link">
                             <i class="bi bi-people"></i> Customers
                         </a>
                     </li>
@@ -94,7 +94,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="stock-report.html" class="nav-link">
-                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                            <i class="bi bi-bar-chart-line"></i> Inventory Management
                         </a>
                     </li>
                 </ul>
@@ -130,10 +130,9 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Customer Details</h4>
+                    <h4>Add Brand</h4>
                 </div>
                 <div class="d-flex align-items-center ms-auto">
-                    <a href="#" class="text-secondary me-3"><i class="bi bi-bell fs-5"></i></a>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                             data-bs-toggle="dropdown">
@@ -153,124 +152,36 @@
             </header>
 
             <div class="container-fluid p-0">
-                <div class="row g-4">
-                    <!-- Left Column: Customer Profile -->
-                    <div class="col-lg-4">
-                        <div class="stat-card mb-4 flex-column align-items-center text-center">
-                            <div class="mb-3">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto"
-                                    style="width: 80px; height: 80px; font-size: 2rem;">J</div>
-                            </div>
-                            <h5 class="fw-bold mb-1 text-dark">John Doe</h5>
-                            <p class="text-secondary small mb-3">Customer ID: #CUST-001</p>
-                            <span class="badge bg-success bg-opacity-10 text-success mb-3">Active</span>
-
-                            <div class="w-100 text-start mt-3 pt-3 border-top">
-                                <div class="mb-2">
-                                    <small class="text-muted d-block">Email</small>
-                                    <span class="fw-medium">john@example.com</span>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="form-card">
+                            <h5 class="fw-bold mb-4">Brand Information</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">Brand Name</label>
+                                    <input type="text" class="form-control" name="brand_name"
+                                        placeholder="Enter brand name">
                                 </div>
-                                <div class="mb-2">
-                                    <small class="text-muted d-block">Phone</small>
-                                    <span class="fw-medium">+1 234 567 890</span>
+                                <div class="mb-3">
+                                    <label class="form-label">Logo</label>
+                                    <div class="border border-2 border-dashed rounded p-4 text-center">
+                                        <i class="bi bi-image fs-3 text-muted"></i>
+                                        <p class="small text-muted mb-0">Upload Logo</p>
+                                        <input type="file" class="d-none">
+                                    </div>
                                 </div>
-                                <div class="mb-2">
-                                    <small class="text-muted d-block">Join Date</small>
-                                    <span class="fw-medium">Jan 15, 2023</span>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="statusSwitch" checked>
+                                        <label class="form-check-label" for="statusSwitch">Active</label>
+                                    </div>
                                 </div>
-                                <div class="mb-2">
-                                    <small class="text-muted d-block">Address</small>
-                                    <span class="fw-medium">123 Main St, New York, NY 10001</span>
+                                <div class="d-flex gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary">Save Brand</button>
+                                    <button type="button" class="btn btn-outline-secondary">Cancel</button>
                                 </div>
-                            </div>
-
-                            <div class="w-100 mt-3">
-                                <button class="btn btn-outline-danger w-100">Block Account</button>
-                            </div>
-                        </div>
-
-                        <!-- Quick Stats -->
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <div class="stat-card flex-column align-items-center text-center p-3">
-                                    <h3 class="fw-bold mb-0">12</h3>
-                                    <small class="text-muted">Total Orders</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="stat-card flex-column align-items-center text-center p-3">
-                                    <h3 class="fw-bold mb-0 text-success">$1.2k</h3>
-                                    <small class="text-muted">Total Spent</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Recent Orders -->
-                    <div class="col-lg-8">
-                        <div class="table-card">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h5 class="fw-bold mb-0">Order History</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>Date</th>
-                                            <th>Items</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>#ORD-001</td>
-                                            <td>Oct 12, 2023</td>
-                                            <td>3</td>
-                                            <td>$120.00</td>
-                                            <td><span
-                                                    class="badge bg-soft-warning text-warning bg-opacity-10">Pending</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-light"><i class="bi bi-eye"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#ORD-005</td>
-                                            <td>Sep 20, 2023</td>
-                                            <td>1</td>
-                                            <td>$45.00</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success">Delivered</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-light"><i class="bi bi-eye"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#ORD-012</td>
-                                            <td>Aug 15, 2023</td>
-                                            <td>2</td>
-                                            <td>$80.00</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success">Delivered</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-light"><i class="bi bi-eye"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#ORD-018</td>
-                                            <td>Jul 01, 2023</td>
-                                            <td>5</td>
-                                            <td>$250.00</td>
-                                            <td><span class="badge bg-danger bg-opacity-10 text-danger">Cancelled</span>
-                                            </td>
-                                            <td><button class="btn btn-sm btn-light"><i class="bi bi-eye"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

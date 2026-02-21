@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Supplier - Ceramico Admin</title>
+    <title>Supplier Management - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -94,7 +94,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="stock-report.html" class="nav-link">
-                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                            <i class="bi bi-bar-chart-line"></i> Inventory Management
                         </a>
                     </li>
                 </ul>
@@ -106,11 +106,6 @@
                     <li class="nav-item">
                         <a href="admin-role.html" class="nav-link">
                             <i class="bi bi-person-badge"></i> Admin Role
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="bi bi-shield-lock"></i> Control Authority
                         </a>
                     </li>
                 </ul>
@@ -135,10 +130,19 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Add Supplier</h4>
+                    <h4>Suppliers</h4>
                 </div>
-                <div class="d-flex align-items-center ms-auto gap-3">
+                <div class="search-bar d-none d-md-block">
+                    <form>
+                        <i class="bi bi-search"></i>
+                        <input type="text" placeholder="Search data, users, or reports">
+                    </form>
+                </div>
+                <div class="d-flex align-items-center gap-3">
                     <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" checked>
+                    </div>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
                             <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
@@ -156,100 +160,57 @@
             </header>
 
             <div class="container-fluid p-0">
-
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0">Add New Supplier</h5>
-                    <a href="supplier.html" class="btn btn-white border"><i class="bi bi-arrow-left me-1"></i> Back to
-                        List</a>
+                    <h5 class="fw-bold mb-0">Supplier List</h5>
+                    <a href="add-supplier.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add
+                        Supplier</a>
                 </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <form action="#" method="POST"> <!-- Add backend action here -->
-                            <div class="card border-0 shadow-sm p-4" style="border-radius: 12px;">
-                                <h5 class="fw-bold mb-4">Supplier Information</h5>
-
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Supplier Name</label>
-                                        <input type="text" class="form-control" name="supplier_name"
-                                            placeholder="Enter Full Name" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Company Name</label>
-                                        <input type="text" class="form-control" name="company_name"
-                                            placeholder="Company Name" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Contact Person</label>
-                                        <input type="text" class="form-control" name="contact_person"
-                                            placeholder="Contact Person Name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">GST / Tax ID (Optional)</label>
-                                        <input type="text" class="form-control" name="tax_id"
-                                            placeholder="Tax Identification Number">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Email Address</label>
-                                        <input type="email" class="form-control" name="email"
-                                            placeholder="email@example.com" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Phone Number</label>
-                                        <input type="tel" class="form-control" name="phone"
-                                            placeholder="+1 (555) 000-0000" required>
-                                    </div>
-                                </div>
-
-                                <h5 class="fw-bold mb-3">Address Details</h5>
-                                <div class="row g-3 mb-4">
-                                    <div class="col-12">
-                                        <label class="form-label fw-medium">Address</label>
-                                        <textarea class="form-control" name="address" rows="2"
-                                            placeholder="Street Address, P.O. Box, etc."></textarea>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-medium">City</label>
-                                        <input type="text" class="form-control" name="city">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-medium">State/Province</label>
-                                        <input type="text" class="form-control" name="state">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-medium">Zip / Postal Code</label>
-                                        <input type="text" class="form-control" name="zip_code">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label fw-medium">Country</label>
-                                        <select class="form-select" name="country">
-                                            <option selected>Select Country</option>
-                                            <option value="US">United States</option>
-                                            <option value="CA">Canada</option>
-                                            <option value="UK">United Kingdom</option>
-                                            <!-- Add more countries as needed -->
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-medium">Status</label>
-                                        <select class="form-select" name="status">
-                                            <option value="active" selected>Active</option>
-                                            <option value="inactive">Inactive</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="text-end mt-2">
-                                    <a href="supplier.html" class="btn btn-white border me-2">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Save Supplier</button>
-                                </div>
-
-                            </div>
-                        </form>
+                <div class="table-card">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Supplier Name</th>
+                                    <th>Contact Person</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold">Global Supplier Inc.</td>
+                                    <td>John Doe</td>
+                                    <td>(603) 555-0123</td>
+                                    <td>john@globalsupplier.com</td>
+                                    <td>123 Market St, NY</td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-white border"><i
+                                                class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-sm btn-white border text-danger"><i
+                                                class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Kitchen Ceramics Ltd.</td>
+                                    <td>Jane Smith</td>
+                                    <td>(555) 123-4567</td>
+                                    <td>jane@kitchenceramics.com</td>
+                                    <td>456 Clay Rd, CA</td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-white border"><i
+                                                class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-sm btn-white border text-danger"><i
+                                                class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supplier Management - Ceramico Admin</title>
+    <title>Add Product - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -88,13 +88,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="supplier.html" class="nav-link active">
+                        <a href="supplier.html" class="nav-link">
                             <i class="bi bi-truck"></i> Suppliers
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="stock-report.html" class="nav-link">
-                            <i class="bi bi-bar-chart-line"></i> Stock Updating
+                            <i class="bi bi-bar-chart-line"></i> Inventory Management
                         </a>
                     </li>
                 </ul>
@@ -135,19 +135,10 @@
             <header class="admin-header">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="sidebarToggle"><i class="bi bi-list"></i></button>
-                    <h4>Suppliers</h4>
+                    <h4>Add Product</h4>
                 </div>
-                <div class="search-bar d-none d-md-block">
-                    <form>
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Search data, users, or reports">
-                    </form>
-                </div>
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center ms-auto gap-3">
                     <a href="#" class="text-secondary"><i class="bi bi-bell"></i></a>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" checked>
-                    </div>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
                             <img src="images/ceramic-cup.jpg" class="rounded-circle" width="35" height="35" alt="Admin">
@@ -165,57 +156,84 @@
             </header>
 
             <div class="container-fluid p-0">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold mb-0">Supplier List</h5>
-                    <a href="add-supplier.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add
-                        Supplier</a>
-                </div>
 
-                <div class="table-card">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Supplier Name</th>
-                                    <th>Contact Person</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th>Status</th>
-                                    <th class="text-end">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="fw-bold">Global Supplier Inc.</td>
-                                    <td>John Doe</td>
-                                    <td>(603) 555-0123</td>
-                                    <td>john@globalsupplier.com</td>
-                                    <td>123 Market St, NY</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold">Kitchen Ceramics Ltd.</td>
-                                    <td>Jane Smith</td>
-                                    <td>(555) 123-4567</td>
-                                    <td>jane@kitchenceramics.com</td>
-                                    <td>456 Clay Rd, CA</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <!-- Action Bar -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <h5 class="fw-bold mb-0">Add New Product</h5>
+                </div>
+                <!-- This creates product master record only -->
+
+                <div class="row g-4">
+                    <!-- Left Column: Details -->
+                    <div class="col-lg-8">
+                        <!-- Basic Details -->
+                        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
+                            <h5 class="fw-bold mb-4">Basic Details</h5>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Ceramic Product Name</label>
+                                <input type="text" class="form-control" name="product_name"
+                                    placeholder="Ceramic Vase (e.g.)">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Brand (Optional)</label>
+                                <input type="text" class="form-control" name="brand" placeholder="Brand Name">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Product Description</label>
+                                <textarea class="form-control" name="description" rows="4"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="mt-4 text-end">
+                                <button class="btn btn-white border me-2"><i class="bi bi-save me-1"></i> Save to
+                                    draft</button>
+                                <button class="btn btn-primary">Create Product Master</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- Right Column: Images & Meta -->
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
+                            <h5 class="fw-bold mb-4">Upload Product Image</h5>
+                            <label class="form-label fw-medium mb-3">Product Image</label>
+
+                            <!-- Main Preview (Using existing ceramic image) -->
+                            <div class="upload-preview-container border rounded mb-3 position-relative">
+                                <img src="images/ceramic-cup.jpg" alt="Preview">
+                                <div class="position-absolute bottom-0 start-0 m-3">
+                                    <button class="btn btn-sm btn-white border"><i class="bi bi-image me-1"></i>
+                                        Browse</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm p-4" style="border-radius: 12px;">
+                            <h5 class="fw-bold mb-4">Categories</h5>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Product Categories</label>
+                                <select class="form-select" name="category">
+                                    <option selected>Select Category</option>
+                                    <option value="vases">Vases</option>
+                                    <option value="bowls">Bowls</option>
+                                    <option value="plates">Plates</option>
+                                    <option value="cups">Cups</option>
+                                    <option value="mugs">Mugs</option>
+                                    <option value="decor">Decor Items</option>
+                                    <option value="others">Others</option>
+                                </select>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
