@@ -39,7 +39,7 @@ exports.registerUser = async (req, res) => {
     
     await sendEmail({
       email: newUser.email,
-      subject: "Ceramico - Verify Your Email",
+      subject: "Ceramico - VerifyYour Email",
       message: message,
     });
 
