@@ -10,6 +10,9 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <!-- Bootstrap -->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -40,40 +43,51 @@
                         <p class="text-secondary">Join us for exclusive offers and faster checkout.</p>
                     </div>
 
-                    <form action="verification.html">
+                    <form id="signupForm" novalidate>
                         <div class="mb-3">
-                            <label for="floatingName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control form-control-lg" id="floatingName"
-                                placeholder="John Doe" required>
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-control form-control-lg" placeholder="John Doe"
+                                required>
                         </div>
+
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control form-control-lg" id="email"
+                            <label class="form-label">Email address</label>
+                            <input type="email" name="email" class="form-control form-control-lg"
                                 placeholder="name@example.com" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control form-control-lg" id="password"
-                                placeholder="••••••••" required>
+
+                        <div class="mb-3 position-relative">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" id="password"
+                                class="form-control form-control-lg pe-5" placeholder="••••••••" required>
+
+                            <i class="bi bi-eye-slash position-absolute" id="togglePassword"
+                                style="top: 73%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                         </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control form-control-lg" id="confirmPassword"
-                                placeholder="••••••••" required>
+
+                        <div class="mb-3 position-relative">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" name="confirmPassword" id="confirmPassword"
+                                class="form-control form-control-lg pe-5" placeholder="••••••••" required>
+
+                            <i class="bi bi-eye-slash position-absolute" id="toggleConfirmPassword"
+                                style="top: 73%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                         </div>
 
                         <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" value="" id="terms" required>
-                            <label class="form-check-label text-secondary" for="terms">
-                                I agree to the <a href="#" class="forgot-link">Terms & Conditions</a>
+                            <input class="form-check-input" type="checkbox" required>
+                            <label class="form-check-label text-secondary">
+                                I agree to the Terms & Conditions
                             </label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Sign Up</button>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            Sign Up
+                        </button>
 
                         <button type="button"
                             class="btn btn-outline-secondary btn-lg w-100 d-flex align-items-center justify-content-center gap-2">
-                            <i class="bi bi-google"></i> Sign up with Google
+                            <i class="bi bi-google"></i> login with Google
                         </button>
                     </form>
 
@@ -86,7 +100,115 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
 
+            const name = document.querySelector('input[name="name"]');
+            const email = document.querySelector('input[name="email"]');
+            const password = document.querySelector('input[name="password"]');
+            const confirmPassword = document.querySelector('input[name="confirmPassword"]');
+
+            let isValid = true;
+
+            // Clear old validation
+            document.querySelectorAll(".invalid-feedback").forEach(el => el.remove());
+            document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+
+            function showError(input, message) {
+                input.classList.add("is-invalid");
+                const error = document.createElement("div");
+                error.className = "invalid-feedback";
+                error.innerText = message;
+                input.parentElement.appendChild(error);
+                isValid = false;
+            }
+
+            // ✅ Name validation
+            const namePattern = /^[A-Za-z\s]{3,}$/;
+            if (!namePattern.test(name.value.trim())) {
+                showError(name, "Full name must contain only letters and be at least 3 characters.");
+            }
+
+            // ✅ Gmail validation
+            const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!gmailPattern.test(email.value.trim())) {
+                showError(email, "Email must be a valid @gmail.com address.");
+            }
+
+            // ✅ Password validation
+            if (password.value.length < 6) {
+                showError(password, "Password must be at least 6 characters.");
+            }
+
+            // ✅ Confirm password
+            if (password.value !== confirmPassword.value) {
+                showError(confirmPassword, "Passwords do not match.");
+            }
+
+            if (!isValid) return;
+
+            // 🔥 Send data to backend
+            try {
+                const response = await fetch("http://localhost:5000/api/auth/signup", {
+                    method: "POST", // THIS IS CRITICAL
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: name.value,
+                        email: email.value,
+                        password: password.value,
+                        confirmPassword: confirmPassword.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // ✅ 1. Save email to localStorage so the next page can use it
+                    localStorage.setItem("verificationEmail", email.value);
+
+                    alert("Signup successful! Please check your email for the OTP.");
+
+                    // ✅ 2. Redirect to the verification page
+                    window.location.href = "verification.html";
+                } else {
+                    alert(data.message);
+                }
+
+            } catch (error) {
+                alert("Server error. Please check the console.");
+                console.error("FRONTEND ERROR:", error);
+            }
+        });
+    </script>
+    <script>
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+
+        togglePassword.addEventListener("click", function () {
+
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+
+            this.classList.toggle("bi-eye");
+            this.classList.toggle("bi-eye-slash");
+        });
+    </script>
+    <script>
+        const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+        const confirmPasswordInput = document.getElementById("confirmPassword");
+
+        toggleConfirmPassword.addEventListener("click", function () {
+
+            const type = confirmPasswordInput.type === "password" ? "text" : "password";
+            confirmPasswordInput.type = type;
+
+            this.classList.toggle("bi-eye");
+            this.classList.toggle("bi-eye-slash");
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

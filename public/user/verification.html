@@ -38,7 +38,7 @@
                         <p class="text-secondary">We've sent a 4-digit code to your email address.</p>
                     </div>
 
-                    <form action="home.html">
+                    <form action="login.html">
                         <div class="otp-input-wrapper">
                             <input type="text" class="form-control otp-input" maxlength="1" required>
                             <input type="text" class="form-control otp-input" maxlength="1" required>
@@ -68,6 +68,76 @@
     <!-- Footer Removed as per other auth pages layout consistency, but if needed it can be added. LOGIN.HTML doesn't have it. -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // 1. Get the email we saved during signup
+    const userEmail = localStorage.getItem("verificationEmail");
+    
+    // Optional: Redirect back to signup if there's no email found
+    if (!userEmail) {
+        window.location.href = "signup.html";
+    }
+
+    const verifyForm = document.querySelector('form');
+    const otpInputs = document.querySelectorAll('.otp-input');
+
+    // Auto-focus logic for the 4 boxes
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+        });
+    });
+
+    // 2. Handle form submission
+    verifyForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Combine the 4 input boxes into one string
+        let otpCode = "";
+        otpInputs.forEach(input => {
+            otpCode += input.value;
+        });
+
+        if (otpCode.length !== 4) {
+            alert("Please enter all 4 digits.");
+            return;
+        }
+
+        try {
+            // Send email and OTP to backend
+            const response = await fetch("http://localhost:5000/api/auth/verify-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    email: userEmail, 
+                    otp: otpCode 
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Email verified successfully!");
+                // Clear the email from storage for security
+                localStorage.removeItem("verificationEmail"); 
+                // ✅ Redirect to Login
+                window.location.href = "login.html"; 
+            } else {
+                alert(data.message || "Invalid or expired OTP");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Server error. Please try again later.");
+        }
+    });
+</script>
 </body>
 
 
