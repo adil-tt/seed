@@ -167,35 +167,36 @@
                     <!-- Left Column: Details -->
                     <div class="col-lg-8">
                         <!-- Basic Details -->
-                        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
-                            <h5 class="fw-bold mb-4">Basic Details</h5>
-                            <div class="mb-3">
-                                <label class="form-label fw-medium">Ceramic Product Name</label>
-                                <input type="text" class="form-control" name="product_name"
-                                    placeholder="Ceramic Vase (e.g.)">
+                        <form id="productForm">
+                            <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
+                                <h5 class="fw-bold mb-4">Basic Details</h5>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Ceramic Product Name</label>
+                                    <input type="text" class="form-control" name="product_name"
+                                        placeholder="Ceramic Vase (e.g.)">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Brand (Optional)</label>
+                                    <input type="text" class="form-control" name="brand" placeholder="Brand Name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Product Description</label>
+                                    <textarea class="form-control" name="description" rows="4"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-medium">Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="active" selected>Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <div class="mt-4 text-end">
+                                    <button class="btn btn-white border me-2"><i class="bi bi-save me-1"></i> Save to
+                                        draft</button>
+                                    <button type="submit" class="btn btn-primary">Create Product Master</button>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-medium">Brand (Optional)</label>
-                                <input type="text" class="form-control" name="brand" placeholder="Brand Name">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-medium">Product Description</label>
-                                <textarea class="form-control" name="description" rows="4"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-medium">Status</label>
-                                <select class="form-select" name="status">
-                                    <option value="active" selected>Active</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                            </div>
-                            <div class="mt-4 text-end">
-                                <button class="btn btn-white border me-2"><i class="bi bi-save me-1"></i> Save to
-                                    draft</button>
-                                <button class="btn btn-primary">Create Product Master</button>
-                            </div>
-                        </div>
-
+                        </form>
 
 
                     </div>
@@ -252,6 +253,41 @@
         if (sidebarClose) {
             sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
         }
+    </script>
+    <script>
+        document.getElementById("productForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const data = {
+                name: document.querySelector('[name="product_name"]').value,
+                brand: document.querySelector('[name="brand"]').value,
+                description: document.querySelector('[name="description"]').value,
+                status: document.querySelector('[name="status"]').value
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/api/products", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("Product Created Successfully!");
+                    document.getElementById("productForm").reset();
+                } else {
+                    alert("Error creating product");
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Server error");
+            }
+        });
     </script>
 </body>
 

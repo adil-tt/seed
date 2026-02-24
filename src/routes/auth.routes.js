@@ -1,16 +1,60 @@
-// src/routes/auth.routes.js
+// const express = require("express");
+// const router = express.Router();
+
+// // Import ALL the controller functions
+// const { 
+//   registerUser, 
+//   verifyOtp, 
+//   loginUser, 
+//   forgotPassword, 
+//   resetPassword 
+// } = require("../controllers/authController");
+
+// // Registration & Verification
+// router.post("/signup", registerUser);
+// router.post("/verify-otp", verifyOtp);
+
+// // Login
+// router.post("/login", loginUser);
+
+// // Password Recovery
+// router.post("/forgot-password", forgotPassword);
+// router.post("/reset-password", resetPassword);
+
+// module.exports = router;
 const express = require("express");
 const router = express.Router();
 
-// Import the controller functions
-const { registerUser, verifyOtp } = require("../controllers/authController");
+// 1. Import ALL your controller functions 
+const { 
+  registerUser, 
+  verifyOtp, 
+  loginUser, 
+  forgotPassword, 
+  resetPassword 
+} = require("../controllers/authController");
 
-// Route 1: Register a new user and send OTP
-// POST /api/auth/signup
+// 2. Import your new Auth Middleware
+const { protect } = require("../middleware/authMiddleware");
+
+// ==========================================
+// PUBLIC ROUTES (No token required)
+// ==========================================
 router.post("/signup", registerUser);
-
-// Route 2: Verify the OTP sent to the email
-// POST /api/auth/verify-otp
 router.post("/verify-otp", verifyOtp);
+router.post("/login", loginUser);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
+
+// ==========================================
+// PROTECTED ROUTES (Token REQUIRED!)
+// ==========================================
+// Example: A user requesting their own profile details
+router.get("/profile", protect, (req, res) => {
+  res.status(200).json({
+    message: "Secure route accessed successfully!",
+    user: req.user
+  });
+});
 
 module.exports = router;
