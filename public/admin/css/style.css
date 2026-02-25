@@ -502,7 +502,9 @@ body {
     color: var(--secondary-color);
     margin: 0 4px;
     border-radius: 6px;
-    width: 36px;
+    min-width: 36px;
+    width: auto;
+    padding: 0 12px;
     height: 36px;
     display: flex;
     align-items: center;

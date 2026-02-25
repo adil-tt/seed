@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multer Image Upload Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 50px;
+        }
+
+        .upload-card {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .preview-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        #message {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="upload-card">
+        <h3 class="text-center mb-4">Upload Images (Max 3)</h3>
+        <form id="uploadForm">
+            <div class="mb-3">
+                <label for="images" class="form-label">Select Images</label>
+                <input type="file" class="form-control" id="images" name="images" accept="image/*" multiple required>
+                <div class="form-text">Allowed: JPEG, JPG, PNG, WEBP (Max 5MB each)</div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" id="uploadBtn">Upload Now</button>
+        </form>
+
+        <div class="preview-container" id="previewContainer"></div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const imagesInput = document.getElementById('images');
+        const previewContainer = document.getElementById('previewContainer');
+        const messageDiv = document.getElementById('message');
+        const uploadBtn = document.getElementById('uploadBtn');
+
+        // FRONTEND: Display preview of selected images
+        imagesInput.addEventListener('change', () => {
+            previewContainer.innerHTML = '';
+            const files = Array.from(imagesInput.files);
+
+            if (files.length > 3) {
+                alert('You can only select up to 3 images.');
+                imagesInput.value = '';
+                return;
+            }
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-img');
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // FRONTEND: Handle Submit with Fetch API
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const files = imagesInput.files;
+            if (files.length === 0) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('images', files[i]);
+            }
+
+            uploadBtn.disabled = true;
+            uploadBtn.innerText = 'Uploading...';
+            messageDiv.innerHTML = '<div class="alert alert-info">Uploading images, please wait...</div>';
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    messageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    console.log('Uploaded Files:', data.files);
+                    uploadForm.reset();
+                    previewContainer.innerHTML = '';
+                } else {
+                    messageDiv.innerHTML = `<div class="alert alert-danger">Error: ${data.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                messageDiv.innerHTML = `<div class="alert alert-danger">Fetch Error: ${error.message}</div>`;
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.innerText = 'Upload Now';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

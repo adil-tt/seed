@@ -7,13 +7,21 @@ const productSchema = new mongoose.Schema({
     },
     brand: String,
     description: String,
-    category: String,
-    image: String,
+
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true
+    },
+
+    images: [String],
+
     status: {
         type: String,
         enum: ["active", "inactive"],
         default: "active"
     },
+
     stock: {
         type: Number,
         default: 0

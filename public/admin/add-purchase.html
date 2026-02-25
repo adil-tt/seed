@@ -173,20 +173,18 @@
                             <div class="row g-3 mb-4">
                                 <div class="col-md-4">
                                     <label class="form-label fw-medium">Supplier Name</label>
-                                    <select class="form-select">
-                                        <option selected>Select Supplier</option>
-                                        <option>Global Supplier Inc.</option>
-                                        <option>Kitchen Ceramics Ltd.</option>
-                                        <option>Artistic Clay Works</option>
+                                    <select class="form-select" id="supplierSelect" required>
+                                        <option value="" selected disabled>Select Supplier</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label fw-medium">Invoice Number</label>
-                                    <input type="text" class="form-control" placeholder="Enter Invoice No">
+                                    <input type="text" class="form-control" id="invoiceNumber"
+                                        placeholder="Enter Invoice No" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label fw-medium">Purchase Date</label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" id="purchaseDate" required>
                                 </div>
                             </div>
 
@@ -207,29 +205,9 @@
                                         </tr>
                                     </thead>
                                     <tbody id="purchaseTableBody">
-                                        <tr>
-                                            <td>
-                                                <select class="form-select border-0">
-                                                    <option selected>Select Product</option>
-                                                    <option>Ceramic Vase</option>
-                                                    <option>Clay Bowl</option>
-                                                </select>
-                                            </td>
-                                            <td><input type="text" class="form-control border-0" placeholder="Batch No">
-                                            </td>
-                                            <td><input type="number" class="form-control border-0 quantity" value="1">
-                                            </td>
-                                            <td><input type="number" class="form-control border-0 price"
-                                                    placeholder="0.00">
-                                            </td>
-                                            <td><input type="number" class="form-control border-0" placeholder="0.00">
-                                            </td>
-                                            <td><input type="date" class="form-control border-0"></td>
-                                            <td><input type="text" class="form-control border-0 bg-light subtotal"
-                                                    value="0.00" readonly></td>
-                                            <td><button class="btn btn-sm text-danger remove-row"><i
-                                                        class="bi bi-trash"></i></button></td>
-                                        </tr>
+                                    <tbody id="purchaseTableBody">
+                                        <!-- Rows added via JS -->
+                                    </tbody>
                                     </tbody>
                                     <tfoot>
                                         <tr class="table-light fw-bold">
@@ -238,7 +216,8 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <button class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus-lg me-1"></i> Add
+                                <button class="btn btn-primary btn-sm mt-2" id="addItemBtn"><i
+                                        class="bi bi-plus-lg me-1"></i> Add
                                     Item</button>
                             </div>
 
@@ -246,22 +225,24 @@
                                 <div class="col-md-4">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-muted">Subtotal:</span>
-                                        <span class="fw-bold">$0.00</span>
+                                        <span class="fw-bold" id="grandSubtotal">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-muted">Tax (10%):</span>
-                                        <span class="fw-bold">$0.00</span>
+                                        <span class="fw-bold" id="taxAmount">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-3 border-top pt-2">
                                         <span class="fw-bold fs-5">Total Amount:</span>
-                                        <span class="fw-bold fs-5 text-success">$0.00</span>
+                                        <span class="fw-bold fs-5 text-success" id="grandTotal">$0.00</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="text-end mt-4">
-                                <button class="btn btn-white border me-2">Cancel</button>
-                                <button class="btn btn-primary px-4"><i class="bi bi-check-circle me-1"></i> Save
+                                <button class="btn btn-white border me-2"
+                                    onclick="window.location.href='purchase-list.html'">Cancel</button>
+                                <button class="btn btn-primary px-4" id="savePurchaseBtn"><i
+                                        class="bi bi-check-circle me-1"></i> Save
                                     Purchase</button>
                             </div>
 

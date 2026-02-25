@@ -1,34 +1,58 @@
-const multer = require("multer");
-const path = require("path");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
-// Storage configuration
+/**
+ * CONFIG: Multer Configuration
+ * 1. Ensures the upload directory exists (Fixes ENOENT error).
+ * 2. Handles file naming and destination.
+ * 3. Implements file type and size validation.
+ */
+
+// Define upload directory - path.join is used for cross-platform compatibility (Windows/Linux)
+// This points to a folder named 'uploads' at the project root
+const uploadDir = path.join(__dirname, '../../uploads');
+
+// AUTOMATIC DIRECTORY CREATION: This block fixes the ENOENT error
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log(`Created directory: ${uploadDir}`);
+}
+
+// STORAGE CONFIGURATION
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/");
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
     },
-    filename: function (req, file, cb) {
-        const uniqueName = Date.now() + path.extname(file.originalname);
-        cb(null, uniqueName);
+    filename: (req, file, cb) => {
+        // Generate a unique filename: timestamp-random-originalName
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const fileExt = path.extname(file.originalname);
+        const fileName = path.basename(file.originalname, fileExt).replace(/\s+/g, '-');
+        cb(null, `${fileName}-${uniqueSuffix}${fileExt}`);
     }
 });
 
-// File filter (only images)
+// FILE FILTER: Only allow specific image types
 const fileFilter = (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|webp/;
-    const ext = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mime = allowedTypes.test(file.mimetype);
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
 
-    if (ext && mime) {
-        cb(null, true);
+    if (extname && mimetype) {
+        return cb(null, true);
     } else {
-        cb("Only images are allowed!");
+        cb(new Error('Error: Only images (jpeg, jpg, png, webp) are allowed!'), false);
     }
 };
 
+// INITIALIZE MULTER
 const upload = multer({
-    storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-    fileFilter
+    storage: storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB limit per file
+    },
+    fileFilter: fileFilter
 });
 
 module.exports = upload;

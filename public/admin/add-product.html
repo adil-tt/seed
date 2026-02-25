@@ -70,6 +70,20 @@
                     </li>
                 </ul>
 
+                <div class="nav-section-label">Product</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="all-products.html" class="nav-link">
+                            <i class="bi bi-box-seam"></i> All Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-product.html" class="nav-link active">
+                            <i class="bi bi-plus-square"></i> Add Product
+                        </a>
+                    </li>
+                </ul>
+
                 <div class="nav-section-label">Purchase</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -162,82 +176,74 @@
                     <h5 class="fw-bold mb-0">Add New Product</h5>
                 </div>
                 <!-- This creates product master record only -->
+                <form id="productForm" enctype="multipart/form-data">
+                    <div class="row g-4">
+                        <!-- Left Column: Details -->
+                        <div class="col-lg-8">
+                            <!-- Basic Details -->
+                            <form id="productForm">
+                                <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
+                                    <h5 class="fw-bold mb-4">Basic Details</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-medium">Ceramic Product Name</label>
+                                        <input type="text" class="form-control" name="product_name"
+                                            placeholder="Ceramic Vase (e.g.)">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-medium">Brand (Optional)</label>
+                                        <input type="text" class="form-control" name="brand" placeholder="Brand Name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-medium">Product Description</label>
+                                        <textarea class="form-control" name="description" rows="4"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-medium">Status</label>
+                                        <select class="form-select" name="status">
+                                            <option value="active" selected>Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-4 text-end">
+                                        <button class="btn btn-white border me-2"><i class="bi bi-save me-1"></i> Save
+                                            to
+                                            draft</button>
+                                        <button type="submit" class="btn btn-primary">Create Product Master</button>
+                                    </div>
+                                </div>
+                            </form>
 
-                <div class="row g-4">
-                    <!-- Left Column: Details -->
-                    <div class="col-lg-8">
-                        <!-- Basic Details -->
-                        <form id="productForm">
+
+                        </div>
+
+                        <div class="col-lg-4">
                             <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
-                                <h5 class="fw-bold mb-4">Basic Details</h5>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Ceramic Product Name</label>
-                                    <input type="text" class="form-control" name="product_name"
-                                        placeholder="Ceramic Vase (e.g.)">
+                                <h5 class="fw-bold mb-3">Product Images (Max 3)</h5>
+                                <div id="previewContainer" class="d-flex flex-wrap gap-2 mb-3">
+                                    <img src="images/ceramic-cup.jpg" class="img-thumbnail"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
                                 </div>
+                                <input type="file" name="images" id="imageInput" class="form-control" accept="image/*"
+                                    multiple>
+                                <small class="text-muted mt-2 d-block">You can select up to 3 images.</small>
+                            </div>
+
+                            <div class="card border-0 shadow-sm p-4" style="border-radius: 12px;">
+                                <h5 class="fw-bold mb-4">Categories</h5>
+
                                 <div class="mb-3">
-                                    <label class="form-label fw-medium">Brand (Optional)</label>
-                                    <input type="text" class="form-control" name="brand" placeholder="Brand Name">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Product Description</label>
-                                    <textarea class="form-control" name="description" rows="4"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-medium">Status</label>
-                                    <select class="form-select" name="status">
-                                        <option value="active" selected>Active</option>
-                                        <option value="inactive">Inactive</option>
+                                    <label class="form-label fw-medium">Product Categories</label>
+                                    <select class="form-select" name="category" id="categorySelect">
+                                        <option value="" selected disabled>Select Category</option>
+                                        <!-- Categories will be loaded here -->
                                     </select>
-                                </div>
-                                <div class="mt-4 text-end">
-                                    <button class="btn btn-white border me-2"><i class="bi bi-save me-1"></i> Save to
-                                        draft</button>
-                                    <button type="submit" class="btn btn-primary">Create Product Master</button>
-                                </div>
-                            </div>
-                        </form>
 
-
-                    </div>
-
-                    <!-- Right Column: Images & Meta -->
-                    <div class="col-lg-4">
-                        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px;">
-                            <h5 class="fw-bold mb-4">Upload Product Image</h5>
-                            <label class="form-label fw-medium mb-3">Product Image</label>
-
-                            <!-- Main Preview (Using existing ceramic image) -->
-                            <div class="upload-preview-container border rounded mb-3 position-relative">
-                                <img src="images/ceramic-cup.jpg" alt="Preview">
-                                <div class="position-absolute bottom-0 start-0 m-3">
-                                    <button class="btn btn-sm btn-white border"><i class="bi bi-image me-1"></i>
-                                        Browse</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="card border-0 shadow-sm p-4" style="border-radius: 12px;">
-                            <h5 class="fw-bold mb-4">Categories</h5>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-medium">Product Categories</label>
-                                <select class="form-select" name="category">
-                                    <option selected>Select Category</option>
-                                    <option value="vases">Vases</option>
-                                    <option value="bowls">Bowls</option>
-                                    <option value="plates">Plates</option>
-                                    <option value="cups">Cups</option>
-                                    <option value="mugs">Mugs</option>
-                                    <option value="decor">Decor Items</option>
-                                    <option value="others">Others</option>
-                                </select>
-
-                            </div>
-                        </div>
                     </div>
-                </div>
-
+                </form>
             </div>
         </div>
     </div>
@@ -248,45 +254,149 @@
         const sidebarClose = document.getElementById('sidebarClose');
         const sidebar = document.querySelector('.sidebar');
         if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => sidebar.classList.add('active'));
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.add('active');
+            });
         }
         if (sidebarClose) {
-            sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
+            sidebarClose.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+            });
         }
+
+        // LOAD CATEGORIES DYNAMICALLY
+        async function loadCategories() {
+            try {
+                const response = await fetch("http://localhost:5000/api/categories");
+                const data = await response.json();
+                const categories = data.categories || [];
+
+                const categorySelect = document.getElementById("categorySelect");
+                if (categorySelect) {
+                    // Keep the first "Select Category" option
+                    categorySelect.innerHTML = '<option value="" selected disabled>Select Category</option>';
+
+                    categories.forEach(cat => {
+                        const option = document.createElement("option");
+                        option.value = cat._id;
+                        option.textContent = cat.name;
+                        categorySelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading categories:", error);
+            }
+        }
+
+        loadCategories();
     </script>
     <script>
-        document.getElementById("productForm").addEventListener("submit", async function (e) {
+        // Detect Edit Mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        const form = document.getElementById("productForm");
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const pageTitle = document.querySelector('h4');
+        const actionTitle = document.querySelector('h5.fw-bold.mb-0');
+
+        if (productId) {
+            pageTitle.innerText = "Edit Product";
+            actionTitle.innerText = "Update Existing Product";
+            submitBtn.innerText = "Update Product Master";
+            fetchProductData(productId);
+        }
+
+        async function fetchProductData(id) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/products/${id}`);
+                const product = await response.json();
+
+                if (response.ok) {
+                    form.product_name.value = product.name;
+                    form.brand.value = product.brand || '';
+                    form.description.value = product.description || '';
+                    form.status.value = product.status;
+                    form.category.value = product.category || 'Select Category';
+
+                    // Display existing images
+                    const previewContainer = document.getElementById("previewContainer");
+                    if (product.images && product.images.length > 0) {
+                        previewContainer.innerHTML = "";
+                        product.images.forEach(imgName => {
+                            const img = document.createElement("img");
+                            img.src = `http://localhost:5000/uploads/${imgName}`;
+                            img.classList.add("img-thumbnail");
+                            img.style.width = "100px";
+                            img.style.height = "100px";
+                            img.style.objectFit = "cover";
+                            previewContainer.appendChild(img);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching product data:", error);
+            }
+        }
+
+        form.addEventListener("submit", async function (e) {
             e.preventDefault();
 
-            const data = {
-                name: document.querySelector('[name="product_name"]').value,
-                brand: document.querySelector('[name="brand"]').value,
-                description: document.querySelector('[name="description"]').value,
-                status: document.querySelector('[name="status"]').value
-            };
+            const formData = new FormData(form);
+            const method = productId ? "PUT" : "POST";
+            const url = productId ? `http://localhost:5000/api/products/${productId}` : "http://localhost:5000/api/products";
 
             try {
-                const response = await fetch("http://localhost:5000/api/products", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
+                const response = await fetch(url, {
+                    method: method,
+                    body: formData
                 });
 
                 const result = await response.json();
 
                 if (response.ok) {
-                    alert("Product Created Successfully!");
-                    document.getElementById("productForm").reset();
+                    alert(productId ? "Product Updated Successfully!" : "Product Created Successfully!");
+                    if (!productId) {
+                        form.reset();
+                        document.getElementById("previewContainer").innerHTML = '<img src="images/ceramic-cup.jpg" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">';
+                    } else {
+                        window.location.href = "all-products.html";
+                    }
                 } else {
-                    alert("Error creating product");
+                    alert(result.error || result.message || "Error saving product");
                 }
 
             } catch (error) {
                 console.error(error);
                 alert("Server error");
             }
+        });
+    </script>
+    <script>
+        document.getElementById("imageInput").addEventListener("change", function () {
+            const previewContainer = document.getElementById("previewContainer");
+            previewContainer.innerHTML = "";
+            const files = Array.from(this.files);
+
+            if (files.length > 3) {
+                alert("You can only select up to 3 images.");
+                this.value = "";
+                return;
+            }
+
+            if (files.length === 0) {
+                previewContainer.innerHTML = '<img src="images/ceramic-cup.jpg" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">';
+                return;
+            }
+
+            files.forEach(file => {
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.classList.add("img-thumbnail");
+                img.style.width = "100px";
+                img.style.height = "100px";
+                img.style.objectFit = "cover";
+                previewContainer.appendChild(img);
+            });
         });
     </script>
 </body>

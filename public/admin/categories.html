@@ -16,8 +16,8 @@
     <style>
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -25,38 +25,56 @@
             background-color: var(--white);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 1rem;
+            padding: 0;
+            overflow: hidden;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: #f8f9fa;
-            /* Consistent light background */
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
-        .category-card:hover,
-        .category-card.active {
+        .category-card:hover {
             border-color: var(--primary-color);
-            background-color: #eef2f6;
-            /* Subtle bg change on hover */
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
         }
 
-        .category-card i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
+        .category-img-container {
+            width: 100%;
+            height: 120px;
+            background-color: #f8f9fa;
+            overflow: hidden;
+        }
+
+        .category-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-img-container img {
+            transform: scale(1.1);
+        }
+
+        .category-card-info {
+            padding: 1rem;
         }
 
         .category-card h6 {
-            font-size: 0.9rem;
+            font-size: 1rem;
             margin-bottom: 0;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .category-card .item-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -112,6 +130,20 @@
                     <li class="nav-item">
                         <a href="sales-offers.html" class="nav-link">
                             <i class="bi bi-percent"></i> Sales Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-section-label">Product</div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="all-products.html" class="nav-link">
+                            <i class="bi bi-box-seam"></i> All Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="add-product.html" class="nav-link">
+                            <i class="bi bi-plus-square"></i> Add Product
                         </a>
                     </li>
                 </ul>
@@ -212,30 +244,12 @@
                     <a href="#" class="text-decoration-none text-muted small">Show All Categories</a>
                 </div>
 
-                <div class="category-grid">
-                    <div class="category-card active">
-                        <i class="bi bi-flower1"></i>
-                        <h6>Vases</h6>
-                    </div>
-                    <div class="category-card">
-                        <i class="bi bi-cup-hot"></i>
-                        <h6>Cups</h6>
-                    </div>
-                    <div class="category-card">
-                        <i class="bi bi-cup"></i>
-                        <h6>Mugs</h6>
-                    </div>
-                    <div class="category-card">
-                        <i class="bi bi-circle"></i>
-                        <h6>Bowls</h6>
-                    </div>
-                    <div class="category-card">
-                        <i class="bi bi-lamp"></i>
-                        <h6>Decor Items</h6>
-                    </div>
-                    <div class="category-card">
-                        <i class="bi bi-disc"></i>
-                        <h6>Plates</h6>
+                <div class="category-grid" id="categoryGrid">
+                    <!-- Dynamic Category Cards will be loaded here -->
+                    <div class="text-center w-100 p-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                     </div>
                 </div>
 
@@ -254,7 +268,7 @@
                                 <input type="text" class="form-control border-start-0 ps-0"
                                     placeholder="Search Category">
                             </div>
-                            <button class="btn btn-primary" onclick="window.location.href='add-category.html'"><i
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal"><i
                                     class="bi bi-plus-lg me-1"></i> Add Category</button>
                         </div>
                     </div>
@@ -264,11 +278,11 @@
                             <thead>
                                 <tr>
                                     <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">Categories</th>
-                                    <th scope="col">Starting Price</th>
-                                    <th scope="col">Create by</th>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Product Stock</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Slug</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Category ID</th>
+                                    <th scope="col">Added On</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -422,6 +436,97 @@
         </div>
     </div>
 
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="addCategoryModalLabel">Add New Category</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="addCategoryForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Category Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*" id="addImageInput">
+                            <div id="addImagePreview" class="mt-2 text-center d-none">
+                                <img src="" alt="Preview" class="img-thumbnail" style="max-height: 120px;">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Category Name</label>
+                            <input type="text" class="form-control" id="addCategoryName"
+                                placeholder="Enter category name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Description (Optional)</label>
+                            <textarea class="form-control" id="addDescription" rows="3"
+                                placeholder="Category description..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Status</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="addStatusSwitch" checked>
+                                <label class="form-check-label small" for="addStatusSwitch">Active</label>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary py-2" id="saveBtn">Save Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold" id="editCategoryModalLabel">Update Category Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editCategoryForm">
+                        <input type="hidden" id="editCategoryId">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Category Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*" id="editImageInput">
+                            <div id="editImagePreview" class="mt-2 text-center">
+                                <img src="" alt="Preview" class="img-thumbnail" style="max-height: 120px;">
+                            </div>
+                            <small class="text-muted d-block mt-1">Leave empty to keep current image</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Category Name</label>
+                            <input type="text" class="form-control" id="editCategoryName"
+                                placeholder="Enter category name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Description (Optional)</label>
+                            <textarea class="form-control" id="editDescription" rows="3"
+                                placeholder="Category description..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Status</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="editStatusSwitch" checked>
+                                <label class="form-check-label small" for="editStatusSwitch">Active</label>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary py-2" id="updateBtn">Update Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
@@ -433,6 +538,260 @@
         if (sidebarClose) {
             sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
         }
+    </script>
+    <script>
+        async function loadCategories() {
+            try {
+                const response = await fetch("http://localhost:5000/api/categories");
+                const data = await response.json();
+                const categories = data.categories || [];
+
+                // 1. POPULATE GRID
+                const categoryGrid = document.getElementById("categoryGrid");
+                if (categoryGrid) {
+                    categoryGrid.innerHTML = categories.map(cat => {
+                        const imageUrl = cat.image
+                            ? `http://localhost:5000/uploads/${cat.image}`
+                            : 'https://via.placeholder.com/150?text=No+Image';
+                        return `
+                            <div class="category-card" onclick="window.location.href='all-products.html?category=${cat._id}'">
+                                <div class="category-img-container">
+                                    <img src="${imageUrl}" alt="${cat.name}">
+                                </div>
+                                <div class="category-card-info">
+                                    <h6>${cat.name}</h6>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    if (categories.length === 0) {
+                        categoryGrid.innerHTML = '<div class="text-muted p-4">No categories found.</div>';
+                    }
+                }
+
+                // 2. POPULATE TABLE
+                const tableBody = document.querySelector("tbody");
+                if (tableBody) {
+                    tableBody.innerHTML = categories.map(cat => `
+                        <tr>
+                            <td><input class="form-check-input" type="checkbox"></td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img src="${cat.image ? 'http://localhost:5000/uploads/' + cat.image : 'https://via.placeholder.com/40'}" class="rounded" width="35" height="35" style="object-fit: cover;">
+                                    <span class="fw-medium text-capitalize">${cat.name}</span>
+                                </div>
+                            </td>
+                            <td><span class="text-muted small">${cat.slug}</span></td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" 
+                                        ${cat.status === 'active' ? 'checked' : ''} 
+                                        onchange="toggleStatus('${cat._id}', this.checked)">
+                                    <label class="form-check-label small ${cat.status === 'active' ? 'text-success' : 'text-secondary'}">
+                                        ${cat.status === 'active' ? 'Active' : 'Disabled'}
+                                    </label>
+                                </div>
+                            </td>
+                            <td><code class="small text-muted">${cat._id.substring(0, 8)}...</code></td>
+                            <td><span class="text-muted small">${new Date(cat.createdAt).toLocaleDateString()}</span></td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-action btn-light btn-sm" onclick="editCategory('${cat._id}')" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                                    <button class="btn btn-action btn-light btn-sm text-danger" onclick="deleteCategory('${cat._id}')" title="Delete"><i class="bi bi-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error("Error loading categories:", error);
+            }
+        }
+
+        async function toggleStatus(id, isChecked) {
+            const status = isChecked ? 'active' : 'inactive';
+            try {
+                const response = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to update status");
+                }
+
+                // Refresh table to update label colors
+                loadCategories();
+            } catch (error) {
+                console.error("Error toggling status:", error);
+                alert("Failed to update category status");
+                loadCategories(); // Reset UI
+            }
+        }
+
+        async function deleteCategory(id) {
+            if (!confirm("Are you sure you want to delete this category?")) return;
+            try {
+                const response = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                    loadCategories();
+                } else {
+                    alert("Failed to delete category");
+                }
+            } catch (error) {
+                console.error("Error deleting category:", error);
+            }
+        }
+
+        loadCategories();
+
+        const addModal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+        const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+
+        // IMAGE PREVIEW FOR ADD
+        document.getElementById('addImageInput').addEventListener('change', function (e) {
+            const preview = document.getElementById('addImagePreview');
+            const img = preview.querySelector('img');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    preview.classList.remove('d-none');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.classList.add('d-none');
+            }
+        });
+
+        // SUBMIT ADD FORM
+        document.getElementById("addCategoryForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('saveBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+
+            const formData = new FormData();
+            formData.append("name", document.getElementById('addCategoryName').value);
+            formData.append("description", document.getElementById('addDescription').value);
+            formData.append("status", document.getElementById("addStatusSwitch").checked ? "active" : "inactive");
+
+            const imageFile = document.getElementById('addImageInput').files[0];
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+
+            try {
+                const response = await fetch("http://localhost:5000/api/categories", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    addModal.hide();
+                    e.target.reset();
+                    document.getElementById('addImagePreview').classList.add('d-none');
+                    loadCategories();
+                    setTimeout(() => alert("Category added successfully!"), 300);
+                } else {
+                    const data = await response.json();
+                    alert(data.error || "Failed to add category");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save Category';
+            }
+        });
+
+        // OPEN EDIT MODAL
+        async function editCategory(id) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/categories/${id}`);
+                const cat = await response.json();
+
+                if (!response.ok) throw new Error(cat.message || "Failed to fetch");
+
+                document.getElementById('editCategoryId').value = cat._id;
+                document.getElementById('editCategoryName').value = cat.name;
+                document.getElementById('editDescription').value = cat.description || '';
+                document.getElementById('editStatusSwitch').checked = cat.status === 'active';
+
+                const imgPreview = document.querySelector('#editImagePreview img');
+                if (cat.image) {
+                    imgPreview.src = `http://localhost:5000/uploads/${cat.image}`;
+                } else {
+                    imgPreview.src = 'https://via.placeholder.com/150?text=No+Image';
+                }
+
+                editModal.show();
+            } catch (err) {
+                console.error(err);
+                alert("Error loading category data");
+            }
+        }
+
+        // IMAGE PREVIEW IN MODAL
+        document.getElementById('editImageInput').addEventListener('change', function (e) {
+            const preview = document.querySelector('#editImagePreview img');
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) { preview.src = e.target.result; }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // SUBMIT EDIT FORM
+        document.getElementById("editCategoryForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editCategoryId').value;
+            const submitBtn = document.getElementById('updateBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Updating...';
+
+            const formData = new FormData();
+            formData.append("name", document.getElementById('editCategoryName').value);
+            formData.append("description", document.getElementById('editDescription').value);
+            formData.append("status", document.getElementById("editStatusSwitch").checked ? "active" : "inactive");
+
+            const imageFile = document.getElementById('editImageInput').files[0];
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/categories/${id}`, {
+                    method: "PUT",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    editModal.hide();
+                    loadCategories(); // Refresh list
+                    setTimeout(() => alert("Category updated successfully!"), 300);
+                } else {
+                    const data = await response.json();
+                    alert(data.error || "Failed to update category");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Update Category';
+            }
+        });
     </script>
 </body>
 

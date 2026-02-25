@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
@@ -15,10 +16,12 @@ app.get("/", (req, res) => {
 
 // 3. Routes
 app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/products",require("./routes/productRoutes"))
-app.use("/api/suppliers",require("./routes/supplierRoutes"))
-app.use("/api/purchases",require("./routes/purchaseRoutes"))
-app.use("/uploads", express.static("uploads"));
+app.use("/api/products", require("./routes/productRoutes"))
+app.use("/api/suppliers", require("./routes/supplierRoutes"))
+app.use("/api/purchases", require("./routes/purchaseRoutes"))
+app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/api/categories",require("./routes/categoryRoutes"))
 // 4. Global Error Handling Middleware (Catches unhandled errors)
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err.stack);

@@ -20,3 +20,12 @@ exports.createPurchase = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+exports.getPurchases = async (req, res) => {
+    try {
+        const purchases = await Purchase.find().populate("supplier").populate("items.product").sort({ createdAt: -1 });
+        res.json(purchases);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+};
