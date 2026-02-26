@@ -168,7 +168,7 @@
                                 <i class="bi bi-box"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="fw-bold mb-0">850</h3>
+                                <h3 class="fw-bold mb-0" id="totalProducts">0</h3>
                                 <small class="text-muted">Total Products</small>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 <i class="bi bi-exclamation-triangle"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="fw-bold mb-0">12</h3>
+                                <h3 class="fw-bold mb-0" id="lowStockItems">0</h3>
                                 <small class="text-muted">Low Stock Items</small>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                                 <i class="bi bi-graph-up-arrow"></i>
                             </div>
                             <div class="stat-content">
-                                <h3 class="fw-bold mb-0">4,250</h3>
+                                <h3 class="fw-bold mb-0" id="totalInventoryQty">0</h3>
                                 <small class="text-muted">Total Inventory Qty</small>
                             </div>
                         </div>
@@ -224,99 +224,8 @@
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2" alt="Img">
-                                            <div>
-                                                <span class="d-block fw-medium">Ceramic Vase A1</span>
-                                                <small class="text-muted">Home Decor</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="text-muted small">CVA1-001</span></td>
-                                    <td class="fw-bold">120</td>
-                                    <td><span
-                                            class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Healthy</span>
-                                    </td>
-                                    <td>2</td>
-                                    <td>12 Oct 2025</td>
-                                    <td class="text-end">
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                                                <i class="bi bi-three-dots"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                <li><a class="dropdown-item" href="#"><i
-                                                            class="bi bi-pencil-square me-2"></i> Adjust Stock</a></li>
-                                                <li><a class="dropdown-item" href="#"><i
-                                                            class="bi bi-clock-history me-2"></i> View History</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2" alt="Img">
-                                            <div>
-                                                <span class="d-block fw-medium">Clay Bowl Set</span>
-                                                <small class="text-muted">Tableware</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="text-muted small">CBS-102</span></td>
-                                    <td class="fw-bold text-danger">15</td>
-                                    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">Low
-                                            Stock</span></td>
-                                    <td>5</td>
-                                    <td>30 Sep 2025</td>
-                                    <td class="text-end">
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                                                <i class="bi bi-three-dots"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                <li><a class="dropdown-item" href="#"><i
-                                                            class="bi bi-pencil-square me-2"></i> Adjust Stock</a></li>
-                                                <li><a class="dropdown-item" href="#"><i
-                                                            class="bi bi-clock-history me-2"></i> View History</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2" alt="Img">
-                                            <div>
-                                                <span class="d-block fw-medium">Minimalist Mug</span>
-                                                <small class="text-muted">Tableware</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="text-muted small">MM-55</span></td>
-                                    <td class="fw-bold text-warning">45</td>
-                                    <td><span
-                                            class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3">Warning</span>
-                                    </td>
-                                    <td>3</td>
-                                    <td>05 Oct 2025</td>
-                                    <td class="text-end">
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                                                <i class="bi bi-three-dots"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                                <li><a class="dropdown-item" href="#"><i
-                                                            class="bi bi-pencil-square me-2"></i> Adjust Stock</a></li>
-                                                <li><a class="dropdown-item" href="#"><i
-                                                            class="bi bi-clock-history me-2"></i> View History</a></li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody id="inventoryTableBody">
+                                <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
                     </div>
@@ -337,6 +246,88 @@
         if (sidebarClose) {
             sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
         }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/products");
+                const products = await response.json();
+
+                // Calculate Stats
+                let totalStock = 0;
+                let lowStockCount = 0;
+
+                products.forEach(p => {
+                    totalStock += p.stock || 0;
+                    if ((p.stock || 0) < 20) lowStockCount++;
+                });
+
+                document.getElementById('totalProducts').textContent = products.length;
+                document.getElementById('lowStockItems').textContent = lowStockCount;
+                document.getElementById('totalInventoryQty').textContent = totalStock;
+
+                // Render Table
+                const tbody = document.getElementById('inventoryTableBody');
+                tbody.innerHTML = '';
+
+                products.forEach(product => {
+                    const stock = product.stock || 0;
+                    let stockStatus = '';
+                    let stockClass = '';
+                    let badgeClass = '';
+
+                    if (stock > 50) {
+                        stockStatus = 'Healthy';
+                        stockClass = 'fw-bold';
+                        badgeClass = 'bg-success bg-opacity-10 text-success';
+                    } else if (stock > 20) {
+                        stockStatus = 'Warning';
+                        stockClass = 'fw-bold text-warning';
+                        badgeClass = 'bg-warning bg-opacity-10 text-warning';
+                    } else {
+                        stockStatus = 'Low Stock';
+                        stockClass = 'fw-bold text-danger';
+                        badgeClass = 'bg-danger bg-opacity-10 text-danger';
+                    }
+
+                    const sku = product._id ? product._id.toString().substring(18).toUpperCase() : 'N/A';
+                    const categoryName = product.category ? product.category.name : 'Uncategorized';
+                    const imageSrc = (product.images && product.images.length > 0) ? `http://localhost:5000/uploads/${product.images[0]}` : 'images/ceramic-cup.jpg';
+                    const lastUpdated = new Date(product.updatedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="${imageSrc}" class="product-img-small me-2" alt="${product.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                <div>
+                                    <span class="d-block fw-medium">${product.name}</span>
+                                    <small class="text-muted">${categoryName}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="text-muted small">PRD-${sku}</span></td>
+                        <td class="${stockClass}">${stock}</td>
+                        <td><span class="badge ${badgeClass} rounded-pill px-3">${stockStatus}</span></td>
+                        <td>-</td>
+                        <td>${lastUpdated}</td>
+                        <td class="text-end">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                    <li><a class="dropdown-item" href="add-purchase.html"><i class="bi bi-bag-plus me-2"></i> Add Purchase</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Error fetching inventory data:", error);
+            }
+        });
     </script>
 </body>
 

@@ -27,8 +27,13 @@ exports.getCategories = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const total = await Category.countDocuments();
-    const categories = await Category.find()
+    const filter = {};
+    if (req.query.status) {
+      filter.status = req.query.status;
+    }
+
+    const total = await Category.countDocuments(filter);
+    const categories = await Category.find(filter)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });

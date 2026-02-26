@@ -267,7 +267,8 @@
         // LOAD CATEGORIES DYNAMICALLY
         async function loadCategories() {
             try {
-                const response = await fetch("http://localhost:5000/api/categories");
+                // Fetch active categories with a high limit to get all of them
+                const response = await fetch("http://localhost:5000/api/categories?status=active&limit=1000");
                 const data = await response.json();
                 const categories = data.categories || [];
 
@@ -277,10 +278,12 @@
                     categorySelect.innerHTML = '<option value="" selected disabled>Select Category</option>';
 
                     categories.forEach(cat => {
-                        const option = document.createElement("option");
-                        option.value = cat._id;
-                        option.textContent = cat.name;
-                        categorySelect.appendChild(option);
+                        if (cat.status === 'active') {
+                            const option = document.createElement("option");
+                            option.value = cat._id;
+                            option.textContent = cat.name;
+                            categorySelect.appendChild(option);
+                        }
                     });
                 }
             } catch (error) {

@@ -13,8 +13,13 @@ const purchaseSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Product"
             },
+            batchNo: {
+                type: String,
+                required: true
+            },
             quantity: Number,
-            purchasePrice: Number
+            purchasePrice: Number,
+            sellingPrice: Number
         }
     ],
     totalAmount: Number

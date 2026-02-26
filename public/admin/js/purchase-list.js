@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     <td><span class="badge bg-success bg-opacity-10 text-success">Completed</span></td>
                     <td class="text-end">
                         <button class="btn btn-sm btn-white border" title="View"><i class="bi bi-eye"></i></button>
-                        <button class="btn btn-sm btn-white border text-danger" title="Delete"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-sm btn-white border" title="Edit"><i class="bi bi-pencil"></i></button>
                     </td>
                 </tr>
             `).join('');

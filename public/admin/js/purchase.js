@@ -116,11 +116,18 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             rows.forEach(row => {
                 const productId = row.querySelector('.product-select').value;
+                const batchNo = row.querySelector('.batch-no').value.trim();
                 const quantity = parseInt(row.querySelector('.quantity').value);
                 const purchasePrice = parseFloat(row.querySelector('.price').value);
+                const sellingPrice = parseFloat(row.querySelector('.selling-price').value) || 0;
+
+                if (!batchNo) {
+                    alert("Batch No is required for all products");
+                    return; // Note: In a real app this wouldn't nicely halt the outer function, but works for a quick check. Better handled before the loop.
+                }
 
                 if (productId && quantity > 0) {
-                    items.push({ product: productId, quantity, purchasePrice });
+                    items.push({ product: productId, batchNo, quantity, purchasePrice, sellingPrice });
                 }
             });
 

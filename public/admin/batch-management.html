@@ -183,67 +183,8 @@
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="fw-medium">#BTC-2025-01</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2" alt="Img">
-                                            <span>Ceramic Vase A1</span>
-                                        </div>
-                                    </td>
-                                    <td>120</td>
-                                    <td>$45.00</td>
-                                    <td>$59.00</td>
-                                    <td>12 Dec 2026</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-medium">#BTC-2025-02</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2" alt="Img">
-                                            <span>Clay Bowl Set</span>
-                                        </div>
-                                    </td>
-                                    <td>50</td>
-                                    <td>$12.00</td>
-                                    <td>$18.00</td>
-                                    <td>30 Oct 2025</td>
-                                    <td><span class="badge bg-warning bg-opacity-10 text-warning">Low Stock</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-medium">#BTC-2024-99</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2" alt="Img">
-                                            <span>Decorative Plate</span>
-                                        </div>
-                                    </td>
-                                    <td>0</td>
-                                    <td>$25.00</td>
-                                    <td>$35.00</td>
-                                    <td>15 Jan 2025</td>
-                                    <td><span class="badge bg-danger bg-opacity-10 text-danger">Expired</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
+                            <tbody id="batchTableBody">
+                                <!-- Dynamic rows will be inserted here -->
                             </tbody>
                         </table>
                     </div>
@@ -264,6 +205,77 @@
         if (sidebarClose) {
             sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
         }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/purchases");
+                const purchases = await response.json();
+
+                const tbody = document.getElementById('batchTableBody');
+                tbody.innerHTML = '';
+
+                // Flatten purchases into individual batches (items)
+                let allBatches = [];
+                purchases.forEach(purchase => {
+                    const invoiceNo = purchase.invoiceNumber || purchase._id.toString().substring(18).toUpperCase();
+                    purchase.items.forEach((item, index) => {
+                        let actualSellingPrice = item.sellingPrice ? parseFloat(item.sellingPrice) : (parseFloat(item.purchasePrice) * 1.3);
+                        allBatches.push({
+                            batchNo: item.batchNo || `#BTC-${invoiceNo}-${index + 1}`, // Prioritize DB Batch No
+                            product: item.product,
+                            qtyAvailable: item.quantity, // this is purchase qty
+                            purchasePrice: item.purchasePrice,
+                            sellingPrice: actualSellingPrice.toFixed(2), // Uses DB value if exists
+                            purchaseDate: purchase.purchaseDate || purchase.createdAt
+                        });
+                    });
+                });
+
+                allBatches.forEach(batch => {
+                    const product = batch.product || {};
+                    const productName = product.name || 'Unknown Product';
+                    const imageSrc = (product.images && product.images.length > 0) ? `http://localhost:5000/uploads/${product.images[0]}` : 'images/ceramic-cup.jpg';
+
+                    // Generate Mock Expiry Date (1 year after purchase)
+                    const purchaseDate = new Date(batch.purchaseDate);
+                    const expiryDate = new Date(purchaseDate.setFullYear(purchaseDate.getFullYear() + 1));
+                    const formattedExpiry = expiryDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                    let statusBadge = '';
+                    if (batch.qtyAvailable > 20) {
+                        statusBadge = '<span class="badge bg-success bg-opacity-10 text-success">Active</span>';
+                    } else if (batch.qtyAvailable > 0) {
+                        statusBadge = '<span class="badge bg-warning bg-opacity-10 text-warning">Low Stock</span>';
+                    } else {
+                        statusBadge = '<span class="badge bg-danger bg-opacity-10 text-danger">Out of Stock</span>';
+                    }
+
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><span class="fw-medium">${batch.batchNo}</span></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="${imageSrc}" class="product-img-small me-2" alt="${productName}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                <span>${productName}</span>
+                            </div>
+                        </td>
+                        <td>${batch.qtyAvailable}</td>
+                        <td>$${batch.purchasePrice}</td>
+                        <td>$${batch.sellingPrice}</td>
+                        <td>${formattedExpiry}</td>
+                        <td>${statusBadge}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-white border"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-white border text-danger"><i class="bi bi-trash"></i></button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Error fetching batches:", error);
+            }
+        });
     </script>
 </body>
 
