@@ -8,17 +8,76 @@ document.querySelector('form').addEventListener('submit', function (e) {
     alert('Thank you for subscribing!');
 });
 
-// Restricted Access Modal Handler
-document.addEventListener('DOMContentLoaded', function () {
-    const restrictedLinks = document.querySelectorAll('.restricted-link');
-    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+// Restricted Access & Global Auth Handler
+document.addEventListener('DOMContentLoaded', async function () {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
-    restrictedLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            loginModal.show();
+    // UI Elements
+    const authContainer = document.getElementById('authContainer'); // Contains Login & Sign Up
+    const profileIcon = document.querySelector('a[href="account.html"]');
+    const restrictedLinks = document.querySelectorAll('.restricted-link');
+
+    let loginModal;
+    const loginModalElement = document.getElementById('loginModal');
+    if (loginModalElement) {
+        loginModal = new bootstrap.Modal(loginModalElement);
+    }
+
+    // --- Core Logic ---
+    if (token) {
+        // 1️⃣ USER IS LOGGED IN
+        // Hide Login and Sign Up
+        if (authContainer) authContainer.classList.add('d-none');
+
+        // Show Profile icon
+        if (profileIcon) {
+            profileIcon.classList.remove('d-none');
+            // Remove restricted class so it doesn't trigger modal
+            profileIcon.classList.remove('restricted-link');
+        }
+
+        // Disable Login Required popup for all restricted links (Cart, Wishlist, etc)
+        restrictedLinks.forEach(link => {
+            link.classList.remove('restricted-link');
+            // Optional: Re-clone the node to wipe any leftover event listeners if issues arise, 
+            // but simply removing the class prevents our below listener from interfering later.
         });
-    });
+
+        // Verify token in background
+        try {
+            const response = await fetch("http://localhost:5000/api/users/profile", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error("Token expired");
+        } catch (error) {
+            console.error(error);
+            // If token is invalid, clear it and reset UI
+            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
+            window.location.reload();
+        }
+
+    } else {
+        // 2️⃣ USER IS NOT LOGGED IN
+        // Show Login and Sign Up
+        if (authContainer) authContainer.classList.remove('d-none');
+
+        // Hide Profile icon entirely from DOM
+        if (profileIcon) profileIcon.classList.add('d-none');
+
+        // When user clicks Cart / Wishlist / Profile → show Login Required modal
+        restrictedLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (loginModal) {
+                    loginModal.show();
+                } else {
+                    window.location.href = "login.html"; // Handle edge case if modal doesn't exist on page
+                }
+            });
+        });
+    }
 });
 
 // --- DYNAMIC PRODUCT FETCHING ---
