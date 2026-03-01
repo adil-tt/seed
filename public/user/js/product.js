@@ -40,11 +40,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="product-card">
                         <div class="product-img-wrapper">
                             <a href="single-product.html?id=${product._id}" class="d-block w-100 h-100">
-                                <img src="${imageUrl}" class="product-img" alt="${product.name}" style="height: 280px; object-fit: cover;">
+                                <img src="${imageUrl}" class="product-img w-100" alt="${product.name}" style="height: 280px; object-fit: cover;">
                             </a>
                             <div class="product-actions">
-                                <a href="cart.html" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
-                                <button class="btn btn-sm btn-outline-dark btn-wishlist" data-id="${product._id}">
+                                <button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>
+                                <button class="btn btn-sm btn-outline-dark add-to-wishlist" data-id="${product._id}">
                                     <i class="bi bi-heart"></i>
                                 </button>
                             </div>

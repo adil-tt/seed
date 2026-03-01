@@ -55,6 +55,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (categoryEl) categoryEl.textContent = product.category ? product.category.name : "Uncategorized";
         if (skuEl) skuEl.textContent = product.sku || product._id.toString().substring(18).toUpperCase();
 
+        document.getElementById('single-add-cart')?.setAttribute('data-id', product._id);
+        document.getElementById('single-add-wishlist')?.setAttribute('data-id', product._id);
+
         // Update Images (Main Gallery + Thumbs)
         if (imagesContainer) {
             let imagesHtml = "";

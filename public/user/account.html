@@ -228,7 +228,7 @@
             }
 
             try {
-                const response = await fetch("http://localhost:5000/api/users/profile", {
+                const response = await fetch("http://localhost:5000/api/auth/profile", {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -249,7 +249,7 @@
                 } else {
                     // Token invalid or expired
                     localStorage.clear();
-                    sessionStorage.clear();
+
                     window.location.href = "login.html";
                 }
             } catch (error) {
@@ -265,6 +265,7 @@
             });
         });
     </script>
+    <script src="js/wishlist.js"></script>
 </body>
 
 </html>

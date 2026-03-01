@@ -35,11 +35,14 @@ exports.createPurchase = async (req, res) => {
         const purchase = new Purchase(req.body);
         await purchase.save();
 
-        // 🔥 Update stock
+        // 🔥 Update stock and price
         for (const item of req.body.items) {
             await Product.findByIdAndUpdate(
                 item.product,
-                { $inc: { stock: item.quantity } }
+                {
+                    $inc: { stock: item.quantity },
+                    $set: { price: item.sellingPrice }
+                }
             );
         }
 

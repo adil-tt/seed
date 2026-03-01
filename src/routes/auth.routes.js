@@ -1,27 +1,4 @@
-// const express = require("express");
-// const router = express.Router();
 
-// // Import ALL the controller functions
-// const { 
-//   registerUser, 
-//   verifyOtp, 
-//   loginUser, 
-//   forgotPassword, 
-//   resetPassword 
-// } = require("../controllers/authController");
-
-// // Registration & Verification
-// router.post("/signup", registerUser);
-// router.post("/verify-otp", verifyOtp);
-
-// // Login
-// router.post("/login", loginUser);
-
-// // Password Recovery
-// router.post("/forgot-password", forgotPassword);
-// router.post("/reset-password", resetPassword);
-
-// module.exports = router;
 const express = require("express");
 const router = express.Router();
 

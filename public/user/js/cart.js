@@ -2,7 +2,7 @@
 console.log('Cart page loaded');
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     if (!token) {
         // Only redirect if we are actually on the cart page
         if (window.location.pathname.includes('cart.html')) {
@@ -15,11 +15,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!cartTableBody) return;
 
     try {
-        const response = await fetch("http://localhost:5000/api/users/cart", {
+        const response = await fetch("http://localhost:5000/api/cart", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
-        if (!response.ok) throw new Error("Failed to fetch cart");
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                throw new Error("Unauthorized");
+            }
+            throw new Error("Failed to fetch cart");
+        }
 
         const cartData = await response.json();
 
@@ -75,11 +80,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (error) {
         console.error("Cart error:", error);
-        if (error.message.includes("Failed")) {
+        if (error.message.includes("Unauthorized")) {
             localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("user");
             window.location.href = "login.html";
         } else {
-            cartTableBody.innerHTML = "<tr><td colspan='5' class='text-center text-danger'>Error loading cart.</td></tr>";
+            cartTableBody.innerHTML = "<tr><td colspan='5' class='text-center text-danger'>Error loading cart. Check console.</td></tr>";
         }
     }
 });

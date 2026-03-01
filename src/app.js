@@ -21,7 +21,10 @@ app.use("/api/suppliers", require("./routes/supplierRoutes"))
 app.use("/api/purchases", require("./routes/purchaseRoutes"))
 app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-app.use("/api/categories",require("./routes/categoryRoutes"))
+app.use("/api/categories", require("./routes/categoryRoutes"));
+app.use("/api/cart", require("./routes/cartRoutes"));
+app.use("/api/wishlist", require("./routes/wishlistRoutes"));
+
 // 4. Global Error Handling Middleware (Catches unhandled errors)
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err.stack);

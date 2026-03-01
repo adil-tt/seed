@@ -9,76 +9,80 @@ document.querySelector('form').addEventListener('submit', function (e) {
 });
 
 // Restricted Access & Global Auth Handler
-document.addEventListener('DOMContentLoaded', async function () {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+function updateNavbar() {
+    // Check both localStorage (Remember Me checked) and sessionStorage (Remember Me unchecked)
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const userString = localStorage.getItem("user") || sessionStorage.getItem("user");
 
-    // UI Elements
-    const authContainer = document.getElementById('authContainer'); // Contains Login & Sign Up
-    const profileIcon = document.querySelector('a[href="account.html"]');
-    const restrictedLinks = document.querySelectorAll('.restricted-link');
+    const authContainer = document.getElementById("authContainer");
 
+    if (token && userString) {
+        try {
+            const user = JSON.parse(userString);
+
+            // USER IS LOGGED IN - Replace Login/SignUp with Welcome & Logout
+            if (authContainer) {
+                // We must use innerHTML because the user's HTML doesn't have loginBtn or signupBtn IDs
+                authContainer.innerHTML = `
+                    <span class="me-3 fw-medium text-dark">Welcome, ${user.name.split(' ')[0]}!</span>
+                    <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+                `;
+
+                // Add logout logic native to the new button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("user");
+                    window.location.reload();
+                });
+            }
+        } catch (error) {
+            console.error("Error parsing user data", error);
+        }
+    } else {
+        // USER NOT LOGGED IN - Restore Login/SignUp buttons
+        if (authContainer) {
+            authContainer.innerHTML = `
+                <a href="login.html" class="btn btn-outline-terracotta me-2 d-none d-lg-block">Login</a>
+                <a href="signup.html" class="btn btn-terracotta me-3 d-none d-lg-block">Sign Up</a>
+            `;
+        }
+    }
+
+    // Modal Handler for restricted links (Cart / Wishlist / Profile icon)
+    const restrictedLinks = document.querySelectorAll(".restricted-link");
+    const loginModalElement = document.getElementById("loginModal");
     let loginModal;
-    const loginModalElement = document.getElementById('loginModal');
-    if (loginModalElement) {
+
+    if (loginModalElement && typeof bootstrap !== "undefined") {
         loginModal = new bootstrap.Modal(loginModalElement);
     }
 
-    // --- Core Logic ---
-    if (token) {
-        // 1️⃣ USER IS LOGGED IN
-        // Hide Login and Sign Up
-        if (authContainer) authContainer.classList.add('d-none');
+    restrictedLinks.forEach(link => {
+        // Clone node to clear old event listeners in case updateNavbar runs multiple times
+        const newLink = link.cloneNode(true);
+        link.parentNode.replaceChild(newLink, link);
 
-        // Show Profile icon
-        if (profileIcon) {
-            profileIcon.classList.remove('d-none');
-            // Remove restricted class so it doesn't trigger modal
-            profileIcon.classList.remove('restricted-link');
-        }
-
-        // Disable Login Required popup for all restricted links (Cart, Wishlist, etc)
-        restrictedLinks.forEach(link => {
-            link.classList.remove('restricted-link');
-            // Optional: Re-clone the node to wipe any leftover event listeners if issues arise, 
-            // but simply removing the class prevents our below listener from interfering later.
-        });
-
-        // Verify token in background
-        try {
-            const response = await fetch("http://localhost:5000/api/users/profile", {
-                method: "GET",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error("Token expired");
-        } catch (error) {
-            console.error(error);
-            // If token is invalid, clear it and reset UI
-            localStorage.removeItem('token');
-            sessionStorage.removeItem('token');
-            window.location.reload();
-        }
-
-    } else {
-        // 2️⃣ USER IS NOT LOGGED IN
-        // Show Login and Sign Up
-        if (authContainer) authContainer.classList.remove('d-none');
-
-        // Hide Profile icon entirely from DOM
-        if (profileIcon) profileIcon.classList.add('d-none');
-
-        // When user clicks Cart / Wishlist / Profile → show Login Required modal
-        restrictedLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
+        newLink.addEventListener("click", function (e) {
+            // Check token on click (check both storages)
+            const currentToken = localStorage.getItem("token") || sessionStorage.getItem("token");
+            if (!currentToken) {
                 e.preventDefault();
                 if (loginModal) {
                     loginModal.show();
                 } else {
-                    window.location.href = "login.html"; // Handle edge case if modal doesn't exist on page
+                    window.location.href = "login.html";
                 }
-            });
+            } else {
+                // If token exists, they should be allowed to go to Account/Cart without Login modal
+                // No preventDefault needed here.
+            }
         });
-    }
-});
+    });
+}
+
+document.addEventListener("DOMContentLoaded", updateNavbar);
 
 // --- DYNAMIC PRODUCT FETCHING ---
 document.addEventListener("DOMContentLoaded", async () => {
@@ -112,11 +116,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="product-card">
                         <div class="product-img-wrapper">
                             <a href="single-product.html?id=${product._id}" class="d-block w-100 h-100">
-                                <img src="${imageUrl}" class="product-img" alt="${product.name}" style="height: 250px; object-fit: cover;">
+                                <img src="${imageUrl}" class="product-img w-100" alt="${product.name}" style="height: 250px; object-fit: cover;">
                             </a>
                             <div class="product-actions">
-                                <a href="cart.html" class="btn btn-sm btn-dark"><i class="bi bi-cart-plus"></i> Add</a>
-                                <button class="btn btn-sm btn-outline-dark btn-wishlist" data-id="${product._id}">
+                                <button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>
+                                <button class="btn btn-sm btn-outline-dark add-to-wishlist" data-id="${product._id}">
                                     <i class="bi bi-heart"></i>
                                 </button>
                             </div>
