@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- WISHLIST API FETCH LOGIC ---
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     if (!token) {
         if (window.location.pathname.includes('wishlist.html')) {
             window.location.href = "login.html";
@@ -273,10 +273,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const wishlistContainer = document.querySelector("#wishlist .row.g-4") || document.querySelector(".dashboard-content .row.g-4");
     if (!wishlistContainer) return; // Only runs on wishlist section
 
+    console.log("Token:", token);
+
     try {
         const response = await fetch("http://localhost:5000/api/wishlist", {
             headers: { "Authorization": `Bearer ${token}` }
         });
+
+        console.log("Response Status:", response.status);
+
+        // Explicitly check for 401 Unauthorized before falling into regular error handling
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
 
         // FIX 1: Read the actual backend error instead of throwing a generic "Failed"
         if (!response.ok) {
@@ -330,7 +342,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (error) {
         console.error("Wishlist error:", error);
-        
+
         // FIX 2: Stop the automatic redirect and show the error on the screen!
         wishlistContainer.innerHTML = `
             <div class='col-12 py-5 text-center text-danger'>
