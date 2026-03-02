@@ -24,6 +24,8 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/categories", require("./routes/categoryRoutes"));
 app.use("/api/cart", require("./routes/cartRoutes"));
 app.use("/api/wishlist", require("./routes/wishlistRoutes"));
+app.use("/api/address", require("./routes/addressRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
 
 // 4. Global Error Handling Middleware (Catches unhandled errors)
 app.use((err, req, res, next) => {

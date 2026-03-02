@@ -11,15 +11,28 @@ function changeImage(element) {
     element.classList.add('active');
 }
 
+let basePrice = 0;
+
+function updatePriceDisplay() {
+    const priceEl = document.getElementById("product-price");
+    const input = document.getElementById('quantity');
+    const quantity = parseInt(input.value) || 1;
+    if (priceEl && basePrice > 0) {
+        priceEl.textContent = `$${(basePrice * quantity).toFixed(2)}`;
+    }
+}
+
 function increaseQty() {
     const input = document.getElementById('quantity');
     input.value = parseInt(input.value) + 1;
+    updatePriceDisplay();
 }
 
 function decreaseQty() {
     const input = document.getElementById('quantity');
     if (parseInt(input.value) > 1) {
         input.value = parseInt(input.value) - 1;
+        updatePriceDisplay();
     }
 }
 
@@ -50,7 +63,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const imagesContainer = document.getElementById("product-images");
 
         if (nameEl) nameEl.textContent = product.name;
-        if (priceEl) priceEl.textContent = `$${product.price ? product.price.toFixed(2) : "0.00"}`;
+        if (priceEl) {
+            basePrice = product.price || 0;
+            priceEl.textContent = `$${basePrice.toFixed(2)}`;
+            updatePriceDisplay();
+        }
         if (descEl) descEl.textContent = product.description || "No description available.";
         if (categoryEl) categoryEl.textContent = product.category ? product.category.name : "Uncategorized";
         if (skuEl) skuEl.textContent = product.sku || product._id.toString().substring(18).toUpperCase();

@@ -36,150 +36,224 @@
     </div>
 
     <!-- Checkout Content -->
-    <div class="container mb-5">
-        <form action="order-success.html" method="GET"> <!-- Redirect to success page -->
+    <div class="container mb-5 mt-4">
+        <style>
+            .checkout-card {
+                background: #fff;
+                border-radius: 12px;
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+                padding: 24px;
+                margin-bottom: 24px;
+                border: 1px solid #f1f1f1;
+            }
+
+            .sticky-summary {
+                position: sticky;
+                top: 90px;
+                z-index: 10;
+            }
+
+            .checkout-card.dark-header {
+                padding: 0;
+                overflow: hidden;
+            }
+
+            .dark-header-title {
+                background-color: #212529;
+                color: white;
+                padding: 18px 24px;
+                margin-bottom: 0;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                border-radius: 12px 12px 0 0;
+            }
+
+            .dark-header-body {
+                padding: 24px;
+            }
+
+            .btn-place-order {
+                background-color: #2bca63;
+                color: white;
+                font-weight: 600;
+                border-radius: 6px;
+                padding: 12px;
+                border: none;
+                transition: background 0.3s;
+                font-size: 1.05rem;
+            }
+
+            .btn-place-order:hover {
+                background-color: #27ae56;
+                color: white;
+            }
+
+            .payment-card-wrap {
+                border: 1px solid #eee;
+                border-radius: 8px;
+                padding: 16px;
+                margin-bottom: 12px;
+            }
+
+            .payment-card-wrap.active {
+                border-color: #e2e8f0;
+                /* Background is kept white to match clean design */
+            }
+
+            .payment-card-wrap .form-check-input:checked {
+                background-color: #0d6efd;
+                border-color: #0d6efd;
+            }
+        </style>
+        <form action="order-success.html" method="GET">
             <div class="row">
-                <div class="col-lg-7 mb-4">
-                    <h4 class="mb-4">Billing Details</h4>
-                    <div class="row g-3 checkout-form">
-                        <div class="col-sm-6">
-                            <label class="form-label">First Name</label>
-                            <input type="text" class="form-control" required>
+                <!-- Left Column (65%) -> col-lg-8. Order 2 on mobile, 1 on LG -->
+                <div class="col-lg-7 order-2 order-lg-1">
+
+                    <!-- 1. Delivery Address Section -->
+                    <div class="checkout-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0 fs-6"><i class="bi bi-geo-alt-fill text-warning me-2"></i> Delivery
+                                Address</h5>
+                            <a href="add-address.html" class="btn btn-outline-secondary btn-sm"><i
+                                    class="bi bi-plus"></i>
+                                Add New</a>
                         </div>
-                        <div class="col-sm-6">
-                            <label class="form-label">Last Name</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Address</label>
-                            <input type="text" class="form-control" placeholder="1234 Main St" required>
-                        </div>
-                        <div class="col-md-5">
-                            <label class="form-label">Country</label>
-                            <select class="form-select" required>
-                                <option value="">Choose...</option>
-                                <option>United States</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">State</label>
-                            <select class="form-select" required>
-                                <option value="">Choose...</option>
-                                <option>California</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Zip</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="same-address">
-                                <label class="form-check-label" for="same-address">Shipping address is the same as my
-                                    billing address</label>
+                        <div id="deliveryAddressesContainer">
+                            <!-- JS WILL INJECT ADDRESS HERE -->
+                            <div class="text-center text-muted p-3 border rounded border-dashed">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"
+                                    aria-hidden="true"></span> Loading addresses...
                             </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="save-info">
-                                <label class="form-check-label" for="save-info">Save this information for next
-                                    time</label>
+                        </div>
+                    </div>
+
+
+
+                    <!-- 3. Payment Method -->
+                    <div class="checkout-card">
+                        <h5 class="fw-bold mb-4 fs-6"><i class="bi bi-credit-card-2-front text-primary me-2"></i>
+                            Payment Method</h5>
+
+                        <div class="payment-card-wrap">
+                            <div
+                                class="form-check d-flex justify-content-between align-items-center w-100 m-0 p-0 ps-4">
+                                <div>
+                                    <input class="form-check-input me-3 ms-0" type="radio" name="paymentMethod"
+                                        id="razorpay">
+                                    <label class="form-check-label text-dark" for="razorpay">
+                                        Pay Online (Razorpay)
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <!-- Use small images for credit card logos as visual aid, or generic text icons -->
+                                    <i class="bi bi-credit-card text-primary px-1"></i>
+                                    <i class="bi bi-google-play px-1"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-card-wrap active border-primary bg-light bg-opacity-10 border-opacity-50">
+                            <div
+                                class="form-check d-flex justify-content-between align-items-center w-100 m-0 p-0 ps-4">
+                                <div>
+                                    <input class="form-check-input me-3 ms-0" type="radio" name="paymentMethod" id="cod"
+                                        checked>
+                                    <label class="form-check-label text-dark fw-medium" for="cod">
+                                        Cash on Delivery
+                                    </label>
+                                </div>
+                                <i class="bi bi-cash-stack text-success fs-5"></i>
+                            </div>
+                        </div>
+
+                        <div class="payment-card-wrap bg-light border-0">
+                            <div
+                                class="form-check d-flex justify-content-between align-items-center w-100 m-0 p-0 ps-4">
+                                <div>
+                                    <input class="form-check-input me-3 ms-0 bg-secondary" type="radio"
+                                        name="paymentMethod" id="wallet" disabled>
+                                    <label class="form-check-label text-dark opacity-75" for="wallet">
+                                        Wallet Balance
+                                    </label>
+                                </div>
+                                <span class="badge bg-secondary rounded px-2 opacity-75">₹1473</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-5">
-                    <div class="cart-summary shadow-sm bg-white rounded-3 p-4">
-                        <h4 class="mb-4">Order Summary</h4>
+                <!-- Right Column (35%) -> col-lg-5. Order 1 on mobile, 2 on LG -->
+                <div class="col-lg-5 order-1 order-lg-2 mb-4">
+                    <div class="checkout-card dark-header sticky-summary">
+                        <h4 class="dark-header-title mb-0"><i class="bi bi-bag-check me-2"></i> Order Summary</h4>
 
-                        <!-- Product Item -->
-                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                            <img src="images/ceramic-cup.jpg" class="rounded"
-                                style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;" alt="Product">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Minimalist Dinner Plate</h6>
-                                <small class="text-muted">Qty: 2</small>
+                        <div class="dark-header-body">
+                            <!-- Product Item Example from original code -->
+                            <div class="d-flex align-items-start mb-3 pb-3 border-bottom position-relative">
+                                <span
+                                    class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+                                    style="margin-left: 2px; margin-top: 5px; z-index: 5;">
+                                    <i class="bi bi-x pb-1" style="font-size: 0.7rem; line-height: 1;"></i>
+                                    <span class="visually-hidden">remove item</span>
+                                </span>
+                                <div class="border rounded p-1 me-3 bg-white d-flex align-items-center justify-content-center"
+                                    style="width: 55px; height: 55px;">
+                                    <img src="images/ceramic-cup.jpg" class="w-100 h-100 object-fit-cover rounded"
+                                        alt="Product">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0 fw-bold fs-6 text-dark mt-1">banana</h6>
+                                    <small class="text-muted d-block mt-1">1 x ₹123</small>
+                                </div>
+                                <span class="fw-bold text-dark mt-1">₹123</span>
                             </div>
-                            <span class="fw-bold">₹4,000</span>
-                        </div>
 
-                        <!-- Product Item -->
-                        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
-                            <img src="images/ceramic-cup.jpg" class="rounded"
-                                style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;" alt="Product">
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Artisan Coffee Mug</h6>
-                                <small class="text-muted">Qty: 1</small>
-                            </div>
-                            <span class="fw-bold">₹1,350</span>
-                        </div>
-
-                        <!-- Coupon Code -->
-                        <div class="input-group coupon-input-group">
-                            <input type="text" class="form-control" placeholder="Enter coupon code">
-                            <button class="btn btn-outline-primary" type="button">Apply</button>
-                        </div>
-
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Subtotal</span>
-                            <span class="fw-bold">₹5,350</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <span>Shipping</span>
-                            <span class="text-success fw-bold">₹150</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                            <h5 class="mb-0 fw-bold">Total</h5>
-                            <h4 class="mb-0 text-primary fw-bold">₹5,500</h4>
-                        </div>
-
-                        <!-- Payment Method -->
-                        <div class="mt-5">
-                            <h5 class="mb-3 text-uppercase fs-6 text-muted fw-bold">Payment Method</h5>
-
-                            <!-- Wallet -->
-                            <div class="payment-option mb-3">
-                                <div class="form-check d-flex align-items-center w-100">
-                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="wallet"
-                                        disabled>
-                                    <label class="form-check-label flex-grow-1" for="wallet">
-                                        <span class="d-block fw-bold">My Wallet</span>
-                                        <small class="text-muted">Balance: ₹0.00 <span
-                                                class="text-danger">(Insufficient)</span></small>
-                                    </label>
-                                    <i class="bi bi-wallet2 fs-5 text-primary"></i>
+                            <!-- Coupon Code Section -->
+                            <div class="mt-4 mb-2">
+                                <label class="form-label fw-bold text-dark fs-6 mb-2">Coupon Code</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter code"
+                                        style="border-radius: 4px 0 0 4px; box-shadow: none;">
+                                    <button class="btn border border-start-0 text-dark bg-white fw-medium px-4"
+                                        type="button" style="border-radius: 0 4px 4px 0;">Apply</button>
+                                </div>
+                                <div class="text-end mt-2">
+                                    <a href="#" class="text-decoration-none small text-primary fw-medium"><i
+                                            class="bi bi-tags-fill me-1"></i> View Available Coupons</a>
                                 </div>
                             </div>
 
-                            <!-- Razorpay/UPI/Card -->
-                            <div class="payment-option mb-3 selected">
-                                <div class="form-check d-flex align-items-center w-100">
-                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="razorpay"
-                                        checked>
-                                    <label class="form-check-label flex-grow-1 fw-bold" for="razorpay">
-                                        Razorpay / UPI / Card
-                                    </label>
-                                    <i class="bi bi-credit-card-2-front fs-5 text-dark"></i>
-                                </div>
+                            <hr class="text-muted opacity-25 my-4">
+
+                            <!-- Summary totals -->
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Subtotal</span>
+                                <span class="fw-bold text-dark">₹123</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Delivery</span>
+                                <span class="text-success fw-bold">₹25</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">Handling Fee</span>
+                                <span class="fw-bold text-dark">₹2</span>
                             </div>
 
-                            <!-- COD -->
-                            <div class="payment-option mb-3">
-                                <div class="form-check d-flex align-items-center w-100">
-                                    <input class="form-check-input me-3" type="radio" name="paymentMethod" id="cod">
-                                    <label class="form-check-label flex-grow-1 fw-bold" for="cod">
-                                        Cash on Delivery
-                                    </label>
-                                    <i class="bi bi-cash-stack fs-5 text-success"></i>
-                                </div>
+                            <div class="d-flex justify-content-between align-items-center pt-3 mt-4 border-top">
+                                <h5 class="mb-0 fw-bold text-dark fs-5">Total Amount</h5>
+                                <h4 class="mb-0 text-dark fw-bold fs-5">₹150</h4>
+                            </div>
+
+                            <button type="submit" class="btn btn-place-order w-100 mt-4 shadow-sm">
+                                Place Order <i class="bi bi-arrow-right fw-bold ms-1"></i>
+                            </button>
+                            <div class="text-center mt-3">
+                                <small class="text-muted fw-medium"><i class="bi bi-lock-fill text-dark me-1"></i>
+                                    Secure Checkout</small>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn btn-place-order w-100 btn-lg mt-4 shadow-sm">PLACE
-                            ORDER</button>
                     </div>
                 </div>
             </div>
@@ -194,7 +268,83 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Use basic js -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // 1. Get Authentication Token
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const addressContainer = document.getElementById("deliveryAddressesContainer");
+
+            try {
+                // 2. Fetch Addresses from Backend
+                const response = await fetch("http://localhost:5000/api/address/my", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.message || "Error fetching addresses");
+
+                const addresses = data.addresses || [];
+
+                // 3. Render Addresses
+                if (addresses.length > 0) {
+                    // Start rendering logic
+                    let html = `<div class="d-flex flex-nowrap gap-3 overflow-auto pb-2">`;
+
+                    addresses.forEach((addr, idx) => {
+                        const isChecked = addr.isDefault || idx === 0 ? "checked" : "";
+                        const defaultBadge = addr.isDefault ? `<span class="badge bg-primary ms-2 position-absolute top-0 end-0 mt-2 me-2" style="font-size: 0.6rem;">Default</span>` : "";
+
+                        html += `
+                        <div class="border rounded p-3 position-relative" style="min-width: 280px; flex: 0 0 auto;">
+                            ${defaultBadge}
+                            <a href="address-book.html?edit=${addr._id}" class="position-absolute bottom-0 end-0 mb-3 me-3 text-primary small text-decoration-none fw-medium"><i class="bi bi-pencil-square"></i> Edit</a>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="selectedShippingAddress" id="addr-${idx}" value="${addr._id}" ${isChecked}>
+                                <label class="form-check-label fw-bold fs-6 text-dark" for="addr-${idx}">
+                                    ${addr.fullName}
+                                </label>
+                            </div>
+                            <div class="ps-4">
+                                <p class="text-muted small mb-0 lh-sm">${addr.house}, ${addr.street}</p>
+                                ${addr.landmark ? `<p class="text-muted small mb-0 lh-sm">Landmark: ${addr.landmark}</p>` : ''}
+                                <p class="text-muted small mb-1 lh-sm">${addr.city}, ${addr.state} - ${addr.pincode}</p>
+                                <p class="text-dark fw-medium small mb-0"><i class="bi bi-telephone-fill text-muted me-1" style="font-size: 0.75rem;"></i> ${addr.phone}</p>
+                            </div>
+                        </div>`;
+                    });
+
+                    html += `</div>`;
+                    addressContainer.innerHTML = html;
+                } else {
+                    addressContainer.innerHTML = `
+                        <div class="text-center p-4 bg-light rounded text-muted">
+                            <i class="bi bi-house-x display-6 d-block mb-2 text-secondary opacity-50"></i>
+                            <p class="mb-0 small">You don't have any saved delivery addresses.</p>
+                            <a href="add-address.html" class="btn btn-sm btn-primary mt-3">Add an Address now</a>
+                        </div>
+                    `;
+                    // Disable place order button if no address
+                    const placeOrderBtn = document.querySelector('.btn-place-order');
+                    if (placeOrderBtn) {
+                        placeOrderBtn.disabled = true;
+                        placeOrderBtn.innerHTML = 'Add Delivery Address First';
+                    }
+                }
+
+            } catch (error) {
+                console.error("Failed to load addresses:", error);
+                addressContainer.innerHTML = `<div class="alert alert-danger p-2 small m-0"><i class="bi bi-exclamation-triangle"></i> Error loading addresses. Please try again.</div>`;
+            }
+        });
+    </script>
 </body>
 
 </html>

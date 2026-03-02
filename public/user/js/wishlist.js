@@ -257,16 +257,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast(error.message, true);
             }
         }
+        // --- MOVE ALL TO CART (Wishlist Page) ---
+        if (e.target.closest('#move-all-to-cart-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('#move-all-to-cart-btn');
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Moving...`;
+                btn.disabled = true;
+
+                const response = await fetch("http://localhost:5000/api/wishlist/move-to-cart", {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401 || response.status === 403) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.message || 'Failed to move items to cart');
+                }
+
+                showToast("All items moved to cart!");
+                updateBadges();
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+
+            } catch (error) {
+                showToast(error.message, true);
+                btn.innerHTML = `<i class="bi bi-cart-plus me-1"></i> Move All to Cart`;
+                btn.disabled = false;
+            }
+        }
     });
 });
 
 // --- WISHLIST API FETCH LOGIC ---
 document.addEventListener("DOMContentLoaded", async () => {
+    // Only run on wishlist page
+    if (!window.location.pathname.includes('wishlist.html')) return;
+
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     if (!token) {
-        if (window.location.pathname.includes('wishlist.html')) {
-            window.location.href = "login.html";
-        }
+        window.location.href = "login.html";
         return;
     }
 

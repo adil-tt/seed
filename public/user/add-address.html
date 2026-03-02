@@ -64,7 +64,6 @@
                         <a class="nav-link active" href="address-book.html"><i class="bi bi-geo-alt"></i> Addresses</a>
                         <a class="nav-link" href="payment-methods.html"><i class="bi bi-credit-card"></i> Payment
                             Methods</a>
-                        <a class="nav-link" href="wishlist.html"><i class="bi bi-heart"></i> Wishlist</a>
                         <a class="nav-link" href="account-settings.html"><i class="bi bi-gear"></i> Account Settings</a>
                     </nav>
                 </div>
@@ -212,6 +211,154 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form");
+
+            const showError = (input, message) => {
+                input.classList.add('is-invalid');
+                let feedback = input.nextElementSibling;
+                if (!feedback || !feedback.classList.contains('invalid-feedback')) {
+                    feedback = document.createElement('div');
+                    feedback.className = 'invalid-feedback small mt-1';
+                    input.parentNode.appendChild(feedback);
+                }
+                feedback.innerText = message;
+            };
+
+            const clearErrors = () => {
+                form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+            };
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                clearErrors();
+                let hasErrors = false;
+
+                // 1. Get Authentication Token
+                const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+                if (!token) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                // 2. Validate Form Fields Frontend
+                const fullNameNode = document.getElementById("fullName");
+                const phoneNode = document.getElementById("phoneNumber");
+                const houseNode = document.getElementById("addressLine1");
+                const streetNode = document.getElementById("addressLine2");
+                const landmarkNode = document.getElementById("landmark");
+                const cityNode = document.getElementById("city");
+                const stateNode = document.getElementById("state");
+                const pincodeNode = document.getElementById("postalCode");
+
+                if (!fullNameNode.value.trim() || fullNameNode.value.trim().length < 3 || !/^[A-Za-z\s]+$/.test(fullNameNode.value.trim())) {
+                    showError(fullNameNode, "Full name must be at least 3 characters (letters & spaces only).");
+                    hasErrors = true;
+                }
+
+                if (!phoneNode.value.trim() || !/^[6-9]\d{9}$/.test(phoneNode.value.trim())) {
+                    showError(phoneNode, "Enter a valid 10-digit Indian mobile number starting with 6-9.");
+                    hasErrors = true;
+                }
+
+                if (!houseNode.value.trim() || houseNode.value.trim().length < 3) {
+                    showError(houseNode, "House/Building info is required (min 3 chars).");
+                    hasErrors = true;
+                }
+
+                if (!streetNode.value.trim() || streetNode.value.trim().length < 5) {
+                    showError(streetNode, "Street/Area is required (min 5 chars).");
+                    hasErrors = true;
+                }
+
+                if (landmarkNode.value.trim() && landmarkNode.value.trim().length < 3) {
+                    showError(landmarkNode, "Landmark must be at least 3 characters if provided.");
+                    hasErrors = true;
+                }
+
+                if (!cityNode.value.trim() || cityNode.value.trim().length < 2 || !/^[A-Za-z\s]+$/.test(cityNode.value.trim())) {
+                    showError(cityNode, "City is required (letters only, min 2).");
+                    hasErrors = true;
+                }
+
+                if (!stateNode.value.trim() || stateNode.value.trim().length < 2 || !/^[A-Za-z\s]+$/.test(stateNode.value.trim())) {
+                    showError(stateNode, "State is required (letters only, min 2).");
+                    hasErrors = true;
+                }
+
+                if (!pincodeNode.value.trim() || !/^\d{6}$/.test(pincodeNode.value.trim())) {
+                    showError(pincodeNode, "Pincode is required and must be exactly 6 numeric digits.");
+                    hasErrors = true;
+                }
+
+                if (hasErrors) return; // Prevent submission if frontend validation failed
+
+                // 3. Gather Data
+                const addressData = {
+                    fullName: fullNameNode.value.trim(),
+                    phone: phoneNode.value.trim(),
+                    house: houseNode.value.trim(),
+                    street: streetNode.value.trim(),
+                    landmark: landmarkNode.value.trim(),
+                    city: cityNode.value.trim(),
+                    state: stateNode.value.trim(),
+                    pincode: pincodeNode.value.trim(),
+                    isDefault: document.getElementById("defaultAddress").checked
+                };
+
+                try {
+                    // Update submit button state
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    submitBtn.disabled = true;
+
+                    // 4. Send POST request to backend API
+                    const response = await fetch("http://localhost:5000/api/address/add", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify(addressData)
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        // Display backend validation errors inline if they exist
+                        if (data.errors) {
+                            if (data.errors.fullName) showError(fullNameNode, data.errors.fullName);
+                            if (data.errors.phone) showError(phoneNode, data.errors.phone);
+                            if (data.errors.house) showError(houseNode, data.errors.house);
+                            if (data.errors.street) showError(streetNode, data.errors.street);
+                            if (data.errors.landmark) showError(landmarkNode, data.errors.landmark);
+                            if (data.errors.city) showError(cityNode, data.errors.city);
+                            if (data.errors.state) showError(stateNode, data.errors.state);
+                            if (data.errors.pincode) showError(pincodeNode, data.errors.pincode);
+                        }
+                        throw new Error(data.message || "Failed to add address");
+                    }
+
+                    // 5. Success handling
+                    alert("Address added successfully!");
+                    window.location.href = "checkout.html";
+
+                } catch (error) {
+                    console.error("Error saving address:", error);
+                    // Only alert generic errors if we didn't receive specific form field errors
+                    if (!error.message.includes("Validation Failed")) {
+                        /* alert("Could not save address: " + error.message); */
+                    }
+
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = 'Save Address';
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
