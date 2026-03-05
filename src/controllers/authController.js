@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const sendEmail = require("../utils/sendEmail"); 
+const sendEmail = require("../utils/sendEmail");
 const jwt = require("jsonwebtoken"); // <-- ADDED FOR LOGIN
 const bcrypt = require("bcryptjs");  // <-- ADDED FOR LOGIN
 
@@ -38,7 +38,7 @@ exports.registerUser = async (req, res) => {
 
     // 3. Send the OTP Email
     const message = `Hi ${name},\n\nWelcome to Ceramico! Your verification code is: ${otp}\n\nThis code will expire in 10 minutes.`;
-    
+
     await sendEmail({
       email: newUser.email,
       subject: "Ceramico - Verify Your Email",
@@ -95,7 +95,7 @@ exports.verifyOtp = async (req, res) => {
     user.isVerified = true;
     user.otp = undefined;
     user.otpExpiry = undefined;
-    
+
     await user.save();
 
     res.status(200).json({ message: "Email successfully verified! You can now log in." });
@@ -136,8 +136,8 @@ exports.loginUser = async (req, res) => {
 
     // 5. Generate a JWT Token (Requires JWT_SECRET in your .env file)
     const token = jwt.sign(
-      { id: user._id, role: user.role }, 
-      process.env.JWT_SECRET, 
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
       { expiresIn: "1d" } // Token expires in 1 day
     );
 
@@ -183,7 +183,7 @@ exports.forgotPassword = async (req, res) => {
 
     // 3. Send the Reset Email
     const message = `Hi ${user.name},\n\nYou requested a password reset. Your OTP is: ${otp}\n\nIf you did not request this, please ignore this email.`;
-    
+
     await sendEmail({
       email: user.email,
       subject: "Ceramico - Password Reset OTP",
@@ -229,7 +229,7 @@ exports.resetPassword = async (req, res) => {
     // 3. Update the password
     // (Because of the pre-save hook in your User.js model, this will automatically be hashed!)
     user.password = newPassword;
-    
+
     // 4. Clear the OTP fields so they can't be used again
     user.otp = undefined;
     user.otpExpiry = undefined;
@@ -241,5 +241,43 @@ exports.resetPassword = async (req, res) => {
   } catch (error) {
     console.error("RESET PASSWORD ERROR:", error);
     res.status(500).json({ message: "Server error during password reset" });
+  }
+};
+
+// --- UPDATE PROFILE ---
+exports.updateProfile = async (req, res) => {
+  try {
+    const { firstName, lastName, phone } = req.body;
+
+    // Construct the update object based on what was provided structurally
+    const updateData = {};
+    if (firstName !== undefined) updateData.firstName = firstName;
+    if (lastName !== undefined) updateData.lastName = lastName;
+    if (phone !== undefined) updateData.phone = phone;
+
+    // Handle Image Upload via Multer
+    if (req.file) {
+      updateData.profileImage = req.file.filename;
+    }
+
+    // Find and update the user currently logged in
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      updateData,
+      { new: true, runValidators: true }
+    ).select("-password -otp -otpExpiry");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully!",
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error("UPDATE PROFILE ERROR:", error);
+    res.status(500).json({ message: "Server error during profile update", error: error.message });
   }
 };

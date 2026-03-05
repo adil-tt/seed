@@ -106,7 +106,7 @@
                 border-color: #0d6efd;
             }
         </style>
-        <form action="order-success.html" method="GET">
+        <div id="checkoutFormWrapper">
             <div class="row">
                 <!-- Left Column (65%) -> col-lg-8. Order 2 on mobile, 1 on LG -->
                 <div class="col-lg-7 order-2 order-lg-1">
@@ -178,7 +178,8 @@
                                         Wallet Balance
                                     </label>
                                 </div>
-                                <span class="badge bg-secondary rounded px-2 opacity-75">₹1473</span>
+                                <span class="badge bg-secondary rounded px-2 opacity-75"
+                                    id="walletBalanceBadge">₹0.00</span>
                             </div>
                         </div>
                     </div>
@@ -189,75 +190,17 @@
                     <div class="checkout-card dark-header sticky-summary">
                         <h4 class="dark-header-title mb-0"><i class="bi bi-bag-check me-2"></i> Order Summary</h4>
 
-                        <div class="dark-header-body">
-                            <!-- Product Item Example from original code -->
-                            <div class="d-flex align-items-start mb-3 pb-3 border-bottom position-relative">
-                                <span
-                                    class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
-                                    style="margin-left: 2px; margin-top: 5px; z-index: 5;">
-                                    <i class="bi bi-x pb-1" style="font-size: 0.7rem; line-height: 1;"></i>
-                                    <span class="visually-hidden">remove item</span>
-                                </span>
-                                <div class="border rounded p-1 me-3 bg-white d-flex align-items-center justify-content-center"
-                                    style="width: 55px; height: 55px;">
-                                    <img src="images/ceramic-cup.jpg" class="w-100 h-100 object-fit-cover rounded"
-                                        alt="Product">
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0 fw-bold fs-6 text-dark mt-1">banana</h6>
-                                    <small class="text-muted d-block mt-1">1 x ₹123</small>
-                                </div>
-                                <span class="fw-bold text-dark mt-1">₹123</span>
-                            </div>
-
-                            <!-- Coupon Code Section -->
-                            <div class="mt-4 mb-2">
-                                <label class="form-label fw-bold text-dark fs-6 mb-2">Coupon Code</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Enter code"
-                                        style="border-radius: 4px 0 0 4px; box-shadow: none;">
-                                    <button class="btn border border-start-0 text-dark bg-white fw-medium px-4"
-                                        type="button" style="border-radius: 0 4px 4px 0;">Apply</button>
-                                </div>
-                                <div class="text-end mt-2">
-                                    <a href="#" class="text-decoration-none small text-primary fw-medium"><i
-                                            class="bi bi-tags-fill me-1"></i> View Available Coupons</a>
-                                </div>
-                            </div>
-
-                            <hr class="text-muted opacity-25 my-4">
-
-                            <!-- Summary totals -->
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Subtotal</span>
-                                <span class="fw-bold text-dark">₹123</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Delivery</span>
-                                <span class="text-success fw-bold">₹25</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <span class="text-muted">Handling Fee</span>
-                                <span class="fw-bold text-dark">₹2</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center pt-3 mt-4 border-top">
-                                <h5 class="mb-0 fw-bold text-dark fs-5">Total Amount</h5>
-                                <h4 class="mb-0 text-dark fw-bold fs-5">₹150</h4>
-                            </div>
-
-                            <button type="submit" class="btn btn-place-order w-100 mt-4 shadow-sm">
-                                Place Order <i class="bi bi-arrow-right fw-bold ms-1"></i>
-                            </button>
-                            <div class="text-center mt-3">
-                                <small class="text-muted fw-medium"><i class="bi bi-lock-fill text-dark me-1"></i>
-                                    Secure Checkout</small>
+                        <div id="orderSummaryContainer" class="dark-header-body">
+                            <div class="text-center py-5">
+                                <span class="spinner-border text-primary spinner-border-sm" role="status"
+                                    aria-hidden="true"></span>
+                                <span class="ms-2">Loading Order Summary...</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -266,85 +209,9 @@
             <p>&copy; 2026 Ceramico. Same footer as other pages.</p>
         </div>
     </footer>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            // 1. Get Authentication Token
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-            if (!token) {
-                window.location.href = "login.html";
-                return;
-            }
-
-            const addressContainer = document.getElementById("deliveryAddressesContainer");
-
-            try {
-                // 2. Fetch Addresses from Backend
-                const response = await fetch("http://localhost:5000/api/address/my", {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) throw new Error(data.message || "Error fetching addresses");
-
-                const addresses = data.addresses || [];
-
-                // 3. Render Addresses
-                if (addresses.length > 0) {
-                    // Start rendering logic
-                    let html = `<div class="d-flex flex-nowrap gap-3 overflow-auto pb-2">`;
-
-                    addresses.forEach((addr, idx) => {
-                        const isChecked = addr.isDefault || idx === 0 ? "checked" : "";
-                        const defaultBadge = addr.isDefault ? `<span class="badge bg-primary ms-2 position-absolute top-0 end-0 mt-2 me-2" style="font-size: 0.6rem;">Default</span>` : "";
-
-                        html += `
-                        <div class="border rounded p-3 position-relative" style="min-width: 280px; flex: 0 0 auto;">
-                            ${defaultBadge}
-                            <a href="address-book.html?edit=${addr._id}" class="position-absolute bottom-0 end-0 mb-3 me-3 text-primary small text-decoration-none fw-medium"><i class="bi bi-pencil-square"></i> Edit</a>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="selectedShippingAddress" id="addr-${idx}" value="${addr._id}" ${isChecked}>
-                                <label class="form-check-label fw-bold fs-6 text-dark" for="addr-${idx}">
-                                    ${addr.fullName}
-                                </label>
-                            </div>
-                            <div class="ps-4">
-                                <p class="text-muted small mb-0 lh-sm">${addr.house}, ${addr.street}</p>
-                                ${addr.landmark ? `<p class="text-muted small mb-0 lh-sm">Landmark: ${addr.landmark}</p>` : ''}
-                                <p class="text-muted small mb-1 lh-sm">${addr.city}, ${addr.state} - ${addr.pincode}</p>
-                                <p class="text-dark fw-medium small mb-0"><i class="bi bi-telephone-fill text-muted me-1" style="font-size: 0.75rem;"></i> ${addr.phone}</p>
-                            </div>
-                        </div>`;
-                    });
-
-                    html += `</div>`;
-                    addressContainer.innerHTML = html;
-                } else {
-                    addressContainer.innerHTML = `
-                        <div class="text-center p-4 bg-light rounded text-muted">
-                            <i class="bi bi-house-x display-6 d-block mb-2 text-secondary opacity-50"></i>
-                            <p class="mb-0 small">You don't have any saved delivery addresses.</p>
-                            <a href="add-address.html" class="btn btn-sm btn-primary mt-3">Add an Address now</a>
-                        </div>
-                    `;
-                    // Disable place order button if no address
-                    const placeOrderBtn = document.querySelector('.btn-place-order');
-                    if (placeOrderBtn) {
-                        placeOrderBtn.disabled = true;
-                        placeOrderBtn.innerHTML = 'Add Delivery Address First';
-                    }
-                }
-
-            } catch (error) {
-                console.error("Failed to load addresses:", error);
-                addressContainer.innerHTML = `<div class="alert alert-danger p-2 small m-0"><i class="bi bi-exclamation-triangle"></i> Error loading addresses. Please try again.</div>`;
-            }
-        });
-    </script>
+    <script src="js/checkout.js"></script>
 </body>
 
 </html>

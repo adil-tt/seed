@@ -233,11 +233,12 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-medium">Product Categories</label>
-                                    <select class="form-select" name="category" id="categorySelect">
-                                        <option value="" selected disabled>Select Category</option>
+                                    <select class="form-select" name="categories" id="categorySelect" multiple
+                                        style="min-height: 120px;">
                                         <!-- Categories will be loaded here -->
                                     </select>
-
+                                    <small class="text-muted mt-1 d-block">Hold Ctrl (Windows) or Cmd (Mac) to select
+                                        multiple.</small>
                                 </div>
                             </div>
                         </div>
@@ -274,8 +275,7 @@
 
                 const categorySelect = document.getElementById("categorySelect");
                 if (categorySelect) {
-                    // Keep the first "Select Category" option
-                    categorySelect.innerHTML = '<option value="" selected disabled>Select Category</option>';
+                    categorySelect.innerHTML = ''; // Ensure clear for multiselect
 
                     categories.forEach(cat => {
                         if (cat.status === 'active') {
@@ -319,7 +319,17 @@
                     form.brand.value = product.brand || '';
                     form.description.value = product.description || '';
                     form.status.value = product.status;
-                    form.category.value = product.category || 'Select Category';
+
+                    // Highlight multiple categories
+                    if (product.categories && Array.isArray(product.categories)) {
+                        const select = document.getElementById("categorySelect");
+                        const selectedIds = product.categories.map(cat => typeof cat === 'object' ? cat._id : cat);
+                        Array.from(select.options).forEach(option => {
+                            if (selectedIds.includes(option.value)) {
+                                option.selected = true;
+                            }
+                        });
+                    }
 
                     // Display existing images
                     const previewContainer = document.getElementById("previewContainer");

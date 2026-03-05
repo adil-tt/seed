@@ -9,6 +9,12 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
+    // New Profile Fields
+    firstName: { type: String, trim: true },
+    lastName: { type: String, trim: true },
+    phone: { type: String, trim: true },
+    profileImage: { type: String },
+
     email: {
       type: String,
       required: true,

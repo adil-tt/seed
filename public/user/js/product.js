@@ -11,24 +11,62 @@ if (priceRange) {
     });
 }
 
-// --- DYNAMIC PRODUCT FETCHING ---
+// --- DYNAMIC PRODUCT FETCHING & FILTERING ---
+let allProducts = []; // Store fetched products globally for quick client-side filtering
+
 document.addEventListener("DOMContentLoaded", async () => {
     const shopContainer = document.getElementById("shop-products");
+    const categoryList = document.getElementById("category-filter-list");
 
     if (!shopContainer) return;
 
     try {
+        // 1. Fetch Categories
+        if (categoryList) {
+            const catResponse = await fetch("http://localhost:5000/api/categories?status=active");
+            if (catResponse.ok) {
+                const catData = await catResponse.json();
+                const categories = catData.categories || [];
+
+                // Keep "All Categories" and append dynamic ones
+                let categoryHTML = '<li><a href="#" data-category-id="all" class="category-filter-link fw-bold text-primary">All Categories</a></li>';
+
+                categories.forEach(cat => {
+                    if (cat.status === 'active') {
+                        categoryHTML += `<li><a href="#" data-category-id="${cat._id}" class="category-filter-link">${cat.name}</a></li>`;
+                    }
+                });
+                categoryList.innerHTML = categoryHTML;
+
+                // Add click listeners to category links
+                attachCategoryListeners();
+            }
+        }
+
+        // 2. Fetch Products
         const response = await fetch("http://localhost:5000/api/products");
         if (!response.ok) throw new Error("Failed to fetch products");
 
-        const products = await response.json();
+        allProducts = await response.json(); // Store permanently
 
-        if (products.length === 0) {
-            shopContainer.innerHTML = "<p class='text-center text-muted'>No products found.</p>";
+        // Initial render: show all active products
+        const activeProducts = allProducts.filter(p => p.status === 'active');
+        renderProducts(activeProducts);
+
+    } catch (error) {
+        console.error("Error loading shop data:", error);
+        shopContainer.innerHTML = "<p class='text-center text-danger'>Error loading products or categories.</p>";
+    }
+
+    // Function to render products grid
+    function renderProducts(productsToRender) {
+        if (productsToRender.length === 0) {
+            shopContainer.innerHTML = "<p class='text-center text-muted'>No products found in this category.</p>";
+            // Update counts if needed here
             return;
         }
 
-        shopContainer.innerHTML = products.map(product => {
+        shopContainer.innerHTML = productsToRender.map(product => {
             const imageUrl = product.images && product.images.length > 0
                 ? `http://localhost:5000/uploads/${product.images[0]}`
                 : "images/ceramic-cup.jpg";
@@ -57,9 +95,92 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `;
         }).join("");
+    }
 
-    } catch (error) {
-        console.error("Error loading shop products:", error);
-        shopContainer.innerHTML = "<p class='text-center text-danger'>Error loading products.</p>";
+    // Function to attach category click listeners
+    function attachCategoryListeners() {
+        const links = document.querySelectorAll('.category-filter-link');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Highlight active link
+                links.forEach(l => {
+                    l.classList.remove('fw-bold', 'text-primary');
+                    l.style.color = ''; // Reset standard styling
+                });
+
+                e.target.classList.add('fw-bold', 'text-primary');
+
+                const categoryId = e.target.getAttribute('data-category-id');
+
+                // Filter logic
+                if (categoryId === 'all') {
+                    const activeProducts = allProducts.filter(p => p.status === 'active');
+                    renderProducts(activeProducts);
+                } else {
+                    const filteredProducts = allProducts.filter(p => {
+                        if (p.status !== 'active') return false;
+
+                        // Check if the selected category _id is in the product's populated categories array
+                        if (p.categories && Array.isArray(p.categories)) {
+                            return p.categories.some(cat => cat._id === categoryId);
+                        }
+                        return false;
+                    });
+                    renderProducts(filteredProducts);
+                }
+            });
+        });
+    }
+
+    // --- ADD TO CART FUNCTIONALITY ---
+    shopContainer.addEventListener("click", (e) => {
+        const addBtn = e.target.closest(".add-to-cart");
+        if (addBtn) {
+            const productId = addBtn.getAttribute("data-id");
+            handleAddToCart(productId);
+        }
+    });
+
+    async function handleAddToCart(productId) {
+        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        if (!token) {
+            alert("Please login to add items to the cart.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const originalText = document.querySelector(`.add-to-cart[data-id="${productId}"]`).innerHTML;
+        const btn = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+
+        if (btn) btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
+
+        try {
+            const response = await fetch("http://localhost:5000/api/cart/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ productId, quantity: 1 })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Optionally show a nice toast, but alert works for testing
+                // alert("Successfully added to cart!");
+                if (btn) btn.innerHTML = '<i class="bi bi-check-lg"></i> Added';
+                setTimeout(() => { if (btn) btn.innerHTML = originalText; }, 2000);
+            } else {
+                alert(data.message || "Failed to add to cart");
+                if (btn) btn.innerHTML = originalText;
+            }
+        } catch (error) {
+            console.error("Add to cart error:", error);
+            alert("An error occurred while adding to cart.");
+            if (btn) btn.innerHTML = originalText;
+        }
     }
 });

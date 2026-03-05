@@ -117,4 +117,61 @@ document.addEventListener("DOMContentLoaded", async () => {
         const nameEl = document.getElementById("product-name");
         if (nameEl) nameEl.textContent = "Error loading product.";
     }
+
+    // --- ADD TO CART FUNCTIONALITY ---
+    const addToCartBtn = document.getElementById('single-add-cart');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            if (!token) {
+                alert("Please login to add items to the cart.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            const productId = addToCartBtn.getAttribute('data-id');
+            const quantityInput = document.getElementById('quantity');
+            const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+
+            if (!productId) {
+                alert("Product ID is missing or still loading.");
+                return;
+            }
+
+            const originalText = addToCartBtn.innerHTML;
+            addToCartBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
+            addToCartBtn.disabled = true;
+
+            try {
+                const response = await fetch("http://localhost:5000/api/cart/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ productId, quantity })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    addToCartBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i> Added to Cart';
+                    setTimeout(() => {
+                        addToCartBtn.innerHTML = originalText;
+                        addToCartBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    alert(data.message || "Failed to add to cart");
+                    addToCartBtn.innerHTML = originalText;
+                    addToCartBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Add to cart error:", error);
+                alert("An error occurred while adding to cart.");
+                addToCartBtn.innerHTML = originalText;
+                addToCartBtn.disabled = false;
+            }
+        });
+    }
 });

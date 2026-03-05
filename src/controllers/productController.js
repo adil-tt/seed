@@ -5,10 +5,11 @@ exports.createProduct = async (req, res) => {
         console.log("Incoming data:", req.body);
         console.log("Uploaded files:", req.files);
 
-        const { product_name, name, ...otherDetails } = req.body;
+        const { product_name, name, categories, ...otherDetails } = req.body;
 
         const product = new Product({
             name: name || product_name,
+            categories: categories ? (Array.isArray(categories) ? categories : [categories]) : [], // Ensure it's an array
             ...otherDetails,
             images: req.files ? req.files.map(file => file.filename) : []
         });
@@ -28,7 +29,7 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
-        const products = await Product.find().populate("category").sort({ createdAt: -1 });
+        const products = await Product.find().populate("categories", "name").sort({ createdAt: -1 });
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -37,7 +38,7 @@ exports.getProducts = async (req, res) => {
 
 exports.getProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id).populate("category");
+        const product = await Product.findById(req.params.id).populate("categories", "name");
         if (!product) return res.status(404).json({ message: "Product not found" });
         res.json(product);
     } catch (error) {
@@ -47,11 +48,15 @@ exports.getProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
     try {
-        const { product_name, name, ...otherDetails } = req.body;
+        const { product_name, name, categories, ...otherDetails } = req.body;
         const updateData = {
             name: name || product_name,
             ...otherDetails
         };
+
+        if (categories !== undefined) {
+            updateData.categories = Array.isArray(categories) ? categories : [categories];
+        }
 
         if (req.files && req.files.length > 0) {
             updateData.images = req.files.map(file => file.filename);

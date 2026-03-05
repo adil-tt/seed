@@ -341,11 +341,11 @@
                                 </div>
                             </div>
                         </td>
-                        <td>${product.category?.name || 'Uncategorized'}</td>
+                        <td>${product.categories && product.categories.length > 0 ? product.categories.map(c => c.name).join(', ') : 'Uncategorized'}</td>
                         <td>${product.brand || 'N/A'}</td>
                         <td>${product.stock || 0}</td>
                         <td><span class="badge ${product.status === 'active' ? 'bg-success' : 'bg-secondary'} bg-opacity-10 ${product.status === 'active' ? 'text-success' : 'text-secondary'}">${product.status}</span></td>
-                        <td>${new Date(product.createdAt).toLocaleDateString()}</td>
+                        <td>${product.createdAt ? new Date(product.createdAt).toLocaleDateString() : 'N/A'}</td>
                         <td>
                             <a href="add-product.html?id=${product._id}" class="btn btn-action btn-light text-secondary" title="Edit"><i
                                     class="bi bi-pencil"></i></a>

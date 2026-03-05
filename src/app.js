@@ -26,7 +26,7 @@ app.use("/api/cart", require("./routes/cartRoutes"));
 app.use("/api/wishlist", require("./routes/wishlistRoutes"));
 app.use("/api/address", require("./routes/addressRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
-
+app.use("/api/payment",require("./routes/paymentRoutes"))
 // 4. Global Error Handling Middleware (Catches unhandled errors)
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err.stack);
