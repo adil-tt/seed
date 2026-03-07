@@ -89,9 +89,12 @@ exports.createOrder = async (req, res) => {
 
         await newOrder.save();
 
-        // 5. Clear User's Cart
-        user.cart = [];
-        await user.save();
+        // 5. Clear User's Cart only if not Razorpay
+        // For Razorpay, we will clear the cart when the payment is verified successfully
+        if (paymentMethod !== 'razorpay') {
+            user.cart = [];
+            await user.save();
+        }
 
         res.status(201).json({ success: true, message: "Order created successfully", order: newOrder });
 

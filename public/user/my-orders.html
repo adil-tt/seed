@@ -58,13 +58,22 @@
                             <a href="login.html" class="btn btn-outline-danger btn-sm w-100">Logout</a>
                         </div>
                     </div>
-                    <nav class="nav flex-column sidebar-nav">
-                        <a class="nav-link" href="account.html"><i class="bi bi-grid"></i> Dashboard</a>
-                        <a class="nav-link active" href="my-orders.html"><i class="bi bi-box-seam"></i> My Orders</a>
-                        <a class="nav-link" href="address-book.html"><i class="bi bi-geo-alt"></i> Addresses</a>
-                        <a class="nav-link" href="payment-methods.html"><i class="bi bi-credit-card"></i> Payment
-                            Methods</a>
-                        <a class="nav-link" href="account-settings.html"><i class="bi bi-gear"></i> Account Settings</a>
+                    <nav class="nav flex-column sidebar-nav custom-sidebar-nav">
+                        <div class="sidebar-section-title">
+                            <i class="bi bi-person-fill"></i> MANAGE ACCOUNT
+                        </div>
+                        <a class="nav-link" href="account-settings.html">My Profile</a>
+                        <a class="nav-link" href="address-book.html">Address Book</a>
+                        <a class="nav-link" href="payment-methods.html">Payment Options</a>
+
+                        <div class="nav-divider"></div>
+
+                        <div class="sidebar-section-title">
+                            <i class="bi bi-box-seam-fill"></i> ORDERS HISTORY
+                        </div>
+                        <a class="nav-link active" href="my-orders.html">My Orders</a>
+                        <a class="nav-link" href="my-returns.html">My Returns</a>
+                        <a class="nav-link" href="my-cancellations.html">My Cancellations</a>
                     </nav>
                 </div>
             </div>
@@ -168,10 +177,14 @@
                     let productsHTML = `<div class="d-flex gap-3 overflow-auto py-2 mb-3">`;
                     if (order.products && order.products.length > 0) {
                         order.products.forEach(item => {
+                            const imgSrc = item.image && !item.image.startsWith('http') && !item.image.startsWith('images/')
+                                ? `http://localhost:5000/uploads/${item.image}`
+                                : (item.image || 'images/placeholder.jpg');
+
                             productsHTML += `
                                 <div class="border rounded p-2 text-center" style="min-width: 120px;">
-                                    <img src="${item.image || 'images/placeholder.jpg'}" alt="${item.name}" class="img-fluid rounded mb-2" style="height: 60px; object-fit: cover;">
-                                    <p class="small mb-0 text-truncate" style="max-width: 100px;">${item.name}</p>
+                                    <img src="${imgSrc}" alt="${item.name}" class="img-fluid rounded mb-2" style="height: 60px; object-fit: cover;">
+                                    <p class="small mb-0 text-truncate" style="max-width: 100px;" title="${item.name}">${item.name}</p>
                                     <small class="text-muted">Qty: ${item.quantity}</small>
                                 </div>
                             `;

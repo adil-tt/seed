@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const mainImgUrl = `http://localhost:5000/uploads/${product.images[0]}`;
                 imagesHtml = `
                     <div class="product-gallery-main mb-3">
-                        <img src="${mainImgUrl}" id="mainImage" class="img-fluid w-100 rounded shadow-sm" style="object-fit: cover; height: 500px;" alt="${product.name}">
+                        <img src="${mainImgUrl}" id="mainImage" class="w-100 rounded shadow-sm" alt="${product.name}">
                     </div>
                 `;
 
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     product.images.forEach((img, index) => {
                         const thumbUrl = `http://localhost:5000/uploads/${img}`;
                         thumbsHtml += `
-                            <img src="${thumbUrl}" class="thumb-img rounded ${index === 0 ? 'active border-primary' : 'border'}" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" 
+                            <img src="${thumbUrl}" class="thumb-img rounded ${index === 0 ? 'active border-primary' : 'border'}" 
                                 onclick="document.getElementById('mainImage').src=this.src; document.querySelectorAll('.thumb-img').forEach(t=>t.classList.remove('border-primary')); this.classList.add('border-primary');" 
                                 alt="Thumb ${index + 1}">
                         `;
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Fallback image
                 imagesHtml = `
                     <div class="product-gallery-main mb-3">
-                        <img src="images/ceramic-cup.jpg" id="mainImage" class="img-fluid w-100 rounded shadow-sm" style="object-fit: cover; height: 500px;" alt="Fallback">
+                        <img src="images/ceramic-cup.jpg" id="mainImage" class="w-100 rounded shadow-sm" alt="Fallback">
                     </div>
                 `;
             }

@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="product-card">
                         <div class="product-img-wrapper">
                             <a href="single-product.html?id=${product._id}" class="d-block w-100 h-100">
-                                <img src="${imageUrl}" class="product-img w-100" alt="${product.name}" style="height: 250px; object-fit: cover;">
+                                <img src="${imageUrl}" class="product-img" alt="${product.name}">
                             </a>
                             <div class="product-actions">
                                 <button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>

@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const Order = require('../models/Order');
+const User = require('../models/User');
 const razorpay = require('../utils/razorpay');
 
 exports.createRazorpayOrder = async (req, res) => {
@@ -10,14 +11,22 @@ exports.createRazorpayOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Amount and Order ID are required' });
     }
 
-    // Razorpay expects amount in smallest currency unit (paise)
     const options = {
       amount: Math.round(amount * 100),
       currency: "INR",
       receipt: `receipt_order_${orderId}`
     };
 
-    const razorpayOrder = await razorpay.orders.create(options);
+    let razorpayOrder;
+    try {
+      razorpayOrder = await razorpay.orders.create(options);
+    } catch (apiError) {
+      if (apiError instanceof TypeError && apiError.message.includes('status')) {
+        // Razorpay SDK bug: throws TypeError when network fails or response is missing
+        return res.status(502).json({ success: false, message: 'Payment gateway unavailable. Please check internet connection or try again later.' });
+      }
+      throw apiError;
+    }
 
     if (!razorpayOrder) {
       return res.status(500).json({ success: false, message: 'Some error occurred while creating Razorpay order' });
@@ -31,7 +40,7 @@ exports.createRazorpayOrder = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating Razorpay order:", error);
-    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    res.status(500).json({ success: false, message: 'Server error', error: error.message || error });
   }
 };
 
@@ -65,6 +74,13 @@ exports.verifyRazorpayPayment = async (req, res) => {
         order.razorpayPaymentId = razorpay_payment_id;
       }
       await order.save();
+
+      // Clear the user's cart
+      const user = await User.findById(order.user);
+      if (user) {
+        user.cart = [];
+        await user.save();
+      }
 
       res.status(200).json({ success: true, message: 'Payment verified successfully' });
     } else {
