@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+
     role: {
       type: String,
       enum: ["user", "admin"],
