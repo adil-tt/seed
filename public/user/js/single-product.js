@@ -12,6 +12,7 @@ function changeImage(element) {
 }
 
 let basePrice = 0;
+let maxStock = 0;
 
 function updatePriceDisplay() {
     const priceEl = document.getElementById("product-price");
@@ -24,8 +25,13 @@ function updatePriceDisplay() {
 
 function increaseQty() {
     const input = document.getElementById('quantity');
-    input.value = parseInt(input.value) + 1;
-    updatePriceDisplay();
+    if (parseInt(input.value) < maxStock) {
+        input.value = parseInt(input.value) + 1;
+        updatePriceDisplay();
+    } else {
+        if (window.showPopup) showPopup("Stock limit reached", "warning");
+        else alert("Stock limit reached");
+    }
 }
 
 function decreaseQty() {
@@ -71,6 +77,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (descEl) descEl.textContent = product.description || "No description available.";
         if (categoryEl) categoryEl.textContent = product.category ? product.category.name : "Uncategorized";
         if (skuEl) skuEl.textContent = product.sku || product._id.toString().substring(18).toUpperCase();
+
+        maxStock = product.stock || 0;
+
+        const singleAddToCartBtn = document.getElementById('single-add-cart');
+        const qtyInput = document.getElementById('quantity');
+        const qtyBtns = document.querySelectorAll('.quantity-btn');
+
+        if (maxStock === 0) {
+            if (singleAddToCartBtn) {
+                singleAddToCartBtn.innerHTML = "Out of Stock";
+                singleAddToCartBtn.disabled = true;
+                singleAddToCartBtn.classList.remove('btn-primary');
+                singleAddToCartBtn.classList.add('btn-secondary');
+            }
+            if (qtyInput) qtyInput.disabled = true;
+            qtyBtns.forEach(btn => btn.disabled = true);
+        }
 
         document.getElementById('single-add-cart')?.setAttribute('data-id', product._id);
         document.getElementById('single-add-wishlist')?.setAttribute('data-id', product._id);
@@ -125,8 +148,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             e.preventDefault();
             const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             if (!token) {
-                alert("Please login to add items to the cart.");
-                window.location.href = "login.html";
+                if (window.showPopup) showPopup("Please login to add items to the cart.", "warning");
+                else alert("Please login to add items to the cart.");
+                setTimeout(() => { window.location.href = "login.html"; }, 1500);
                 return;
             }
 
@@ -156,19 +180,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const data = await response.json();
 
                 if (response.ok) {
+                    if (window.showPopup) showPopup("Added to Cart successfully!", "success");
                     addToCartBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i> Added to Cart';
                     setTimeout(() => {
                         addToCartBtn.innerHTML = originalText;
                         addToCartBtn.disabled = false;
                     }, 2000);
                 } else {
-                    alert(data.message || "Failed to add to cart");
+                    if (window.showPopup) showPopup(data.message || "Failed to add to cart", "danger");
+                    else alert(data.message || "Failed to add to cart");
                     addToCartBtn.innerHTML = originalText;
                     addToCartBtn.disabled = false;
                 }
             } catch (error) {
                 console.error("Add to cart error:", error);
-                alert("An error occurred while adding to cart.");
+                if (window.showPopup) showPopup("An error occurred while adding to cart.", "danger");
+                else alert("An error occurred while adding to cart.");
                 addToCartBtn.innerHTML = originalText;
                 addToCartBtn.disabled = false;
             }

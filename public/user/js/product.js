@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 : "images/ceramic-cup.jpg";
 
             const price = product.price ? product.price.toFixed(2) : "0.00";
+            const isOutOfStock = product.stock === 0;
 
             return `
                 <div class="col-lg-4 col-md-6 col-6 mb-4">
@@ -80,8 +81,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <a href="single-product.html?id=${product._id}" class="d-block w-100 h-100">
                                 <img src="${imageUrl}" class="product-img" alt="${product.name}">
                             </a>
-                            <div class="product-actions">
-                                <button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>
+                            <div class="product-actions" style="${isOutOfStock ? 'opacity: 0.5;' : ''}">
+                                ${isOutOfStock
+                    ? `<button class="btn btn-sm btn-secondary" disabled>Out of Stock</button>`
+                    : `<button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>`
+                }
                                 <button class="btn btn-sm btn-outline-dark add-to-wishlist" data-id="${product._id}">
                                     <i class="bi bi-heart"></i>
                                 </button>
@@ -146,8 +150,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function handleAddToCart(productId) {
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         if (!token) {
-            alert("Please login to add items to the cart.");
-            window.location.href = "login.html";
+            if (window.showPopup) {
+                window.showPopup("Please login to add items to the cart.", "warning");
+            } else {
+                alert("Please login to add items to the cart.");
+            }
+            setTimeout(() => { window.location.href = "login.html"; }, 1500);
             return;
         }
 
@@ -169,17 +177,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Optionally show a nice toast, but alert works for testing
-                // alert("Successfully added to cart!");
+                if (window.showPopup) showPopup("Successfully added to cart!", "success");
                 if (btn) btn.innerHTML = '<i class="bi bi-check-lg"></i> Added';
                 setTimeout(() => { if (btn) btn.innerHTML = originalText; }, 2000);
             } else {
-                alert(data.message || "Failed to add to cart");
+                if (window.showPopup) showPopup(data.message || "Failed to add to cart", "danger");
+                else alert(data.message || "Failed to add to cart");
                 if (btn) btn.innerHTML = originalText;
             }
         } catch (error) {
             console.error("Add to cart error:", error);
-            alert("An error occurred while adding to cart.");
+            if (window.showPopup) showPopup("An error occurred while adding to cart.", "danger");
+            else alert("An error occurred while adding to cart.");
             if (btn) btn.innerHTML = originalText;
         }
     }

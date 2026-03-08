@@ -199,7 +199,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.querySelector('input[name="selectedShippingAddress"]:checked');
 
                 if (!selectedAddress) {
-                    alert("Select delivery address");
+                    if (window.showPopup) showPopup("Select delivery address", "warning");
+                    else alert("Select delivery address");
                     return;
                 }
 
@@ -224,7 +225,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const orderData = await orderRes.json();
 
                     if (!orderRes.ok) {
-                        alert(orderData.message || "Order failed");
+                        if (window.showPopup) showPopup(orderData.message || "Order failed", "danger");
+                        else alert(orderData.message || "Order failed");
                         return;
                     }
 
@@ -233,8 +235,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     /* ===== COD ===== */
 
                     if (paymentMethod === "cod") {
-
-                        alert("Order placed successfully!");
+                        if (window.showPopup) showPopup("Order placed successfully!", "success");
+                        else alert("Order placed successfully!");
                         window.location.href = "order-success.html";
                         return;
                     }
@@ -284,7 +286,8 @@ async function openRazorpay(orderId, amount) {
     const data = await res.json();
 
     if (!res.ok || !data.success) {
-        alert(data.message || "Failed to initialize payment");
+        if (window.showPopup) showPopup(data.message || "Failed to initialize payment", "danger");
+        else alert(data.message || "Failed to initialize payment");
         return;
     }
 
@@ -321,14 +324,17 @@ async function openRazorpay(orderId, amount) {
                 const verifyData = await verifyRes.json();
 
                 if (verifyRes.ok && verifyData.success) {
-                    alert("Payment Successful!");
+                    if (window.showPopup) showPopup("Payment Successful!", "success");
+                    else alert("Payment Successful!");
                     window.location.href = "order-success.html";
                 } else {
-                    alert(verifyData.message || "Payment verification failed.");
+                    if (window.showPopup) showPopup(verifyData.message || "Payment verification failed.", "danger");
+                    else alert(verifyData.message || "Payment verification failed.");
                 }
             } catch (err) {
                 console.error("Verification error:", err);
-                alert("An error occurred during payment verification.");
+                if (window.showPopup) showPopup("An error occurred during payment verification.", "danger");
+                else alert("An error occurred during payment verification.");
             }
         }
 
@@ -339,13 +345,15 @@ async function openRazorpay(orderId, amount) {
 
         rzp.on('payment.failed', function (response) {
             console.error("Payment Failed", response.error);
-            alert("Payment failed: " + response.error.description);
+            if (window.showPopup) showPopup("Payment failed: " + response.error.description, "danger");
+            else alert("Payment failed: " + response.error.description);
         });
 
         rzp.open();
     } catch (err) {
         console.error("Razorpay SDK Error:", err);
-        alert("Could not load Razorpay. Please verify you are connected to the internet and check the console.");
+        if (window.showPopup) showPopup("Could not load Razorpay. Please verify you are connected to the internet and check the console.", "danger");
+        else alert("Could not load Razorpay. Please verify you are connected to the internet and check the console.");
     }
 
 }

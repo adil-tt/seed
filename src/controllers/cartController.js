@@ -46,9 +46,18 @@ const addToCart = async (req, res) => {
             (item) => item.product.toString() === productId
         );
 
+        let newQuantity = Number(quantity);
+        if (existingCartItemIndex > -1) {
+            newQuantity += user.cart[existingCartItemIndex].quantity;
+        }
+
+        if (newQuantity > productExists.stock) {
+            return res.status(400).json({ message: `Cannot add more than available stock (${productExists.stock})` });
+        }
+
         if (existingCartItemIndex > -1) {
             // Product exists, update quantity
-            user.cart[existingCartItemIndex].quantity += Number(quantity);
+            user.cart[existingCartItemIndex].quantity = newQuantity;
         } else {
             // New product, add to cart array
             user.cart.push({ product: productId, quantity: Number(quantity) });
@@ -73,6 +82,15 @@ const updateCartQuantity = async (req, res) => {
 
         if (!quantity || quantity < 1) {
             return res.status(400).json({ message: "Valid quantity is required" });
+        }
+
+        const productExists = await Product.findById(productId);
+        if (!productExists) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        if (quantity > productExists.stock) {
+            return res.status(400).json({ message: `Cannot update quantity to more than available stock (${productExists.stock})` });
         }
 
         const user = await User.findById(req.user.id);

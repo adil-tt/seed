@@ -58,6 +58,13 @@ exports.createOrder = async (req, res) => {
             return res.status(400).json({ success: false, message: "Cart is empty or contains deleted products" });
         }
 
+        // Validate stock for all items BEFORE creating order
+        for (const item of validCartItems) {
+            if (item.quantity > item.product.stock) {
+                return res.status(400).json({ success: false, message: `Insufficient stock for ${item.product.name}. Only ${item.product.stock} left.` });
+            }
+        }
+
         // 3. Map Cart Items to Order Products Array format
         const orderProducts = validCartItems.map(item => ({
             product: item.product._id,
@@ -88,6 +95,12 @@ exports.createOrder = async (req, res) => {
         });
 
         await newOrder.save();
+
+        // 4b. Decrement stock for ordered items
+        for (const item of validCartItems) {
+            item.product.stock -= item.quantity;
+            await item.product.save();
+        }
 
         // 5. Clear User's Cart only if not Razorpay
         // For Razorpay, we will clear the cart when the payment is verified successfully

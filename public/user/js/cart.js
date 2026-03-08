@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 : "images/ceramic-cup.jpg";
 
             const price = product.price || 0;
+            const stock = product.stock || 0;
             const subtotal = price * (cartItem.quantity || 1);
             subtotalTotal += subtotal;
 
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </td>
                     <td class="align-middle">$${price.toFixed(2)}</td>
                     <td class="align-middle">
-                        <input type="number" class="form-control" value="${cartItem.quantity || 1}" min="1" style="width: 70px;" readonly>
+                        <input type="number" class="form-control cart-qty-input" data-product-id="${product._id}" data-stock="${stock}" value="${cartItem.quantity || 1}" min="1" max="${stock}" style="width: 70px;">
                     </td>
                     <td class="align-middle fw-medium">$${subtotal.toFixed(2)}</td>
                     <td class="align-middle"><button class="btn text-danger bg-transparent border-0 p-0"><i class="bi bi-trash"></i></button></td>
@@ -77,6 +78,49 @@ document.addEventListener("DOMContentLoaded", async () => {
             summaryValues[0].textContent = `$${subtotalTotal.toFixed(2)}`; // Subtotal
             summaryValues[1].textContent = `$${subtotalTotal.toFixed(2)}`; // Total
         }
+
+        // Listeners for quantity updates
+        document.querySelectorAll('.cart-qty-input').forEach(input => {
+            input.addEventListener('change', async (e) => {
+                const newQty = parseInt(e.target.value);
+                const maxStock = parseInt(e.target.dataset.stock);
+                const productId = e.target.dataset.productId;
+
+                if (newQty > maxStock) {
+                    if (window.showPopup) showPopup(`Only ${maxStock} items available`, 'warning');
+                    else alert(`Only ${maxStock} items available`);
+                    e.target.value = maxStock;
+                    return;
+                }
+
+                if (newQty < 1) {
+                    e.target.value = 1;
+                    return;
+                }
+
+                try {
+                    const updateRes = await fetch(`http://localhost:5000/api/cart/update/${productId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ quantity: e.target.value })
+                    });
+
+                    if (updateRes.ok) {
+                        window.location.reload();
+                    } else {
+                        const data = await updateRes.json();
+                        if (window.showPopup) showPopup(data.message || "Failed to update cart", 'danger');
+                        else alert(data.message || "Failed to update cart");
+                    }
+                } catch (err) {
+                    console.error("Cart update error:", err);
+                    if (window.showPopup) showPopup("Failed to update cart", 'danger');
+                }
+            });
+        });
 
     } catch (error) {
         console.error("Cart error:", error);
