@@ -195,9 +195,10 @@
                                     <h6 class="fw-bold fs-6 mb-0">Total Orders</h6>
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </div>
-                                <h3 class="fw-bold mb-2">1,240</h3>
-                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 14.4% <span
-                                        class="text-muted">Last 7 days</span></p>
+                                <h3 class="fw-bold mb-2" id="totalOrders">0</h3>
+                                <p class="text-success small mb-0" id="totalOrdersTrend"><i
+                                        class="bi bi-arrow-up-short"></i> 0% <span class="text-muted">Last 7 days</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -208,8 +209,8 @@
                                     <h6 class="fw-bold fs-6 mb-0">New Orders</h6>
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </div>
-                                <h3 class="fw-bold mb-2">240</h3>
-                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 28% <span
+                                <h3 class="fw-bold mb-2" id="newOrders">0</h3>
+                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 0% <span
                                         class="text-muted">Last 7 days</span></p>
                             </div>
                         </div>
@@ -221,8 +222,8 @@
                                     <h6 class="fw-bold fs-6 mb-0">Completed Orders</h6>
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </div>
-                                <h3 class="fw-bold mb-2">960</h3>
-                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 8% <span
+                                <h3 class="fw-bold mb-2" id="completedOrders">0</h3>
+                                <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 0% <span
                                         class="text-muted">Last 7 days</span></p>
                             </div>
                         </div>
@@ -234,8 +235,8 @@
                                     <h6 class="fw-bold fs-6 mb-0">Canceled Orders</h6>
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </div>
-                                <h3 class="fw-bold mb-2">87</h3>
-                                <p class="text-danger small mb-0"><i class="bi bi-arrow-down-short"></i> 5% <span
+                                <h3 class="fw-bold mb-2" id="canceledOrders">0</h3>
+                                <p class="text-danger small mb-0"><i class="bi bi-arrow-down-short"></i> 0% <span
                                         class="text-muted">Last 7 days</span></p>
                             </div>
                         </div>
@@ -245,17 +246,17 @@
                 <!-- Filters & Table -->
                 <div class="table-card mt-4">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                        <div class="filter-tabs">
-                            <button class="filter-tab active">All order (240)</button>
-                            <button class="filter-tab">Completed</button>
-                            <button class="filter-tab">Pending</button>
-                            <button class="filter-tab">Canceled</button>
+                        <div class="filter-tabs" id="statusFilters">
+                            <button class="filter-tab active" data-status="All">All orders</button>
+                            <button class="filter-tab" data-status="Completed">Completed</button>
+                            <button class="filter-tab" data-status="Pending">Pending</button>
+                            <button class="filter-tab" data-status="Canceled">Canceled</button>
                         </div>
                         <div class="d-flex gap-2">
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0"><i
                                         class="bi bi-search text-muted"></i></span>
-                                <input type="text" class="form-control border-start-0 ps-0"
+                                <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
                                     placeholder="Search order report">
                             </div>
                             <button class="btn btn-white border"><i class="bi bi-funnel"></i></button>
@@ -278,135 +279,15 @@
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>1</td>
-                                    <td>#ORD0001</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2"
-                                                alt="Product">
-                                            <span>Wireless Bluetooth Head...</span>
-                                        </div>
-                                    </td>
-                                    <td>01-01-2025</td>
-                                    <td>49.99</td>
-                                    <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
-                                                style="font-size: 6px;"></i> Paid</span></td>
-                                    <td><span class="text-success bg-soft-success px-2 py-1 rounded small fw-bold"><i
-                                                class="bi bi-check-lg"></i> Delivered</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>2</td>
-                                    <td>#ORD0002</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2"
-                                                alt="Product">
-                                            <span>Men's T-Shirt</span>
-                                        </div>
-                                    </td>
-                                    <td>01-01-2025</td>
-                                    <td>14.99</td>
-                                    <td><span class="text-danger small fw-bold"><i class="bi bi-circle-fill"
-                                                style="font-size: 6px;"></i> Unpaid</span></td>
-                                    <td><span class="text-warning bg-soft-warning px-2 py-1 rounded small fw-bold"><i
-                                                class="bi bi-clock"></i> Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>3</td>
-                                    <td>#ORD0003</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2"
-                                                alt="Product">
-                                            <span>Men's Leather Wallet</span>
-                                        </div>
-                                    </td>
-                                    <td>01-01-2025</td>
-                                    <td>49.99</td>
-                                    <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
-                                                style="font-size: 6px;"></i> Paid</span></td>
-                                    <td><span class="text-success bg-soft-success px-2 py-1 rounded small fw-bold"><i
-                                                class="bi bi-check-lg"></i> Delivered</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>4</td>
-                                    <td>#ORD0004</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2"
-                                                alt="Product">
-                                            <span>Memory Foam Pillow</span>
-                                        </div>
-                                    </td>
-                                    <td>01-01-2025</td>
-                                    <td>39.99</td>
-                                    <td><span class="text-success small fw-bold"><i class="bi bi-circle-fill"
-                                                style="font-size: 6px;"></i> Paid</span></td>
-                                    <td><span class="text-dark fw-bold"><i class="bi bi-truck"></i> Shipped</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>5</td>
-                                    <td>#ORD0005</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2"
-                                                alt="Product">
-                                            <span>Adjustable Dumbbells</span>
-                                        </div>
-                                    </td>
-                                    <td>01-01-2025</td>
-                                    <td>14.99</td>
-                                    <td><span class="text-danger small fw-bold"><i class="bi bi-circle-fill"
-                                                style="font-size: 6px;"></i> Unpaid</span></td>
-                                    <td><span class="text-warning bg-soft-warning px-2 py-1 rounded small fw-bold"><i
-                                                class="bi bi-clock"></i> Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>6</td>
-                                    <td>#ORD0006</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="images/ceramic-cup.jpg" class="product-img-small me-2"
-                                                alt="Product">
-                                            <span>Coffee Maker</span>
-                                        </div>
-                                    </td>
-                                    <td>01-01-2025</td>
-                                    <td>79.99</td>
-                                    <td><span class="text-danger small fw-bold"><i class="bi bi-circle-fill"
-                                                style="font-size: 6px;"></i> Unpaid</span></td>
-                                    <td><span class="text-danger bg-soft-danger px-2 py-1 rounded small fw-bold"><i
-                                                class="bi bi-x-circle"></i> Cancelled</span></td>
-                                </tr>
+                            <tbody id="orderTableBody">
+                                <!-- Dynamic rows injected here -->
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <button class="btn btn-white border px-3">← Previous</button>
-
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination mb-0">
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item"><span class="mx-2 text-muted">...</span></li>
-                                <li class="page-item"><a class="page-link" href="#">24</a></li>
-                            </ul>
-                        </nav>
-
-                        <button class="btn btn-white border px-3">Next →</button>
+                    <!-- Pagination -->
+                    <div id="paginationContainer" class="d-flex justify-content-between align-items-center mt-4">
                     </div>
                 </div>
 
@@ -426,6 +307,7 @@
             sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
         }
     </script>
+    <script src="js/order-management.js"></script>
 </body>
 
 </html>

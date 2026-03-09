@@ -35,7 +35,7 @@ async function fetchUsers() {
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         if (!token) {
             console.error("No valid token found. Admin may not be logged in.");
-            // Redirect to login or handle unauthenticated state if needed
+            window.location.href = "login.html";
             return;
         }
 
@@ -53,7 +53,8 @@ async function fetchUsers() {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Failed to fetch users: ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
@@ -70,6 +71,10 @@ async function fetchUsers() {
         }
     } catch (error) {
         console.error("Error fetching admin users:", error);
+        const tbody = document.querySelector("#customerTableBody");
+        if (tbody) {
+            tbody.innerHTML = `<tr><td colspan='7' class='text-center py-4 text-danger'><i class="bi bi-exclamation-triangle"></i> Error loading customers: ${error.message} <br> <a href="login.html" class="btn btn-sm btn-outline-primary mt-2">Go to Login</a></td></tr>`;
+        }
     }
 }
 
@@ -88,7 +93,7 @@ function renderUsers(users) {
     }
 
     users.forEach(user => {
-        const name = `${user.firstName} ${user.lastName}`.trim() || 'Unknown';
+        const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Unknown';
         const phone = user.phone && user.phone !== 'N/A' ? user.phone : 'No Phone';
         const shortId = `#CUST-${user._id.toString().slice(-6).toUpperCase()}`;
 
@@ -174,7 +179,7 @@ function selectUser(userId) {
 }
 
 function updateSidePanel(user) {
-    const name = `${user.firstName} ${user.lastName}`.trim() || 'Unknown Customer';
+    const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Unknown Customer';
     const email = user.email;
     const phone = user.phone && user.phone !== 'N/A' ? user.phone : 'Not provided';
     const joined = new Date(user.createdAt).toLocaleDateString();

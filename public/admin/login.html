@@ -23,15 +23,17 @@
             <p class="text-secondary text-uppercase small ls-1">Admin Panel</p>
         </div>
 
-        <form action="dashboard.html">
+        <form id="adminLoginForm">
+            <div id="loginErrorAlert" class="alert alert-danger d-none small py-2" role="alert"></div>
+
             <div class="mb-3">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-control" placeholder="admin@ceramico.com" value="admin@ceramico.com"
-                    required>
+                <label class="form-label" for="emailInput">Email Address</label>
+                <input type="email" id="emailInput" class="form-control" placeholder="admin@ceramico.com"
+                    value="admin@ceramico.com" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" placeholder="••••••••" required>
+                <label class="form-label" for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" class="form-control" placeholder="••••••••" required>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="form-check">
@@ -45,6 +47,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/login.js"></script>
 </body>
 
 </html>
