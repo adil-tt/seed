@@ -202,7 +202,7 @@
                                     <h6 class="text-secondary mb-0">Total Sales</h6>
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </div>
-                                <h3 class="fw-bold mb-2">$350,000</h3>
+                                <h3 class="fw-bold mb-2" id="total-sales">$0</h3>
                                 <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 10.4% <span
                                         class="text-muted">vs last 7 days</span></p>
                                 <div class="mt-3 text-end">
@@ -218,7 +218,7 @@
                                     <h6 class="text-secondary mb-0">Total Orders</h6>
                                     <i class="bi bi-three-dots-vertical text-muted"></i>
                                 </div>
-                                <h3 class="fw-bold mb-2">10.7K</h3>
+                                <h3 class="fw-bold mb-2" id="total-orders">0</h3>
                                 <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 14.4% <span
                                         class="text-muted">vs last 7 days</span></p>
                                 <div class="mt-3 text-end">
@@ -237,11 +237,11 @@
                                 <div class="d-flex justify-content-between align-items-end">
                                     <div>
                                         <small class="text-muted d-block">Pending</small>
-                                        <h4 class="fw-bold text-dark">509</h4>
+                                        <h4 class="fw-bold text-dark" id="total-pending">0</h4>
                                     </div>
                                     <div class="text-end">
                                         <small class="text-muted d-block">Canceled</small>
-                                        <h4 class="fw-bold text-danger">94</h4>
+                                        <h4 class="fw-bold text-danger" id="total-canceled">0</h4>
                                     </div>
                                 </div>
                                 <div class="mt-3 text-end">
@@ -321,42 +321,9 @@
                                             <th class="text-end">Amount</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="transactions-tbody">
                                         <tr>
-                                            <td>1.</td>
-                                            <td>#6545</td>
-                                            <td>01 Oct / 11:25 am</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Paid</span>
-                                            </td>
-                                            <td class="text-end fw-bold">$250</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>#5432</td>
-                                            <td>01 Oct / 10:00 am</td>
-                                            <td><span
-                                                    class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3">Pending</span>
-                                            </td>
-                                            <td class="text-end fw-bold">$535</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>#8662</td>
-                                            <td>01 Oct / 09:23 am</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Paid</span>
-                                            </td>
-                                            <td class="text-end fw-bold">$125</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>#9876</td>
-                                            <td>30 Sep / 04:45 pm</td>
-                                            <td><span
-                                                    class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">Canceled</span>
-                                            </td>
-                                            <td class="text-end fw-bold">$56</td>
+                                            <td colspan="5" class="text-center py-4">Loading transactions...</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -381,36 +348,9 @@
                             </div>
 
                             <!-- List Items -->
-                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <img src="images/ceramic-cup.jpg" class="rounded me-3" width="50" height="50">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0 fw-bold">Ceramic Vase</h6>
-                                    <small class="text-muted">Item: #2422</small>
-                                </div>
-                                <div class="text-end">
-                                    <span class="fw-bold d-block">$99.00</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <img src="images/ceramic-cup.jpg" class="rounded me-3" width="50" height="50">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0 fw-bold">Marble Pot</h6>
-                                    <small class="text-muted">Item: #1255</small>
-                                </div>
-                                <div class="text-end">
-                                    <span class="fw-bold d-block">$72.00</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-                                <img src="images/ceramic-cup.jpg" class="rounded me-3" width="50" height="50">
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0 fw-bold">Clay Bowl</h6>
-                                    <small class="text-muted">Item: #9932</small>
-                                </div>
-                                <div class="text-end">
-                                    <span class="fw-bold d-block">$35.00</span>
+                            <div id="top-products-container">
+                                <div class="text-center py-4 text-muted">
+                                    Loading top products...
                                 </div>
                             </div>
 
