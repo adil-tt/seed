@@ -137,7 +137,7 @@ function viewMessage(id) {
 document.getElementById('sendReplyBtn')?.addEventListener('click', () => {
     const replyText = document.getElementById('replyTextarea').value.trim();
     if (!replyText) {
-        alert("Please enter a reply message.");
+        Swal.fire({ text: "Please enter a reply message.", icon: 'info' });
         return;
     }
 
@@ -165,6 +165,6 @@ document.getElementById('sendReplyBtn')?.addEventListener('click', () => {
         modal.hide();
 
         // Show success toast (optional, alert for now)
-        alert(`Reply sent to ${messages[index].userName} successfully! Status updated.`);
+        Swal.fire({ text: `Reply sent to ${messages[index].userName} successfully! Status updated.`, icon: 'info' });
     }
 });

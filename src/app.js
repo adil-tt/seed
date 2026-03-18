@@ -28,6 +28,9 @@ app.use("/api/address", require("./routes/addressRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/payment", require("./routes/paymentRoutes"))
 app.use("/api/admin", require("./routes/admin.routes"));
+
+// Serve Frontend Static Files
+app.use(express.static(path.join(__dirname, "../public")));
 // 4. Global Error Handling Middleware (Catches unhandled errors)
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err.stack);

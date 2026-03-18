@@ -5,7 +5,7 @@ console.log('Home page loaded');
 // Example: Newsletter form submission handler
 document.querySelector('form').addEventListener('submit', function (e) {
     e.preventDefault();
-    alert('Thank you for subscribing!');
+    Swal.fire({ text: 'Thank you for subscribing!', icon: 'info' });
 });
 
 // Restricted Access & Global Auth Handler

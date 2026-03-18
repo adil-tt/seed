@@ -14,6 +14,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/account.css">
+
+    <!-- SweetAlert2 Injection -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </head>
 
 <body>
@@ -97,7 +102,7 @@
                     <div class="col-md-4">
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h2>8</h2>
+                                <h2 id="total-orders-count">-</h2>
                                 <p>Total Orders</p>
                             </div>
                             <div class="stat-icon">
@@ -109,7 +114,7 @@
                     <div class="col-md-4">
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h2>3</h2>
+                                <h2 id="total-addresses-count">-</h2>
                                 <p>Saved Addresses</p>
                             </div>
                             <div class="stat-icon">
@@ -120,53 +125,17 @@
                 </div>
 
                 <!-- Recent Orders -->
-                <div class="dashboard-card">
+                <div class="dashboard-card" id="recent-orders-container">
                     <div class="dashboard-card-header">
                         <h5>Recent Orders</h5>
                         <a href="my-orders.html" class="btn btn-sm btn-outline-navy">View All</a>
                     </div>
-
-                    <!-- Order 1 -->
-                    <div class="order-item-card">
-                        <div class="order-header">
-                            <div>
-                                <span class="fw-bold d-block">Order #SEED1001</span>
-                                <small class="text-muted">Placed on February 15, 2026</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="fw-bold mb-1">$234.00</div>
-                                <span class="order-status delivered">Delivered</span>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="order-products">
-                                <img src="images/ceramic-cup.jpg" class="order-product-thumb" alt="Product">
-                                <img src="images/ceramic-cup.jpg" class="order-product-thumb" alt="Product">
-                            </div>
-                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                    <!-- Dynamic Orders -->
+                    <div id="recent-orders-list">
+                        <div class="text-center py-4 text-muted">
+                            <i class="spinner-border spinner-border-sm me-2"></i> Loading recent orders...
                         </div>
                     </div>
-
-                    <!-- Order 2 -->
-                    <div class="order-item-card mb-0">
-                        <div class="order-header">
-                            <div>
-                                <span class="fw-bold d-block">Order #SEED1002</span>
-                                <small class="text-muted">Placed on February 10, 2026</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="fw-bold mb-1">$120.00</div>
-                                <span class="order-status delivered">Delivered</span>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="order-products">
-                                <img src="images/ceramic-cup.jpg" class="order-product-thumb" alt="Product">
-                            </div>
-                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
@@ -265,6 +234,8 @@
     </script>
     <script src="js/wishlist.js"></script>
     <script src="js/auth-sync.js"></script>
+    <!-- Custom fetch script for dashboard -->
+    <script src="js/dashboard-sync.js"></script>
 </body>
 
 </html>

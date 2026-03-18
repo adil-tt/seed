@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         addRow(); // Add first row by default
     } catch (error) {
         console.error("Error fetching data:", error);
-        alert("Failed to load suppliers/products");
+        Swal.fire({ text: "Failed to load suppliers/products", icon: 'info' });
     }
 
     function populateSuppliers() {
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             const items = [];
             const rows = purchaseTableBody.querySelectorAll('tr');
 
-            if (!supplierSelect.value) return alert("Please select a supplier");
-            if (rows.length === 0) return alert("Please add at least one item");
+            if (!supplierSelect.value) return Swal.fire({ text: "Please select a supplier", icon: 'info' });
+            if (rows.length === 0) return Swal.fire({ text: "Please add at least one item", icon: 'info' });
 
             rows.forEach(row => {
                 const productId = row.querySelector('.product-select').value;
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const sellingPrice = parseFloat(row.querySelector('.selling-price').value) || 0;
 
                 if (!batchNo) {
-                    alert("Batch No is required for all products");
+                    Swal.fire({ text: "Batch No is required for all products", icon: 'info' });
                     return; // Note: In a real app this wouldn't nicely halt the outer function, but works for a quick check. Better handled before the loop.
                 }
 
@@ -147,15 +147,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                 });
 
                 if (res.ok) {
-                    alert("Purchase saved successfully!");
+                    Swal.fire({ text: "Purchase saved successfully!", icon: 'info' });
                     window.location.href = 'purchase-list.html';
                 } else {
                     const err = await res.json();
-                    alert("Error: " + err.message);
+                    Swal.fire({ text: "Error: " + err.message, icon: 'info' });
                 }
             } catch (error) {
                 console.error("Save error:", error);
-                alert("Failed to save purchase");
+                Swal.fire({ text: "Failed to save purchase", icon: 'info' });
             }
         });
     }

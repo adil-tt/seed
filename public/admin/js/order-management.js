@@ -230,12 +230,12 @@ window.changeOrderStatus = async function (orderId, newStatus) {
             // Success
             fetchOrders(); // Re-fetch to update stats, badges, and ensure sync
         } else {
-            alert(data.message || `Failed to update status`);
+            Swal.fire({ text: data.message || `Failed to update status`, icon: 'info' });
             fetchOrders(); // Revert
         }
     } catch (error) {
         console.error(`Error updating order:`, error);
-        alert(`An error occurred while trying to update order status.`);
+        Swal.fire({ text: `An error occurred while trying to update order status.`, icon: 'info' });
         fetchOrders(); // Revert
     }
 }

@@ -14,6 +14,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/account.css">
+
+    <!-- SweetAlert2 Injection -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
 </head>
 
 <body>
@@ -352,7 +357,15 @@
 
                     // 5. Success handling
                     alert("Address added successfully!");
-                    window.location.href = "checkout.html";
+
+                    // Check URL parameter to see where to redirect
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const returnTo = urlParams.get('returnTo');
+                    if (returnTo === 'checkout') {
+                        window.location.href = "checkout.html";
+                    } else {
+                        window.location.href = "address-book.html";
+                    }
 
                 } catch (error) {
                     console.error("Error saving address:", error);

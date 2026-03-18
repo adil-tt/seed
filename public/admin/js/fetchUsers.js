@@ -226,11 +226,11 @@ async function handleBlockUser() {
             // Re-fetch users to update table and state
             fetchUsers();
         } else {
-            alert(data.message || `Failed to ${actionText} user`);
+            Swal.fire({ text: data.message || `Failed to ${actionText} user`, icon: 'info' });
         }
     } catch (error) {
         console.error(`Error ${actionText}ing user:`, error);
-        alert(`An error occurred while trying to ${actionText} the user.`);
+        Swal.fire({ text: `An error occurred while trying to ${actionText} the user.`, icon: 'info' });
     }
 }
 
@@ -254,10 +254,10 @@ async function deleteUser(userId) {
             }
             fetchUsers();
         } else {
-            alert(data.message || "Failed to delete user");
+            Swal.fire({ text: data.message || "Failed to delete user", icon: 'info' });
         }
     } catch (error) {
         console.error(`Error deleting user:`, error);
-        alert(`An error occurred while trying to delete the user.`);
+        Swal.fire({ text: `An error occurred while trying to delete the user.`, icon: 'info' });
     }
 }

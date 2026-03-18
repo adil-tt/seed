@@ -29,8 +29,7 @@ function increaseQty() {
         input.value = parseInt(input.value) + 1;
         updatePriceDisplay();
     } else {
-        if (window.showPopup) showPopup("Stock limit reached", "warning");
-        else alert("Stock limit reached");
+        Swal.fire({ text: "Stock limit reached", icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
     }
 }
 
@@ -148,9 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             e.preventDefault();
             const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             if (!token) {
-                if (window.showPopup) showPopup("Please login to add items to the cart.", "warning");
-                else alert("Please login to add items to the cart.");
-                setTimeout(() => { window.location.href = "login.html"; }, 1500);
+                Swal.fire({ text: "Please login to add items to the cart.", icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+setTimeout(() => { window.location.href = "login.html"; }, 1500);
                 return;
             }
 
@@ -159,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
 
             if (!productId) {
-                alert("Product ID is missing or still loading.");
+                Swal.fire({ text: "Product ID is missing or still loading.", icon: 'info' });
                 return;
             }
 
@@ -180,23 +178,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    if (window.showPopup) showPopup("Added to Cart successfully!", "success");
+                    Swal.fire({ text: "Added to Cart successfully!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
                     addToCartBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i> Added to Cart';
                     setTimeout(() => {
                         addToCartBtn.innerHTML = originalText;
                         addToCartBtn.disabled = false;
                     }, 2000);
                 } else {
-                    if (window.showPopup) showPopup(data.message || "Failed to add to cart", "danger");
-                    else alert(data.message || "Failed to add to cart");
-                    addToCartBtn.innerHTML = originalText;
+                    Swal.fire({ text: data.message || "Failed to add to cart", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+addToCartBtn.innerHTML = originalText;
                     addToCartBtn.disabled = false;
                 }
             } catch (error) {
                 console.error("Add to cart error:", error);
-                if (window.showPopup) showPopup("An error occurred while adding to cart.", "danger");
-                else alert("An error occurred while adding to cart.");
-                addToCartBtn.innerHTML = originalText;
+                Swal.fire({ text: "An error occurred while adding to cart.", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+addToCartBtn.innerHTML = originalText;
                 addToCartBtn.disabled = false;
             }
         });

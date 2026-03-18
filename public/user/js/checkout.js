@@ -199,9 +199,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.querySelector('input[name="selectedShippingAddress"]:checked');
 
                 if (!selectedAddress) {
-                    if (window.showPopup) showPopup("Select delivery address", "warning");
-                    else alert("Select delivery address");
-                    return;
+                    Swal.fire({ text: "Select delivery address", icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+return;
                 }
 
                 const paymentMethod =
@@ -225,9 +224,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const orderData = await orderRes.json();
 
                     if (!orderRes.ok) {
-                        if (window.showPopup) showPopup(orderData.message || "Order failed", "danger");
-                        else alert(orderData.message || "Order failed");
-                        return;
+                        Swal.fire({ text: orderData.message || "Order failed", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+return;
                     }
 
                     const orderId = orderData.order._id;
@@ -235,9 +233,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     /* ===== COD ===== */
 
                     if (paymentMethod === "cod") {
-                        if (window.showPopup) showPopup("Order placed successfully!", "success");
-                        else alert("Order placed successfully!");
-                        window.location.href = "order-success.html";
+                        Swal.fire({ text: "Order placed successfully!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+window.location.href = "order-success.html";
                         return;
                     }
 
@@ -268,7 +265,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 ===================================== */
 
 async function openRazorpay(orderId, amount) {
-
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
     const res = await fetch("http://localhost:5000/api/payment/create-order", {
@@ -286,74 +282,55 @@ async function openRazorpay(orderId, amount) {
     const data = await res.json();
 
     if (!res.ok || !data.success) {
-        if (window.showPopup) showPopup(data.message || "Failed to initialize payment", "danger");
-        else alert(data.message || "Failed to initialize payment");
+        Swal.fire({ text: data.message || "Failed to initialize payment", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
         return;
     }
 
     const options = {
-
-        key: data.key, // Dynamically pulled from backend env variables
-
+        key: data.key,
         amount: data.order.amount,
-
         currency: "INR",
-
         order_id: data.order.id,
-
         handler: async function (response) {
             try {
                 const verifyRes = await fetch("http://localhost:5000/api/payment/verify-payment", {
-
                     method: "POST",
-
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-
                     body: JSON.stringify({
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_signature: response.razorpay_signature,
                         orderId
                     })
-
                 });
 
                 const verifyData = await verifyRes.json();
 
                 if (verifyRes.ok && verifyData.success) {
-                    if (window.showPopup) showPopup("Payment Successful!", "success");
-                    else alert("Payment Successful!");
+                    Swal.fire({ text: "Payment Successful!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
                     window.location.href = "order-success.html";
                 } else {
-                    if (window.showPopup) showPopup(verifyData.message || "Payment verification failed.", "danger");
-                    else alert(verifyData.message || "Payment verification failed.");
+                    Swal.fire({ text: verifyData.message || "Payment verification failed.", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
                 }
             } catch (err) {
                 console.error("Verification error:", err);
-                if (window.showPopup) showPopup("An error occurred during payment verification.", "danger");
-                else alert("An error occurred during payment verification.");
+                Swal.fire({ text: "An error occurred during payment verification.", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
             }
         }
-
     };
 
     try {
         const rzp = new Razorpay(options);
-
         rzp.on('payment.failed', function (response) {
             console.error("Payment Failed", response.error);
-            if (window.showPopup) showPopup("Payment failed: " + response.error.description, "danger");
-            else alert("Payment failed: " + response.error.description);
+            Swal.fire({ text: "Payment failed: " + response.error.description, icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
         });
-
         rzp.open();
     } catch (err) {
         console.error("Razorpay SDK Error:", err);
-        if (window.showPopup) showPopup("Could not load Razorpay. Please verify you are connected to the internet and check the console.", "danger");
-        else alert("Could not load Razorpay. Please verify you are connected to the internet and check the console.");
+        Swal.fire({ text: "Could not load Razorpay. Please verify you are connected to the internet and check the console.", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
     }
-
 }

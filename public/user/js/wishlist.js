@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error("Wishlist Add Error Details:", error);
-                alert("Server rejected: " + error.message);
+                Swal.fire({ text: "Server rejected: " + error.message, icon: 'info' });
                 showToast(error.message, true);
             }
         }

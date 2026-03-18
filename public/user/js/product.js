@@ -150,11 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function handleAddToCart(productId) {
         const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         if (!token) {
-            if (window.showPopup) {
-                window.showPopup("Please login to add items to the cart.", "warning");
-            } else {
-                alert("Please login to add items to the cart.");
-            }
+            Swal.fire({ text: "Please login to add items to the cart.", icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 })
             setTimeout(() => { window.location.href = "login.html"; }, 1500);
             return;
         }
@@ -177,19 +173,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await response.json();
 
             if (response.ok) {
-                if (window.showPopup) showPopup("Successfully added to cart!", "success");
+                Swal.fire({ text: "Successfully added to cart!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
                 if (btn) btn.innerHTML = '<i class="bi bi-check-lg"></i> Added';
                 setTimeout(() => { if (btn) btn.innerHTML = originalText; }, 2000);
             } else {
-                if (window.showPopup) showPopup(data.message || "Failed to add to cart", "danger");
-                else alert(data.message || "Failed to add to cart");
-                if (btn) btn.innerHTML = originalText;
+                Swal.fire({ text: data.message || "Failed to add to cart", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+if (btn) btn.innerHTML = originalText;
             }
         } catch (error) {
             console.error("Add to cart error:", error);
-            if (window.showPopup) showPopup("An error occurred while adding to cart.", "danger");
-            else alert("An error occurred while adding to cart.");
-            if (btn) btn.innerHTML = originalText;
+            Swal.fire({ text: "An error occurred while adding to cart.", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+if (btn) btn.innerHTML = originalText;
         }
     }
 });

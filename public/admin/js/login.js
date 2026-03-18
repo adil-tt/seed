@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             errorAlert.textContent = message;
             errorAlert.classList.remove("d-none");
         } else {
-            alert(message);
+            Swal.fire({ text: message, icon: 'info' });
         }
     }
 });

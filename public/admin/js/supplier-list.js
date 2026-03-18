@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (res.ok) {
                 loadSuppliers();
             } else {
-                alert("Failed to delete supplier");
+                Swal.fire({ text: "Failed to delete supplier", icon: 'info' });
             }
         } catch (error) {
             console.error("Delete error:", error);
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     window.editSupplier = (id) => {
         // Since we don't have an edit-supplier.html yet, we'll alert for now or redirect if it exists
-        alert("Editing supplier: " + id);
+        Swal.fire({ text: "Editing supplier: " + id, icon: 'info' });
     };
 
     loadSuppliers();
