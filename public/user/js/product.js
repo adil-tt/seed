@@ -2,14 +2,7 @@
 
 console.log('Product page loaded');
 
-// Example: Filter change simulation
-const priceRange = document.querySelector('.price-range');
-if (priceRange) {
-    priceRange.addEventListener('input', function (e) {
-        // In a real app, this would filter products
-        console.log('Price filter changed:', e.target.value);
-    });
-}
+
 
 // --- DYNAMIC PRODUCT FETCHING & FILTERING ---
 let allProducts = []; // Store fetched products globally for quick client-side filtering
@@ -19,6 +12,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const categoryList = document.getElementById("category-filter-list");
 
     if (!shopContainer) return;
+
+    let currentCategoryId = 'all';
+    let currentMaxPrice = 200;
 
     try {
         // 1. Fetch Categories
@@ -49,9 +45,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         allProducts = await response.json(); // Store permanently
 
-        // Initial render: show all active products
-        const activeProducts = allProducts.filter(p => p.status === 'active');
-        renderProducts(activeProducts);
+        // Dynamically set max price based on products
+        const maxProductPrice = Math.max(...allProducts.map(p => p.price || 0), 200);
+        const priceInput = document.getElementById('priceRangeInput');
+        const priceDisplay = document.getElementById('priceRangeDisplay');
+        if (priceInput && priceDisplay) {
+            priceInput.max = Math.ceil(maxProductPrice);
+            priceInput.value = Math.ceil(maxProductPrice);
+            priceDisplay.innerText = `$${Math.ceil(maxProductPrice)}`;
+            currentMaxPrice = Math.ceil(maxProductPrice);
+
+            priceInput.addEventListener('input', (e) => {
+                currentMaxPrice = parseFloat(e.target.value);
+                priceDisplay.innerText = `$${currentMaxPrice}`;
+                applyFilters();
+            });
+        }
+
+        // Initial render: show all active products matching filters
+        applyFilters();
 
     } catch (error) {
         console.error("Error loading shop data:", error);
@@ -101,6 +113,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         }).join("");
     }
 
+    // Function to apply active filters (category & price)
+    function applyFilters() {
+        let filtered = allProducts.filter(p => p.status === 'active');
+
+        // Apply Category Filter
+        if (currentCategoryId !== 'all') {
+            filtered = filtered.filter(p => {
+                if (p.categories && Array.isArray(p.categories)) {
+                    return p.categories.some(cat => cat._id === currentCategoryId);
+                }
+                return false;
+            });
+        }
+
+        // Apply Price Filter
+        filtered = filtered.filter(p => {
+            const price = parseFloat(p.price) || 0;
+            return price <= currentMaxPrice;
+        });
+
+        renderProducts(filtered);
+    }
+
     // Function to attach category click listeners
     function attachCategoryListeners() {
         const links = document.querySelectorAll('.category-filter-link');
@@ -116,24 +151,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 e.target.classList.add('fw-bold', 'text-primary');
 
-                const categoryId = e.target.getAttribute('data-category-id');
-
-                // Filter logic
-                if (categoryId === 'all') {
-                    const activeProducts = allProducts.filter(p => p.status === 'active');
-                    renderProducts(activeProducts);
-                } else {
-                    const filteredProducts = allProducts.filter(p => {
-                        if (p.status !== 'active') return false;
-
-                        // Check if the selected category _id is in the product's populated categories array
-                        if (p.categories && Array.isArray(p.categories)) {
-                            return p.categories.some(cat => cat._id === categoryId);
-                        }
-                        return false;
-                    });
-                    renderProducts(filteredProducts);
-                }
+                currentCategoryId = e.target.getAttribute('data-category-id');
+                applyFilters();
             });
         });
     }
