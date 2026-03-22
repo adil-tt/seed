@@ -42,7 +42,7 @@ function setupEventListeners() {
 
 async function fetchOrders() {
     try {
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
         if (!token) {
             console.error("No valid token found. Admin may not be logged in.");
             window.location.href = "login.html";
@@ -207,7 +207,7 @@ window.changePage = function (page) {
 }
 
 window.changeOrderStatus = async function (orderId, newStatus) {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) return;
 
     if (!confirm(`Are you sure you want to change this order's status to ${newStatus}?`)) {

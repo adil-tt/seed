@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const spinner = document.getElementById('profileSpinner');
 
     // Make sure we are logged in
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) {
         window.location.href = 'login.html';
         return;

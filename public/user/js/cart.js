@@ -2,7 +2,7 @@
 console.log('Cart page loaded');
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) {
         // Only redirect if we are actually on the cart page
         if (window.location.pathname.includes('cart.html')) {
@@ -171,7 +171,7 @@ e.target.value = maxStock;
 
 // Global function for removing items
 window.removeFromCart = async (productId) => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) return;
 
     // Optional confirmation

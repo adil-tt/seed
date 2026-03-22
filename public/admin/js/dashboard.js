@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function fetchDashboardData() {
     try {
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
         if (!token) {
             console.error("No valid token found. Admin may not be logged in.");
             window.location.href = "login.html";

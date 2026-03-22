@@ -32,7 +32,7 @@ function setupEventListeners() {
 
 async function fetchUsers() {
     try {
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
         if (!token) {
             console.error("No valid token found. Admin may not be logged in.");
             window.location.href = "login.html";
@@ -209,7 +209,7 @@ function updateSidePanel(user) {
 async function handleBlockUser() {
     if (!selectedUser) return;
 
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) return;
 
     const actionText = selectedUser.isBlocked ? 'unblock' : 'block';
@@ -235,7 +235,7 @@ async function handleBlockUser() {
 }
 
 async function deleteUser(userId) {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) return;
 
     if (!confirm("Are you sure you want to permanently delete this customer? This action cannot be undone.")) return;

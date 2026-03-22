@@ -84,6 +84,20 @@ const userSchema = new mongoose.Schema(
         pincode: { type: String, required: true },
         isDefault: { type: Boolean, default: false }
       }
+    ],
+
+    walletBalance: {
+      type: Number,
+      default: 0
+    },
+
+    walletTransactions: [
+      {
+        amount: { type: Number, required: true },
+        type: { type: String, enum: ['credit', 'debit'], required: true },
+        description: { type: String },
+        date: { type: Date, default: Date.now }
+      }
     ]
   },
   { timestamps: true }

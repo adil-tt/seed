@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Navbar Badges
     const updateBadges = async () => {
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
         if (!token) return;
 
         try {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = e.target.closest('.add-to-cart');
             const productId = btn.getAttribute('data-id');
 
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
             if (!token) {
                 const loginModal = document.getElementById('loginModal');
                 if (loginModal) {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const btn = e.target.closest('.remove-wishlist');
             const productId = btn.getAttribute('data-id');
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
             if (!token) return;
 
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = e.target.closest('.add-to-wishlist');
             const productId = btn.getAttribute('data-id');
 
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
             if (!token) {
                 const loginModal = document.getElementById('loginModal');
                 if (loginModal) {
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.closest('#move-all-to-cart-btn')) {
             e.preventDefault();
             const btn = e.target.closest('#move-all-to-cart-btn');
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
             if (!token) {
                 window.location.href = "login.html";
@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Only run on wishlist page
     if (!window.location.pathname.includes('wishlist.html')) return;
 
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     if (!token) {
         window.location.href = "login.html";
         return;

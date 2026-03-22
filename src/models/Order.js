@@ -59,6 +59,12 @@ const orderSchema = new mongoose.Schema(
         trackingId: {
             type: String,
         },
+        returnReason: {
+            type: String,
+        },
+        returnDetails: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Check for token in storage
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
     // If not logged in, quietly exit (some pages have built-in redirects already)
     if (!token) return;

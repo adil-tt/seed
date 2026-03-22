@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 window.setDefaultAddress = async (id) => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     try {
         const response = await fetch(`http://localhost:5000/api/address/${id}/default`, {
             method: "PUT",
@@ -100,7 +100,7 @@ window.setDefaultAddress = async (id) => {
 
 window.deleteAddress = async (id) => {
     if (!confirm("Are you sure you want to delete this address?")) return;
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     try {
         const response = await fetch(`http://localhost:5000/api/address/${id}`, {
             method: "DELETE",

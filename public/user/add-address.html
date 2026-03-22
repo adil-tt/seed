@@ -69,7 +69,7 @@
                         </div>
                         <a class="nav-link" href="account-settings.html">My Profile</a>
                         <a class="nav-link active" href="address-book.html">Address Book</a>
-                        <a class="nav-link" href="payment-methods.html">Payment Options</a>
+                        <a class="nav-link" href="payment-methods.html">Wallet</a>
 
                         <div class="nav-divider"></div>
 
@@ -250,7 +250,7 @@
                 let hasErrors = false;
 
                 // 1. Get Authentication Token
-                const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+                const token = sessionStorage.getItem("token") || localStorage.getItem("token");
                 if (!token) {
                     window.location.href = "login.html";
                     return;

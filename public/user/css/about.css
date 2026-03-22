@@ -1,0 +1,172 @@
+/* Custom About Page Styles */
+
+:root {
+    --about-bg: #F2EFED;
+    --about-text-dark: #4A3E3E;
+    --about-text-muted: #7A6F6F;
+    --about-accent: #8D6E63;
+}
+
+body {
+    overflow-x: hidden;
+    padding-top: 80px; /* Space for fixed navbar */
+}
+
+/* Base Styles */
+.about-section {
+    padding: 100px 0;
+}
+
+.about-header-text {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    color: var(--about-text-dark);
+}
+
+.about-main-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(3rem, 10vw, 8rem);
+    text-transform: uppercase;
+    color: var(--about-text-dark);
+    margin: 0;
+    line-height: 0.8;
+    z-index: 2;
+    position: relative;
+    mix-blend-mode: multiply;
+}
+
+/* Hero Section */
+.hero-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 40px;
+    position: relative;
+}
+
+.hero-top-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.hero-center-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-circle-mask {
+    width: clamp(280px, 50vw, 550px);
+    aspect-ratio: 1 / 1.2;
+    background-color: #ddd;
+    border-radius: 500px 500px 0 0; /* Semi-oval shape */
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.hero-circle-mask img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Content Sections */
+.section-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--about-text-dark);
+    margin-bottom: 20px;
+}
+
+.content-block {
+    max-width: 450px;
+}
+
+.content-block p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--about-text-muted);
+    margin-bottom: 20px;
+}
+
+/* Image Overlays / Layouts */
+.vases-img-container {
+    position: relative;
+    width: 100%;
+}
+
+.vases-img-container img {
+    width: 100%;
+    border-radius: 4px;
+}
+
+.bottom-images-grid {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.img-hands-wheel {
+    width: 100%;
+    max-width: 450px; /* Slightly larger */
+    border-radius: 4px;
+}
+
+.img-holding-cups {
+    width: 100%;
+    max-width: 300px;
+    margin-top: -180px; /* Stronger overlap */
+    margin-left: 120px;
+    border-radius: 300px 300px 0 0; /* More pronounced arch */
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    border: 15px solid #fff; /* Border to separate from image behind */
+}
+
+.img-holding-cups img {
+    width: 100%;
+    display: block;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .about-main-title {
+        font-size: 15vw;
+        margin-top: 20px;
+    }
+    
+    .hero-circle-mask {
+        width: 300px;
+    }
+    
+    .img-holding-cups {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+    
+    .about-section {
+        padding: 50px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-container {
+        padding: 10px;
+    }
+    
+    .about-header-text {
+        font-size: 0.7rem;
+    }
+}

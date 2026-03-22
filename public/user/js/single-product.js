@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
             if (!token) {
                 Swal.fire({ text: "Please login to add items to the cart.", icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
 setTimeout(() => { window.location.href = "login.html"; }, 1500);

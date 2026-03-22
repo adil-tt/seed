@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Check if user is an admin
                 if (data.user && data.user.role === "admin") {
+                    // Clear any lingering session user tokens that might take precedence
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("user");
+                    
                     // Save token
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("adminData", JSON.stringify(data.user));

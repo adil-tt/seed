@@ -1,5 +1,6 @@
 const Order = require("../models/Order");
 const User = require("../models/User");
+const PDFDocument = require('pdfkit');
 
 // Get the authenticated user's order history
 exports.getMyOrders = async (req, res) => {
@@ -176,7 +177,104 @@ exports.cancelOrderItem = async (req, res) => {
     }
 };
 
-// Download/View Order Invoice
+// Cancel an entire order
+exports.cancelOrder = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { orderId } = req.params;
+
+        const order = await Order.findOne({ _id: orderId, user: userId });
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
+        if (order.deliveryStatus !== "Processing") {
+            return res.status(400).json({ success: false, message: "Only processing orders can be cancelled." });
+        }
+
+        // Cancel all products
+        let refundAmount = 0;
+        const Product = require("../models/Product");
+
+        for (const item of order.products) {
+            if (!item.isCancelled) {
+                item.isCancelled = true;
+                refundAmount += (item.price * item.quantity);
+                
+                // Restore stock
+                const productDoc = await Product.findById(item.product);
+                if (productDoc) {
+                    productDoc.stock += item.quantity;
+                    await productDoc.save();
+                }
+            }
+        }
+
+        order.totalAmount -= refundAmount;
+        order.deliveryStatus = "Cancelled";
+        order.paymentStatus = (order.paymentMethod === "COD") ? "Cancelled" : "Refunded";
+
+        await order.save();
+        res.status(200).json({ success: true, message: "Order cancelled successfully", order });
+
+    } catch (error) {
+        console.error("Error cancelling order:", error);
+        res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
+};
+
+// Return an entire order
+exports.returnOrder = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { orderId } = req.params;
+        const { reason, details } = req.body;
+
+        const order = await Order.findOne({ _id: orderId, user: userId });
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
+        if (order.deliveryStatus !== "Delivered") {
+            return res.status(400).json({ success: false, message: "Only delivered orders can be returned." });
+        }
+
+        order.deliveryStatus = "Returned";
+        order.paymentStatus = "Refunded"; 
+        order.returnReason = reason || "Not Specified";
+        order.returnDetails = details || "";
+
+        // Restore stock
+        const Product = require("../models/Product");
+        for (const item of order.products) {
+            if (!item.isCancelled) {
+                item.isCancelled = true;
+                const productDoc = await Product.findById(item.product);
+                if (productDoc) {
+                    productDoc.stock += item.quantity;
+                    await productDoc.save();
+                }
+            }
+        }
+
+        // Refund to Wallet
+        const user = await User.findById(userId);
+        if (user) {
+            user.walletBalance = (user.walletBalance || 0) + order.totalAmount;
+            user.walletTransactions.push({
+                amount: order.totalAmount,
+                type: 'credit',
+                description: `Refund for returned order #${order._id.toString().substring(0, 8).toUpperCase()}`
+            });
+            await user.save();
+        }
+
+        await order.save();
+        res.status(200).json({ success: true, message: "Order returned successfully, amount credited to wallet.", order });
+
+    } catch (error) {
+        console.error("Error returning order:", error);
+        res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
+};
+
+// Download/View Order Invoice (PDFKit)
 exports.downloadInvoice = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -184,112 +282,104 @@ exports.downloadInvoice = async (req, res) => {
 
         const order = await Order.findOne({ _id: orderId, user: userId });
         if (!order) {
-            return res.status(404).send("Order not found");
+            return res.status(404).json({ success: false, message: "Order not found" });
         }
 
-        // Simple HTML invoice wrapper that auto-prints
-        let tbody = '';
+        const doc = new PDFDocument({ margin: 50 });
+        const filename = `invoice_${orderId}.pdf`;
+
+        res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-type', 'application/pdf');
+
+        doc.pipe(res);
+
+        // Header
+        doc.fillColor('#1e3a8a').fontSize(28).text('CERAMICO', { align: 'right' });
+        doc.fillColor('#666666').fontSize(10).text('Your Premium Ceramic Partner', { align: 'right' });
+        doc.moveDown(2);
+
+        doc.fillColor('#333333').fontSize(20).text('INVOICE', { align: 'left' });
+        doc.moveDown();
+
+        // Billing Details
+        const shipping = order.shippingAddress;
+        doc.fontSize(10).fillColor('#555555').text('Billed To:', { underline: true });
+        doc.fillColor('#000000').text(shipping.fullName);
+        doc.text(`${shipping.house}, ${shipping.street}`);
+        doc.text(`${shipping.city}, ${shipping.state} - ${shipping.pincode}`);
+        doc.text(`Phone: ${shipping.phone}`);
+        
+        // Order Details
+        const currentY = doc.y - 60;
+        doc.text(`Order ID: #${order._id.toString().toUpperCase().substring(0, 10)}`, 300, currentY, { align: 'right' });
+        doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-GB')}`, 300, currentY + 15, { align: 'right' });
+        doc.text(`Payment: ${order.paymentMethod}`, 300, currentY + 30, { align: 'right' });
+        doc.text(`Status: ${order.paymentStatus}`, 300, currentY + 45, { align: 'right' });
+        
+        doc.moveDown(4);
+
+        // Table Header
+        const tableTop = doc.y;
+        doc.font('Helvetica-Bold');
+        doc.text('Item Description', 50, tableTop);
+        doc.text('Price', 280, tableTop, { width: 90, align: 'right' });
+        doc.text('Qty', 370, tableTop, { width: 90, align: 'right' });
+        doc.text('Total', 470, tableTop, { width: 90, align: 'right' });
+        
+        doc.moveTo(50, tableTop + 15).lineTo(560, tableTop + 15).stroke();
+        doc.font('Helvetica');
+
+        let yPosition = tableTop + 25;
+        let subtotal = 0;
+        let cancelledTotal = 0;
+
         order.products.forEach(p => {
-            const trClass = p.isCancelled ? 'cancelled text-muted' : '';
-            const badge = p.isCancelled ? '<span class="badge">CANCELLED</span>' : '';
-            tbody += '<tr class="' + trClass + '">';
-            tbody += '<td><strong>' + p.name + '</strong> ' + badge + '</td>';
-            tbody += '<td>₹' + p.price.toFixed(2) + '</td>';
-            tbody += '<td>' + p.quantity + '</td>';
-            tbody += '<td style="text-align: right;">₹' + (p.price * p.quantity).toFixed(2) + '</td>';
-            tbody += '</tr>';
+            const itemTotal = p.price * p.quantity;
+            
+            if (p.isCancelled) {
+                doc.fillColor('#999999');
+                cancelledTotal += itemTotal;
+                doc.text(`${p.name} (CANCELLED)`, 50, yPosition);
+            } else {
+                doc.fillColor('#333333');
+                subtotal += itemTotal;
+                doc.text(p.name, 50, yPosition);
+            }
+
+            doc.text(`Rs. ${p.price.toFixed(2)}`, 280, yPosition, { width: 90, align: 'right' });
+            doc.text(p.quantity.toString(), 370, yPosition, { width: 90, align: 'right' });
+            doc.text(`Rs. ${itemTotal.toFixed(2)}`, 470, yPosition, { width: 90, align: 'right' });
+            
+            yPosition += 20;
         });
 
-        const subtotal = order.products.reduce((acc, p) => acc + (p.price * p.quantity), 0).toFixed(2);
-        const hasCancelled = order.products.some(p => p.isCancelled);
-        const cancelledTotal = order.products.filter(p => p.isCancelled).reduce((acc, p) => acc + (p.price * p.quantity), 0).toFixed(2);
-        const cancelledHtml = hasCancelled ? '<div class="totals-row" style="color: #ef4444;"><span>Cancelled Adjustments:</span><span>-₹' + cancelledTotal + '</span></div>' : '';
+        doc.moveTo(50, yPosition + 10).lineTo(560, yPosition + 10).stroke();
+        yPosition += 20;
 
-        const html = [
-            '<!DOCTYPE html>',
-            '<html>',
-            '<head>',
-            '    <title>Invoice #' + order._id + '</title>',
-            '    <style>',
-            '        body { font-family: Arial, sans-serif; padding: 40px; color: #333; max-width: 800px; margin: 0 auto; }',
-            '        .header { border-bottom: 2px solid #ddd; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }',
-            '        .logo { font-size: 28px; font-weight: bold; color: #1e3a8a; letter-spacing: 2px; }',
-            '        .invoice-title { font-size: 32px; color: #666; letter-spacing: 4px; }',
-            '        .details { display: flex; justify-content: space-between; margin-top: 30px; margin-bottom: 40px; }',
-            '        .section-title { font-weight: bold; margin-bottom: 10px; color: #555; text-transform: uppercase; font-size: 14px; }',
-            '        table { width: 100%; border-collapse: collapse; margin-top: 20px; }',
-            '        th, td { padding: 15px 12px; text-align: left; border-bottom: 1px solid #ddd; }',
-            '        th { background-color: #f8f9fa; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; color: #555; }',
-            '        .totals { float: right; width: 300px; margin-top: 30px; }',
-            '        .totals-row { display: flex; justify-content: space-between; padding: 10px 0; }',
-            '        .totals-row.grand-total { font-weight: bold; font-size: 20px; border-top: 2px solid #333; padding-top: 15px; color: #1e3a8a; }',
-            '        .cancelled { background-color: #fafafa; }',
-            '        .cancelled td { text-decoration: line-through; color: #999; }',
-            '        .badge { background: #fee2e2; color: #ef4444; padding: 4px 8px; font-size: 12px; border-radius: 4px; border: 1px solid #fca5a5; display: inline-block; margin-left: 10px;}',
-            '    </style>',
-            '</head>',
-            '<body onload="window.print()">',
-            '    <div class="header">',
-            '        <div>',
-            '            <div class="logo">CERAMICO</div>',
-            '            <div style="color: #666; margin-top: 10px;">Your Premium Ceramic Partner</div>',
-            '        </div>',
-            '        <div class="invoice-title">INVOICE</div>',
-            '    </div>',
-            '    <div class="details">',
-            '        <div>',
-            '            <div class="section-title">Billed To</div>',
-            '            <div><strong>' + order.shippingAddress.fullName + '</strong></div>',
-            '            <div style="margin-top: 4px;">' + order.shippingAddress.house + ', ' + order.shippingAddress.street + '</div>',
-            '            <div>' + order.shippingAddress.city + ', ' + order.shippingAddress.state + ' - ' + order.shippingAddress.pincode + '</div>',
-            '            <div style="margin-top: 4px;">Phone: ' + order.shippingAddress.phone + '</div>',
-            '        </div>',
-            '        <div style="text-align: right;">',
-            '            <br>',
-            '            <div><strong>Order ID:</strong> #' + order._id.toString().toUpperCase().substring(0, 10) + '</div>',
-            '            <div style="margin-top: 4px;"><strong>Date:</strong> ' + new Date(order.createdAt).toLocaleDateString('en-GB') + '</div>',
-            '            <div style="margin-top: 4px;"><strong>Payment Method:</strong> ' + order.paymentMethod + '</div>',
-            '            <div style="margin-top: 4px;"><strong>Payment Status:</strong> ' + order.paymentStatus + '</div>',
-            '        </div>',
-            '    </div>',
-            '    ',
-            '    <table>',
-            '        <thead>',
-            '            <tr>',
-            '                <th>Item Description</th>',
-            '                <th>Price</th>',
-            '                <th>Qty</th>',
-            '                <th style="text-align: right;">Total</th>',
-            '            </tr>',
-            '        </thead>',
-            '        <tbody>',
-            tbody,
-            '        </tbody>',
-            '    </table>',
-            '    ',
-            '    <div class="totals">',
-            '        <div class="totals-row">',
-            '            <span>Subtotal:</span>',
-            '            <span>₹' + subtotal + '</span>',
-            '        </div>',
-            cancelledHtml,
-            '        <div class="totals-row grand-total">',
-            '            <span>Total Amount:</span>',
-            '            <span>₹' + order.totalAmount.toFixed(2) + '</span>',
-            '        </div>',
-            '    </div>',
-            '    ',
-            '    <div style="margin-top: 100px; text-align: center; color: #888; border-top: 1px dashed #ddd; padding-top: 20px;">',
-            '        Thank you for shopping with Ceramico! If you have any questions, contact support@ceramico.com.',
-            '    </div>',
-            '</body>',
-            '</html>'
-        ].join('\n');
+        // Totals
+        doc.fillColor('#555555');
+        doc.text('Subtotal:', 370, yPosition, { width: 90, align: 'right' });
+        doc.text(`Rs. ${(subtotal + cancelledTotal).toFixed(2)}`, 470, yPosition, { width: 90, align: 'right' });
+        yPosition += 15;
 
-        res.send(html);
+        if (cancelledTotal > 0) {
+            doc.fillColor('#ef4444');
+            doc.text('Cancelled Adjustments:', 280, yPosition, { width: 180, align: 'right' });
+            doc.text(`-Rs. ${cancelledTotal.toFixed(2)}`, 470, yPosition, { width: 90, align: 'right' });
+            yPosition += 15;
+        }
+
+        doc.font('Helvetica-Bold').fillColor('#1e3a8a');
+        doc.text('Total Amount:', 370, yPosition, { width: 90, align: 'right' });
+        doc.text(`Rs. ${order.totalAmount.toFixed(2)}`, 470, yPosition, { width: 90, align: 'right' });
+        
+        doc.moveDown(4);
+        doc.font('Helvetica').fillColor('#888888').fontSize(10).text('Thank you for shopping with Ceramico! If you have any questions, contact support@ceramico.com.', 50, doc.y, { align: 'center' });
+
+        doc.end();
 
     } catch (error) {
         console.error("Error generating invoice:", error);
-        res.status(500).send("Error generating invoice");
+        res.status(500).json({ success: false, message: "Error generating PDF invoice" });
     }
 };

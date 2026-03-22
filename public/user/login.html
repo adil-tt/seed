@@ -120,6 +120,12 @@
 
                 // 4. Handle the Response
                 if (response.ok) {
+                    // Clear conflicting storage before setting to prevent overlaps
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("user");
+
                     // Success! Store the JWT token and user info
                     if (rememberMe) {
                         // Keeps them logged in even if they close the browser
