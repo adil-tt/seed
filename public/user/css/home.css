@@ -1,26 +1,156 @@
 /* Home Page Specific Styles */
 
+/* Hero Carousel Styles */
 .hero-section {
-    background: url('https://placehold.co/1920x800/D7CCC8/8D6E63?text=Handcrafted+Ceramics') no-repeat center center/cover;
-    height: 80vh;
-    min-height: 500px;
-    position: relative;
+    padding: 0;
+    margin-top: 0; /* Already handled by body padding-top in style.css */
 }
 
-.hero-section::before {
+.carousel-item {
+    height: 600px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-item::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.3);
-    /* Overlay */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(15, 15, 15, 0.9) 0%, rgba(15, 15, 15, 0.45) 50%, rgba(15, 15, 15, 0) 100%);
 }
 
-.hero-section .container {
+.banner-content {
     position: relative;
-    z-index: 1;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10%;
+    color: #fff;
+    max-width: 800px;
+}
+
+.banner-badge {
+    background: #3b82f6;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-block;
+    width: fit-content;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.banner-title {
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-family: 'Outfit', sans-serif;
+}
+
+.banner-description {
+    font-size: 1.15rem;
+    color: #e5e7eb;
+    margin-bottom: 35px;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.banner-btn {
+    background: #fff;
+    color: #111;
+    padding: 16px 45px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    width: fit-content;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.banner-btn:hover {
+    background: #f3f4f6;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    color: #000;
+}
+
+/* Countdown Timer */
+.countdown-container {
+    position: absolute;
+    top: 15%;
+    right: 5%;
+    background: rgba(26, 26, 26, 0.75);
+    backdrop-filter: blur(12px);
+    padding: 24px 35px;
+    border-radius: 12px;
+    display: flex;
+    gap: 20px;
+    color: #fff;
+    z-index: 15;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.countdown-box {
+    text-align: center;
+    min-width: 65px;
+}
+
+.countdown-box .number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    display: block;
+    line-height: 1;
+}
+
+.countdown-box .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #9ca3af;
+    margin-top: 8px;
+    display: block;
+}
+
+.countdown-divider {
+    font-size: 1.8rem;
+    font-weight: 800;
+    padding-top: 8px;
+    color: #4b5563;
+}
+
+/* Indicators */
+.carousel-indicators {
+    bottom: 40px;
+    margin-bottom: 0;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: none;
+    opacity: 0.4;
+    margin: 0 6px;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators .active {
+    opacity: 1;
+    width: 35px;
+    border-radius: 10px;
 }
 
 .category-card {

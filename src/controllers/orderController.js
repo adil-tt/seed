@@ -99,6 +99,15 @@ exports.createOrder = async (req, res) => {
 
         await newOrder.save();
 
+        // 4a. Increment coupon usage if applicable
+        if (couponCode) {
+            const Coupon = require("../models/Coupon");
+            await Coupon.findOneAndUpdate(
+                { code: couponCode.toUpperCase() },
+                { $inc: { usedCount: 1 } }
+            ).catch(err => console.error("Error updating coupon usedCount:", err));
+        }
+
         // 4b. Decrement stock for ordered items
         for (const item of validCartItems) {
             item.product.stock -= item.quantity;

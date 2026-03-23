@@ -16,10 +16,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentCategoryId = 'all';
     let currentMaxPrice = 200;
 
+    let activeOffers = [];
+
     try {
+        // 0. Fetch Active Offers for displacement
+        const offResponse = await fetch("/api/offers/active");
+        if (offResponse.ok) {
+            const offData = await offResponse.json();
+            activeOffers = offData.offers || [];
+        }
+
         // 1. Fetch Categories
         if (categoryList) {
-            const catResponse = await fetch("http://localhost:5000/api/categories?status=active");
+            const catResponse = await fetch("/api/categories?status=active");
             if (catResponse.ok) {
                 const catData = await catResponse.json();
                 const categories = catData.categories || [];
@@ -40,29 +49,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // 2. Fetch Products
-        const response = await fetch("http://localhost:5000/api/products");
+        const response = await fetch("/api/products");
         if (!response.ok) throw new Error("Failed to fetch products");
 
         allProducts = await response.json(); // Store permanently
 
-        // Dynamically set max price based on products
+        // ... rest of filtering init ...
         const maxProductPrice = Math.max(...allProducts.map(p => p.price || 0), 200);
         const priceInput = document.getElementById('priceRangeInput');
         const priceDisplay = document.getElementById('priceRangeDisplay');
         if (priceInput && priceDisplay) {
             priceInput.max = Math.ceil(maxProductPrice);
             priceInput.value = Math.ceil(maxProductPrice);
-            priceDisplay.innerText = `$${Math.ceil(maxProductPrice)}`;
+            priceDisplay.innerText = `₹${Math.ceil(maxProductPrice)}`;
             currentMaxPrice = Math.ceil(maxProductPrice);
 
             priceInput.addEventListener('input', (e) => {
                 currentMaxPrice = parseFloat(e.target.value);
-                priceDisplay.innerText = `$${currentMaxPrice}`;
+                priceDisplay.innerText = `₹${currentMaxPrice}`;
                 applyFilters();
             });
         }
 
-        // Initial render: show all active products matching filters
         applyFilters();
 
     } catch (error) {
@@ -70,20 +78,80 @@ document.addEventListener("DOMContentLoaded", async () => {
         shopContainer.innerHTML = "<p class='text-center text-danger'>Error loading products or categories.</p>";
     }
 
+    function calculateDiscount(product, offers) {
+        let bestDiscount = 0;
+        let discountedPrice = product.price;
+        let activeOffer = null;
+
+        offers.forEach(offer => {
+            let applies = false;
+            if (offer.offerType === 'Product' && offer.targetId === product._id) {
+                applies = true;
+            } else if (offer.offerType === 'Category') {
+                const productCatIds = (product.categories || []).map(c => typeof c === 'object' ? c._id : c);
+                if (productCatIds.includes(offer.targetId)) {
+                    applies = true;
+                }
+            } else if (offer.offerType === 'All') {
+                applies = true;
+            }
+
+            if (applies) {
+                let currentDiscount = 0;
+                if (offer.discountType === 'Percentage') {
+                    currentDiscount = (product.price * offer.discountValue) / 100;
+                } else {
+                    currentDiscount = offer.discountValue;
+                }
+
+                if (currentDiscount > bestDiscount) {
+                    bestDiscount = currentDiscount;
+                    discountedPrice = Math.max(0, product.price - currentDiscount);
+                    activeOffer = offer;
+                }
+            }
+        });
+
+        return { 
+            hasDiscount: bestDiscount > 0, 
+            discountedPrice, 
+            originalPrice: product.price,
+            activeOffer 
+        };
+    }
+
     // Function to render products grid
     function renderProducts(productsToRender) {
         if (productsToRender.length === 0) {
             shopContainer.innerHTML = "<p class='text-center text-muted'>No products found in this category.</p>";
-            // Update counts if needed here
             return;
         }
 
         shopContainer.innerHTML = productsToRender.map(product => {
+            const { hasDiscount, discountedPrice, originalPrice, activeOffer } = calculateDiscount(product, activeOffers);
+            
             const imageUrl = product.images && product.images.length > 0
-                ? `http://localhost:5000/uploads/${product.images[0]}`
+                ? `/uploads/${product.images[0]}`
                 : "images/ceramic-cup.jpg";
 
-            const price = product.price ? product.price.toFixed(2) : "0.00";
+            const displayOriginal = originalPrice.toFixed(2);
+            const displayDiscounted = discountedPrice.toFixed(2);
+
+            let priceHTML = `<div class="product-price">₹${displayOriginal}</div>`;
+            if (hasDiscount) {
+                const badgeText = activeOffer.discountType === 'Percentage' 
+                    ? `${activeOffer.discountValue}% OFF` 
+                    : `₹${activeOffer.discountValue} OFF`;
+                    
+                priceHTML = `
+                    <div class="product-price-wrapper">
+                        <span class="original-price text-muted text-decoration-line-through me-2">₹${displayOriginal}</span>
+                        <span class="discounted-price fw-bold text-danger">₹${displayDiscounted}</span>
+                        <div class="discount-label-mini">${badgeText}</div>
+                    </div>
+                `;
+            }
+
             const isOutOfStock = product.stock === 0;
 
             return `
@@ -95,17 +163,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                             </a>
                             <div class="product-actions" style="${isOutOfStock ? 'opacity: 0.5;' : ''}">
                                 ${isOutOfStock
-                    ? `<button class="btn btn-sm btn-secondary" disabled>Out of Stock</button>`
-                    : `<button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>`
-                }
+                                    ? `<button class="btn btn-sm btn-secondary" disabled>Out of Stock</button>`
+                                    : `<button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>`
+                                }
                                 <button class="btn btn-sm btn-outline-dark add-to-wishlist" data-id="${product._id}">
                                     <i class="bi bi-heart"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="product-info">
-                            <h3 class="product-title"><a href="single-product.html?id=${product._id}">${product.name}</a></h3>
-                            <div class="product-price">$${price}</div>
+                        <div class="product-info p-3">
+                            <h3 class="product-title m-0 mb-1"><a href="single-product.html?id=${product._id}">${product.name}</a></h3>
+                            ${priceHTML}
                         </div>
                     </div>
                 </div>
@@ -180,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (btn) btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
 
         try {
-            const response = await fetch("http://localhost:5000/api/cart/add", {
+            const response = await fetch("/api/cart/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

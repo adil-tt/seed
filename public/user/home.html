@@ -56,16 +56,32 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section d-flex align-items-center">
-        <div class="container text-center">
-            <h1 class="display-3 mb-4">Elevate Your Dining Experience</h1>
-            <p class="lead mb-5">Handcrafted ceramics for the modern home. Sustainable, durable, and beautiful.</p>
-            <a href="product.html" class="btn btn-primary btn-lg">Shop Collection</a>
+    <!-- Hero Section (Offers Carousel) -->
+    <section class="hero-section">
+        <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators" id="carousel-indicators">
+                <!-- Indicators will be loaded dynamically -->
+            </div>
+            <div class="carousel-inner" id="carousel-inner">
+                <!-- Fallback/Loading Slide -->
+                <div class="carousel-item active" style="background-image: url('https://placehold.co/1920x800/1a1a1a/ffffff?text=Loading+Offers...');">
+                    <div class="banner-content">
+                        <h1 class="banner-title">Exclusive Designs<br>Handcrafted</h1>
+                        <p class="banner-description">Discover the beauty of Artisanal Ceramics. Elevate your everyday moments with our unique collections.</p>
+                        <a href="product.html" class="banner-btn">Shop Collection</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#offersCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#offersCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </section>
-
-
 
     <!-- Category Section -->
     <section class="py-5 bg-white">

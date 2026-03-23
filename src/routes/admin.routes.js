@@ -6,6 +6,7 @@ const { getAllUsers, toggleBlockUser, deleteUser, getUserDetails } = require("..
 const { getAllOrders, updateOrderStatus, exportOrdersExcel } = require("../controllers/adminOrderController");
 const { getDashboardStats } = require("../controllers/adminDashboardController");
 const { createCoupon, getCoupons, updateCoupon, deleteCoupon } = require("../controllers/adminCouponController");
+const { createOffer, getOffers, updateOffer, deleteOffer } = require("../controllers/adminOfferController");
 
 // Protected Admin Routes
 router.get("/dashboard", protect, admin, getDashboardStats);
@@ -24,5 +25,11 @@ router.get("/coupons", protect, admin, getCoupons);
 router.post("/coupons", protect, admin, createCoupon);
 router.put("/coupons/:id", protect, admin, updateCoupon);
 router.delete("/coupons/:id", protect, admin, deleteCoupon);
+
+// Admin Offer Routes
+router.get("/offers", protect, admin, getOffers);
+router.post("/offers", protect, admin, createOffer);
+router.put("/offers/:id", protect, admin, updateOffer);
+router.delete("/offers/:id", protect, admin, deleteOffer);
 
 module.exports = router;

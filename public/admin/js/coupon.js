@@ -34,6 +34,19 @@ async function fetchCoupons() {
         if (data.success) {
             couponsList = data.coupons;
             renderCouponsTable(data.coupons);
+
+            // Update stats cards
+            if (data.stats) {
+                const totalEl = document.getElementById("totalCouponCount");
+                const activeEl = document.getElementById("activeCouponCount");
+                const expiredEl = document.getElementById("expiredCouponCount");
+                const usageEl = document.getElementById("totalUsageCount");
+
+                if (totalEl) totalEl.textContent = data.stats.totalCoupons;
+                if (activeEl) activeEl.textContent = data.stats.activeCoupons;
+                if (expiredEl) expiredEl.textContent = data.stats.expiredCoupons;
+                if (usageEl) usageEl.textContent = (data.stats.totalUsage || 0).toLocaleString();
+            }
         }
     } catch (error) {
         console.error(error);

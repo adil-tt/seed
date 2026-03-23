@@ -37,7 +37,27 @@ const createCoupon = async (req, res) => {
 const getCoupons = async (req, res) => {
     try {
         const coupons = await Coupon.find().sort({ createdAt: -1 });
-        res.status(200).json({ success: true, coupons });
+        
+        // Calculate stats
+        const totalCoupons = coupons.length;
+        const now = new Date();
+        const activeCoupons = coupons.filter(c => 
+            c.status === 'Active' && 
+            (!c.expiryDate || new Date(c.expiryDate) > now)
+        ).length;
+        const expiredCoupons = totalCoupons - activeCoupons;
+        const totalUsage = coupons.reduce((sum, c) => sum + (c.usedCount || 0), 0);
+
+        res.status(200).json({ 
+            success: true, 
+            coupons,
+            stats: {
+                totalCoupons,
+                activeCoupons,
+                expiredCoupons,
+                totalUsage
+            }
+        });
     } catch (error) {
         console.error("Error fetching coupons:", error);
         res.status(500).json({ success: false, message: "Server Error" });

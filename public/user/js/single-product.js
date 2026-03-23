@@ -2,25 +2,19 @@
 
 console.log('Single Product page loaded');
 
-function changeImage(element) {
-    const mainImg = document.getElementById('mainImage');
-    mainImg.src = element.src;
-
-    // Update active class
-    document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active'));
-    element.classList.add('active');
-}
-
 let basePrice = 0;
 let maxStock = 0;
+let activeOffers = [];
 
 function updatePriceDisplay() {
     const priceEl = document.getElementById("product-price");
     const input = document.getElementById('quantity');
     const quantity = parseInt(input.value) || 1;
-    if (priceEl && basePrice > 0) {
-        priceEl.textContent = `$${(basePrice * quantity).toFixed(2)}`;
-    }
+    
+    // We only update if we have a simple price. 
+    // If it's a discount wrapper, we might need a more complex update, 
+    // but usually, product details show the unit price.
+    // For now, let's keep the unit price display and maybe update the 'Total' elsewhere if needed.
 }
 
 function increaseQty() {
@@ -43,7 +37,6 @@ function decreaseQty() {
 
 // --- DYNAMIC PRODUCT FETCHING ---
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Get Product ID from URL
     const params = new URLSearchParams(window.location.search);
     const productId = params.get("id");
 
@@ -52,9 +45,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    // 1. Fetch Active Offers first
+    try {
+        const offRes = await fetch("/api/offers/active");
+        if (offRes.ok) {
+            const offData = await offRes.json();
+            activeOffers = offData.offers || [];
+        }
+    } catch (e) { console.error("Error fetching offers:", e); }
+
     try {
         // 2. Fetch Product Details
-        const response = await fetch(`http://localhost:5000/api/products/${productId}`);
+        const response = await fetch(`/api/products/${productId}`);
         if (!response.ok) throw new Error("Failed to load product details");
 
         const product = await response.json();
@@ -68,13 +70,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         const imagesContainer = document.getElementById("product-images");
 
         if (nameEl) nameEl.textContent = product.name;
+        
+        // Calculate Discount
+        const { hasDiscount, discountedPrice, originalPrice, activeOffer } = calculateDiscount(product, activeOffers);
+        basePrice = hasDiscount ? discountedPrice : product.price;
+
         if (priceEl) {
-            basePrice = product.price || 0;
-            priceEl.textContent = `$${basePrice.toFixed(2)}`;
-            updatePriceDisplay();
+            if (hasDiscount) {
+                const badgeText = activeOffer.discountType === 'Percentage' 
+                    ? `${activeOffer.discountValue}% OFF` 
+                    : `₹${activeOffer.discountValue} OFF`;
+                
+                priceEl.innerHTML = `
+                    <div class="product-price-wrapper d-flex align-items-center flex-wrap gap-2">
+                        <span class="original-price text-muted text-decoration-line-through" style="font-size: 1.2rem;">₹${originalPrice.toFixed(2)}</span>
+                        <span class="discounted-price fw-bold text-danger" style="font-size: 2rem;">₹${discountedPrice.toFixed(2)}</span>
+                        <span class="badge bg-danger ms-2">${badgeText}</span>
+                    </div>
+                `;
+            } else {
+                priceEl.textContent = `₹${product.price.toFixed(2)}`;
+            }
         }
+
         if (descEl) descEl.textContent = product.description || "No description available.";
-        if (categoryEl) categoryEl.textContent = product.category ? product.category.name : "Uncategorized";
+        if (categoryEl) categoryEl.textContent = product.category ? (product.category.name || product.category) : "Uncategorized";
         if (skuEl) skuEl.textContent = product.sku || product._id.toString().substring(18).toUpperCase();
 
         maxStock = product.stock || 0;
@@ -97,104 +117,111 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById('single-add-cart')?.setAttribute('data-id', product._id);
         document.getElementById('single-add-wishlist')?.setAttribute('data-id', product._id);
 
-        // Update Images (Main Gallery + Thumbs)
+        // Images Gallery
         if (imagesContainer) {
-            let imagesHtml = "";
-            let thumbsHtml = "";
-
-            if (product.images && product.images.length > 0) {
-                const mainImgUrl = `http://localhost:5000/uploads/${product.images[0]}`;
-                imagesHtml = `
-                    <div class="product-gallery-main mb-3">
-                        <img src="${mainImgUrl}" id="mainImage" class="w-100 rounded shadow-sm" alt="${product.name}">
-                    </div>
-                `;
-
-                if (product.images.length > 1) {
-                    thumbsHtml = `<div class="product-gallery-thumbs d-flex gap-2 mt-2">`;
-                    product.images.forEach((img, index) => {
-                        const thumbUrl = `http://localhost:5000/uploads/${img}`;
-                        thumbsHtml += `
-                            <img src="${thumbUrl}" class="thumb-img rounded ${index === 0 ? 'active border-primary' : 'border'}" 
-                                onclick="document.getElementById('mainImage').src=this.src; document.querySelectorAll('.thumb-img').forEach(t=>t.classList.remove('border-primary')); this.classList.add('border-primary');" 
-                                alt="Thumb ${index + 1}">
-                        `;
-                    });
-                    thumbsHtml += `</div>`;
-                }
-            } else {
-                // Fallback image
-                imagesHtml = `
-                    <div class="product-gallery-main mb-3">
-                        <img src="images/ceramic-cup.jpg" id="mainImage" class="w-100 rounded shadow-sm" alt="Fallback">
-                    </div>
-                `;
-            }
-
-            imagesContainer.innerHTML = imagesHtml + thumbsHtml;
+            renderGallery(product);
         }
 
     } catch (error) {
         console.error("Error loading single product:", error);
-        const nameEl = document.getElementById("product-name");
-        if (nameEl) nameEl.textContent = "Error loading product.";
+        if (document.getElementById("product-name")) document.getElementById("product-name").textContent = "Error loading product.";
     }
 
-    // --- ADD TO CART FUNCTIONALITY ---
+    // --- UTILS ---
+
+    function calculateDiscount(product, offers) {
+        let bestDiscount = 0;
+        let discountedPrice = product.price;
+        let activeOffer = null;
+
+        offers.forEach(offer => {
+            let applies = false;
+            if (offer.offerType === 'Product' && offer.targetId === product._id) {
+                applies = true;
+            } else if (offer.offerType === 'Category') {
+                const productCatIds = (product.categories || []).map(c => typeof c === 'object' ? c._id : c);
+                if (productCatIds.includes(offer.targetId)) {
+                    applies = true;
+                }
+            } else if (offer.offerType === 'All') {
+                applies = true;
+            }
+
+            if (applies) {
+                let currentDiscount = 0;
+                if (offer.discountType === 'Percentage') {
+                    currentDiscount = (product.price * offer.discountValue) / 100;
+                } else {
+                    currentDiscount = offer.discountValue;
+                }
+
+                if (currentDiscount > bestDiscount) {
+                    bestDiscount = currentDiscount;
+                    discountedPrice = Math.max(0, product.price - currentDiscount);
+                    activeOffer = offer;
+                }
+            }
+        });
+
+        return { hasDiscount: bestDiscount > 0, discountedPrice, originalPrice: product.price, activeOffer };
+    }
+
+    function renderGallery(product) {
+        let imagesHtml = "";
+        let thumbsHtml = "";
+
+        if (product.images && product.images.length > 0) {
+            const mainImgUrl = `/uploads/${product.images[0]}`;
+            imagesHtml = `
+                <div class="product-gallery-main mb-3">
+                    <img src="${mainImgUrl}" id="mainImage" class="w-100 rounded shadow-sm" alt="${product.name}">
+                </div>
+            `;
+
+            if (product.images.length > 1) {
+                thumbsHtml = `<div class="product-gallery-thumbs d-flex gap-2 mt-2 overflow-auto pb-2">`;
+                product.images.forEach((img, index) => {
+                    const thumbUrl = `/uploads/${img}`;
+                    thumbsHtml += `
+                        <img src="${thumbUrl}" class="thumb-img rounded ${index === 0 ? 'active border-primary' : 'border'}" 
+                            style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;"
+                            onclick="document.getElementById('mainImage').src=this.src; document.querySelectorAll('.thumb-img').forEach(t=>t.classList.remove('border-primary', 'active')); this.classList.add('border-primary', 'active');" 
+                            alt="Thumb ${index + 1}">
+                    `;
+                });
+                thumbsHtml += `</div>`;
+            }
+        } else {
+            imagesHtml = `<div class="product-gallery-main mb-3"><img src="images/ceramic-cup.jpg" id="mainImage" class="w-100 rounded shadow-sm" alt="No image"></div>`;
+        }
+        document.getElementById("product-images").innerHTML = imagesHtml + thumbsHtml;
+    }
+
+    // Add to Cart
     const addToCartBtn = document.getElementById('single-add-cart');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+        addToCartBtn.addEventListener('click', async () => {
+            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             if (!token) {
-                Swal.fire({ text: "Please login to add items to the cart.", icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-setTimeout(() => { window.location.href = "login.html"; }, 1500);
+                Swal.fire({ text: "Please login to add items to the cart.", icon: 'warning' });
                 return;
             }
-
-            const productId = addToCartBtn.getAttribute('data-id');
-            const quantityInput = document.getElementById('quantity');
-            const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
-
-            if (!productId) {
-                Swal.fire({ text: "Product ID is missing or still loading.", icon: 'info' });
-                return;
-            }
-
-            const originalText = addToCartBtn.innerHTML;
-            addToCartBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
-            addToCartBtn.disabled = true;
+            const qty = parseInt(document.getElementById('quantity').value) || 1;
+            const pid = addToCartBtn.getAttribute('data-id');
 
             try {
-                const response = await fetch("http://localhost:5000/api/cart/add", {
+                const res = await fetch("/api/cart/add", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ productId, quantity })
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                    body: JSON.stringify({ productId: pid, quantity: qty })
                 });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    Swal.fire({ text: "Added to Cart successfully!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-                    addToCartBtn.innerHTML = '<i class="bi bi-check-lg me-2"></i> Added to Cart';
-                    setTimeout(() => {
-                        addToCartBtn.innerHTML = originalText;
-                        addToCartBtn.disabled = false;
-                    }, 2000);
+                if (res.ok) {
+                    Swal.fire({ text: "Added to Cart!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
                 } else {
-                    Swal.fire({ text: data.message || "Failed to add to cart", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-addToCartBtn.innerHTML = originalText;
-                    addToCartBtn.disabled = false;
+                    const d = await res.json();
+                    Swal.fire({ text: d.message || "Failed", icon: 'error' });
                 }
-            } catch (error) {
-                console.error("Add to cart error:", error);
-                Swal.fire({ text: "An error occurred while adding to cart.", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-addToCartBtn.innerHTML = originalText;
-                addToCartBtn.disabled = false;
-            }
+            } catch (e) { console.error(e); }
         });
     }
 });

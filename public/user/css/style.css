@@ -280,6 +280,44 @@ footer a:hover {
     /* Zoom effect */
 }
 
+/* Product Price Discount Styles */
+.product-price-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.original-price {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.discounted-price {
+    font-size: 1.1rem;
+    color: #e63946; /* Strong red for discount */
+    font-weight: 700;
+}
+
+.discount-label-mini {
+    background-color: #e63946;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.product-info {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover .product-info {
+    background-color: #fcfcfc;
+}
+
 .category-title {
     font-weight: 600;
     text-transform: uppercase;
