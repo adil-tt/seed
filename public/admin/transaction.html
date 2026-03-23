@@ -188,7 +188,7 @@
                                         <h6 class="fw-bold fs-6 mb-0">Total Revenue</h6>
                                         <i class="bi bi-three-dots-vertical text-muted"></i>
                                     </div>
-                                    <h3 class="fw-bold mb-1">$15,045</h3>
+                                    <h3 class="fw-bold mb-1" id="total-revenue">$0</h3>
                                     <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 14.4% <span
                                             class="text-muted">Last 7 days</span></p>
                                 </div>
@@ -199,7 +199,7 @@
                                         <h6 class="fw-bold fs-6 mb-0">Completed Transactions</h6>
                                         <i class="bi bi-three-dots-vertical text-muted"></i>
                                     </div>
-                                    <h3 class="fw-bold mb-1">3,150</h3>
+                                    <h3 class="fw-bold mb-1" id="total-completed">0</h3>
                                     <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 20% <span
                                             class="text-muted">Last 7 days</span></p>
                                 </div>
@@ -210,7 +210,7 @@
                                         <h6 class="fw-bold fs-6 mb-0">Pending Transactions</h6>
                                         <i class="bi bi-three-dots-vertical text-muted"></i>
                                     </div>
-                                    <h3 class="fw-bold mb-1">150</h3>
+                                    <h3 class="fw-bold mb-1" id="total-pending">0</h3>
                                     <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 0.3% <span
                                             class="text-muted">Last 7 days</span></p>
                                 </div>
@@ -221,7 +221,7 @@
                                         <h6 class="fw-bold fs-6 mb-0">Failed Transactions</h6>
                                         <i class="bi bi-three-dots-vertical text-muted"></i>
                                     </div>
-                                    <h3 class="fw-bold mb-1 text-danger">75</h3>
+                                    <h3 class="fw-bold mb-1 text-danger" id="total-failed">0</h3>
                                     <p class="text-danger small mb-0"><i class="bi bi-arrow-down-short"></i> 15% <span
                                             class="text-muted">Last 7 days</span></p>
                                 </div>
@@ -241,16 +241,16 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label small text-muted fw-bold">From Date</label>
-                                        <input type="date" class="form-control form-control-sm">
+                                        <input type="date" id="exportFromDate" class="form-control form-control-sm">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label small text-muted fw-bold">To Date</label>
-                                        <input type="date" class="form-control form-control-sm">
+                                        <input type="date" id="exportToDate" class="form-control form-control-sm">
                                     </div>
                                 </div>
 
                                 <div class="mt-4">
-                                    <button type="button"
+                                    <button type="button" id="btnGenerateReport"
                                         class="btn btn-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2">
                                         <i class="bi bi-download"></i> Generate Excel Report
                                     </button>
@@ -270,11 +270,11 @@
                 <div class="table-card">
                     <!-- Filters -->
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                        <div class="filter-tabs">
-                            <button class="filter-tab active">All order (240)</button>
-                            <button class="filter-tab">Completed</button>
-                            <button class="filter-tab">Pending</button>
-                            <button class="filter-tab">Canceled</button>
+                        <div class="filter-tabs" id="statusFilters">
+                            <button class="filter-tab active" data-status="All">All order (0)</button>
+                            <button class="filter-tab" data-status="Completed">Completed</button>
+                            <button class="filter-tab" data-status="Pending">Pending</button>
+                            <button class="filter-tab" data-status="Canceled">Canceled</button>
                         </div>
 
                         <div class="d-flex gap-2">
@@ -304,159 +304,15 @@
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <!-- Row 1 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>John Doe</td>
-                                    <td>01-05-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>CC</td>
-                                    <td><span class="badge bg-transparent text-success p-0 fw-normal"><span
-                                                class="status-dot bg-success"></span> Completed</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 2 -->
-                                <tr>
-                                    <td>#CUST005</td>
-                                    <td>John Doe</td>
-                                    <td>03-05-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>PayPal</td>
-                                    <td><span class="badge bg-transparent text-success p-0 fw-normal"><span
-                                                class="status-dot bg-success"></span> Completed</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 3 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>John Doe</td>
-                                    <td>03-05-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>CC</td>
-                                    <td><span class="badge bg-transparent text-success p-0 fw-normal"><span
-                                                class="status-dot bg-success"></span> Completed</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 4 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>John Doe</td>
-                                    <td>03-05-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>Bank</td>
-                                    <td><span class="badge bg-transparent text-success p-0 fw-normal"><span
-                                                class="status-dot bg-success"></span> Completed</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 5 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>Jane Smith</td>
-                                    <td>01-01-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>CC</td>
-                                    <td><span class="badge bg-transparent text-danger p-0 fw-normal"><span
-                                                class="status-dot bg-danger"></span> Canceled</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 6 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>Emily Davis</td>
-                                    <td>03-01-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>PayPal</td>
-                                    <td><span class="badge bg-transparent text-warning p-0 fw-normal text-warning"><span
-                                                class="status-dot bg-warning"></span> Pending</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 7 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>Jane Smith</td>
-                                    <td>01-01-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>Bank</td>
-                                    <td><span class="badge bg-transparent text-danger p-0 fw-normal"><span
-                                                class="status-dot bg-danger"></span> Canceled</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 8 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>John Doe</td>
-                                    <td>01-01-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>CC</td>
-                                    <td><span class="badge bg-transparent text-success p-0 fw-normal"><span
-                                                class="status-dot bg-success"></span> Completed</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 9 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>Emily Davis</td>
-                                    <td>03-01-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>PayPal</td>
-                                    <td><span class="badge bg-transparent text-warning p-0 fw-normal text-warning"><span
-                                                class="status-dot bg-warning"></span> Pending</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
-                                <!-- Row 10 -->
-                                <tr>
-                                    <td>#CUST001</td>
-                                    <td>Jane Smith</td>
-                                    <td>01-01-2025</td>
-                                    <td class="fw-bold">$2,904</td>
-                                    <td>Bank</td>
-                                    <td><span class="badge bg-transparent text-success p-0 fw-normal"><span
-                                                class="status-dot bg-success"></span> Completed</span></td>
-                                    <td class="text-end"><a href="#"
-                                            class="btn btn-link btn-sm text-decoration-none text-primary">View
-                                            Details</a></td>
-                                </tr>
+                            <tbody id="transactionTableBody">
+                                <tr><td colspan="7" class="text-center py-4">Loading transactions...</td></tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-5">
-                        <button class="btn btn-white border px-3">← Previous</button>
-
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination mb-0">
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item"><span class="mx-2 text-muted">...</span></li>
-                                <li class="page-item"><a class="page-link" href="#">24</a></li>
-                            </ul>
-                        </nav>
-
-                        <button class="btn btn-white border px-3">Next →</button>
+                    <div class="d-flex justify-content-between align-items-center mt-5" id="paginationContainer">
                     </div>
 
                 </div>
@@ -465,6 +321,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/transaction.js"></script>
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebarClose = document.getElementById('sidebarClose');
@@ -476,6 +333,81 @@
             sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
         }
     </script>
+    <!-- Order Details Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalOrderTitle">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted small text-uppercase mb-2">Customer Info</h6>
+                            <p class="mb-1 fw-bold" id="modalCustomerName">-</p>
+                            <p class="mb-1 text-muted small" id="modalCustomerEmail">-</p>
+                            <p class="mb-0 text-muted small" id="modalCustomerPhone">-</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted small text-uppercase mb-2">Shipping Address</h6>
+                            <p class="mb-0 text-muted small" id="modalShippingAddress">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted small text-uppercase mb-2">Payment Details</h6>
+                            <p class="mb-1 small">Method: <span class="fw-bold" id="modalPaymentMethod">-</span></p>
+                            <p class="mb-0 small">Status: <span class="badge" id="modalPaymentStatus">-</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-muted small text-uppercase mb-2">Order Info</h6>
+                            <p class="mb-1 small">Date: <span class="fw-bold" id="modalOrderDate">-</span></p>
+                            <p class="mb-0 small">Delivery: <span class="badge" id="modalDeliveryStatus">-</span></p>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-muted small text-uppercase mb-3">Products</h6>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-sm align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Item</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-end">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalProductsList">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span class="text-muted">Subtotal</span>
+                                <span class="fw-bold" id="modalSubtotal">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span class="text-muted">Discount</span>
+                                <span class="fw-bold text-danger" id="modalDiscount">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3 small">
+                                <span class="text-muted">Shipping</span>
+                                <span class="fw-bold" id="modalShipping">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between border-top pt-2">
+                                <span class="fw-bold text-dark">Total</span>
+                                <span class="fw-bold fs-5 text-dark" id="modalTotal">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

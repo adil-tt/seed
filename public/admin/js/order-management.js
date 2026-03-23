@@ -8,6 +8,8 @@ let currentPage = 1;
 const limit = 10;
 let searchQuery = "";
 let currentStatusFilter = "All";
+let allOrders = []; // To store fetched orders for details view
+
 
 function setupEventListeners() {
     const searchInput = document.getElementById('searchInput');
@@ -71,6 +73,7 @@ async function fetchOrders() {
         const data = await response.json();
 
         if (data.success) {
+            allOrders = data.orders; // Store globally
             renderStats(data.stats);
             renderOrders(data.orders);
             renderPagination(data.pagination);
@@ -163,9 +166,12 @@ function renderOrders(orders) {
             <td>$${order.totalAmount.toFixed(2)}</td>
             <td><span class="${paymentClass} small fw-bold"><i class="bi ${paymentIcon}" style="font-size: 6px;"></i> ${paymentText}</span></td>
             <td>
-                <select class="form-select form-select-sm border-0 fw-bold ${selectColorClass}" onchange="changeOrderStatus('${order._id}', this.value)" style="box-shadow:none; cursor:pointer; font-size: 0.8rem;">
-                    ${statusOptionsHtml}
-                </select>
+                <div class="d-flex align-items-center gap-2">
+                    <select class="form-select form-select-sm border-0 fw-bold ${selectColorClass}" onchange="changeOrderStatus('${order._id}', this.value)" style="box-shadow:none; cursor:pointer; font-size: 0.8rem; width: auto;">
+                        ${statusOptionsHtml}
+                    </select>
+                    <button class="btn btn-sm btn-outline-dark" onclick="viewOrderDetails('${order._id}')">View</button>
+                </div>
             </td>
         `;
 
@@ -239,3 +245,103 @@ window.changeOrderStatus = async function (orderId, newStatus) {
         fetchOrders(); // Revert
     }
 }
+window.viewOrderDetails = function(orderId) {
+    const order = allOrders.find(o => o._id === orderId);
+    if (!order) return;
+
+    // Set Header
+    document.getElementById('modalOrderId').textContent = `ORDER #${order._id.substring(0, 8).toUpperCase()}`;
+    const dateObj = new Date(order.createdAt);
+    const dateStr = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const timeStr = dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('modalOrderDate').textContent = `Placed on ${dateStr} at ${timeStr}`;
+
+    // Status Badge
+    const statusBadge = document.getElementById('modalStatusBadge');
+    statusBadge.textContent = order.deliveryStatus.toUpperCase();
+    statusBadge.className = `status-badge status-${order.deliveryStatus.toLowerCase().replace(/\s+/g, '-')}`;
+
+    // Invoice Button
+    document.getElementById('modalInvoiceBtn').onclick = () => downloadInvoice(order._id);
+
+    // Items List
+    const itemsList = document.getElementById('modalItemsList');
+    itemsList.innerHTML = '';
+    
+    let totalOriginal = 0;
+    let itemsCount = 0;
+
+    order.products.forEach(item => {
+        const price = item.price;
+        // In the database, we might not have oldPrice for older orders, fallback to price
+        const oldPrice = item.product?.oldPrice || price; 
+        const qty = item.quantity;
+        totalOriginal += (oldPrice * qty);
+        itemsCount += qty;
+
+        const img = item.image ? `http://localhost:5000/uploads/${item.image.split('\\').pop().split('/').pop()}` : 'images/ceramic-cup.jpg';
+        
+        const itemHtml = `
+            <div class="detail-product-item">
+                <div class="d-flex align-items-center">
+                    <img src="${img}" class="detail-product-img" onerror="this.src='images/ceramic-cup.jpg'">
+                    <div class="detail-product-name-col">
+                        <div class="detail-product-name">${item.name}</div>
+                        <div class="detail-product-meta">Size: ${item.size || 'N/A'} | Qty: ${qty}</div>
+                    </div>
+                </div>
+                <div class="detail-product-total">₹${(price * qty).toFixed(2)}</div>
+            </div>
+        `;
+        itemsList.insertAdjacentHTML('beforeend', itemHtml);
+    });
+
+    // Shipping info
+    const addr = order.shippingAddress;
+    document.getElementById('modalRecipientName').textContent = addr.fullName;
+    document.getElementById('modalAddress').textContent = `${addr.house}, ${addr.street}, ${addr.landmark ? addr.landmark + ', ' : ''}${addr.city}, ${addr.state} - ${addr.pincode}`;
+    document.getElementById('modalPhone').textContent = addr.phone;
+
+    // Billing
+    const productDiscount = totalOriginal - (order.totalAmount + (order.discountAmount || 0)); // This is tricky.
+    // If discountAmount exists, it's (ProductDiscount + CouponDiscount).
+    // Let's use order.discountAmount if provided, otherwise calculate from original prices.
+    
+    const displayDiscount = order.discountAmount || (totalOriginal - order.totalAmount);
+
+    document.getElementById('modalItemsCountLabel').textContent = `Price (${itemsCount} items)`;
+    document.getElementById('modalOriginalPrice').textContent = `₹${totalOriginal.toFixed(2)}`;
+    document.getElementById('modalProductDiscount').textContent = `-₹${displayDiscount.toFixed(2)}`;
+    document.getElementById('modalTotalSaved').textContent = `₹${displayDiscount.toFixed(2)}`;
+    document.getElementById('modalNetPayable').textContent = `₹${order.totalAmount.toFixed(2)}`;
+
+    // Payment Info
+    document.getElementById('modalPaymentMethod').textContent = order.paymentMethod;
+    document.getElementById('modalPaymentStatus').textContent = order.paymentStatus;
+
+    // Show Modal
+    const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+    modal.show();
+};
+
+window.downloadInvoice = async (orderId) => {
+    try {
+        Swal.fire({ title: 'Generating PDF...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/invoice`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error("Could not download invoice");
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `invoice_${orderId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        Swal.close();
+    } catch (error) {
+        Swal.fire('Error', error.message, 'error');
+    }
+};

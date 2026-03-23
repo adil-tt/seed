@@ -227,6 +227,7 @@
                                     ${order.trackingId ? `<i class="bi bi-truck me-2"></i> Track Order: ${order.trackingId}` : '<i class="bi bi-box me-2"></i> Processing...'}
                                 </div>
                                 <div class="d-flex gap-2">
+                                    <button onclick="viewOrderDetails('${order._id}')" class="btn btn-sm btn-dark"><i class="bi bi-eye me-1"></i> View Details</button>
                                     <button onclick="downloadInvoice('${order._id}')" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i> Invoice</button>
                                     ${order.deliveryStatus === 'Delivered'
                             ? `<button onclick="confirmReturnOrder('${order._id}')" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-return-left me-1"></i> Return</button>`
@@ -239,6 +240,7 @@
                 });
 
                 ordersContainer.innerHTML = ordersHTML;
+                window.allOrders = ordersList; // Store for details view
 
             } catch (error) {
                 console.error("Error loading order history:", error);
@@ -368,6 +370,160 @@
                     }
                 }
             });
+        };
+    </script>
+    <!-- Order Details Modal -->
+    <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-start border-0 pb-0">
+                    <div>
+                        <h5 class="order-id-title" id="modalOrderId">ORDER #103C6C96</h5>
+                        <div class="order-meta" id="modalOrderDate">Placed on 23 March 2026 at 13:51</div>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="btn btn-light btn-sm fw-bold border" id="modalInvoiceBtn">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Invoice
+                        </button>
+                        <span class="status-badge" id="modalStatusBadge">PENDING</span>
+                        <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal-body pt-4">
+                    <div class="row g-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-7 border-end">
+                            <div class="order-details-section">
+                                <div class="order-details-section-title">
+                                    <i class="bi bi-bag-check"></i> ORDER ITEMS
+                                </div>
+                                <div id="modalItemsList" class="pe-lg-3">
+                                    <!-- Items will be injected here -->
+                                </div>
+                            </div>
+
+                            <div class="order-details-section mt-5">
+                                <div class="order-details-section-title">
+                                    <i class="bi bi-geo-alt"></i> SHIPPING INFORMATION
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="info-label">RECIPIENT</div>
+                                        <div class="info-value" id="modalRecipientName">Adil tt</div>
+                                        
+                                        <div class="info-label">ADDRESS</div>
+                                        <div class="info-value" id="modalAddress">jf ,bh d y, meenchanda, Kerala - 325610</div>
+                                        
+                                        <div class="info-label">PHONE</div>
+                                        <div class="info-value" id="modalPhone">+91 7034731397</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-5">
+                            <div class="order-details-section">
+                                <div class="order-details-section-title">BILLING DETAILS</div>
+                                <div class="billing-details-modal rounded-3 p-3 bg-white border">
+                                    <div class="billing-row">
+                                        <span id="modalItemsCountLabel">Price (1 items)</span>
+                                        <span id="modalOriginalPrice">₹3999.00</span>
+                                    </div>
+                                    <div class="billing-row discount">
+                                        <span>Product Discount</span>
+                                        <span id="modalProductDiscount">-₹200.00</span>
+                                    </div>
+                                    <div class="billing-row">
+                                        <span>Shipping</span>
+                                        <span class="free-ship">FREE</span>
+                                    </div>
+                                    <div class="billing-row total-saved">
+                                        <span>Total Saved</span>
+                                        <span id="modalTotalSaved">₹200.00</span>
+                                    </div>
+                                    <div class="net-payable-row">
+                                        <span>Net Payable</span>
+                                        <span id="modalNetPayable">₹3799.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-details-section mt-5 px-1">
+                                <div class="order-details-section-title">PAYMENT INFO</div>
+                                <div class="info-label">METHOD</div>
+                                <div class="info-value" id="modalPaymentMethod">COD</div>
+                                
+                                <div class="info-label">PAYMENT STATUS</div>
+                                <div class="info-value mb-0" id="modalPaymentStatus">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom CSS for Checkout/Summary can be shared if needed, but I'll add the necessary logic to JS -->
+    <link rel="stylesheet" href="css/cart-checkout.css">
+
+    <script>
+        window.viewOrderDetails = function(orderId) {
+            const order = window.allOrders.find(o => o._id === orderId);
+            if (!order) return;
+
+            document.getElementById('modalOrderId').textContent = `ORDER #${order._id.substring(0, 8).toUpperCase()}`;
+            const dateObj = new Date(order.createdAt);
+            document.getElementById('modalOrderDate').textContent = `Placed on ${dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} at ${dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+
+            const statusBadge = document.getElementById('modalStatusBadge');
+            statusBadge.textContent = order.deliveryStatus.toUpperCase();
+            statusBadge.className = `status-badge status-${order.deliveryStatus.toLowerCase().replace(/\s+/g, '-')}`;
+
+            document.getElementById('modalInvoiceBtn').onclick = () => downloadInvoice(order._id);
+
+            const itemsList = document.getElementById('modalItemsList');
+            itemsList.innerHTML = '';
+            let totalOriginal = 0;
+            let itemsCount = 0;
+
+            order.products.forEach(item => {
+                const price = item.price;
+                const oldPrice = item.product?.oldPrice || price; 
+                totalOriginal += (oldPrice * item.quantity);
+                itemsCount += item.quantity;
+
+                const img = item.image ? `http://localhost:5000/uploads/${item.image.split('\\').pop().split('/').pop()}` : 'images/ceramic-cup.jpg';
+                itemsList.insertAdjacentHTML('beforeend', `
+                    <div class="detail-product-item">
+                        <div class="d-flex align-items-center">
+                            <img src="${img}" class="detail-product-img" onerror="this.src='images/ceramic-cup.jpg'">
+                            <div class="detail-product-name-col">
+                                <div class="detail-product-name">${item.name}</div>
+                                <div class="detail-product-meta">Size: ${item.size || 'N/A'} | Qty: ${item.quantity}</div>
+                            </div>
+                        </div>
+                        <div class="detail-product-total">₹${(price * item.quantity).toFixed(2)}</div>
+                    </div>
+                `);
+            });
+
+            const addr = order.shippingAddress;
+            document.getElementById('modalRecipientName').textContent = addr.fullName;
+            document.getElementById('modalAddress').textContent = `${addr.house}, ${addr.street}, ${addr.landmark ? addr.landmark + ', ' : ''}${addr.city}, ${addr.state} - ${addr.pincode}`;
+            document.getElementById('modalPhone').textContent = addr.phone;
+
+            const displayDiscount = order.discountAmount || (totalOriginal - order.totalAmount);
+            document.getElementById('modalItemsCountLabel').textContent = `Price (${itemsCount} items)`;
+            document.getElementById('modalOriginalPrice').textContent = `₹${totalOriginal.toFixed(2)}`;
+            document.getElementById('modalProductDiscount').textContent = `-₹${displayDiscount.toFixed(2)}`;
+            document.getElementById('modalTotalSaved').textContent = `₹${displayDiscount.toFixed(2)}`;
+            document.getElementById('modalNetPayable').textContent = `₹${order.totalAmount.toFixed(2)}`;
+
+            document.getElementById('modalPaymentMethod').textContent = order.paymentMethod;
+            document.getElementById('modalPaymentStatus').textContent = order.paymentStatus;
+
+            new bootstrap.Modal(document.getElementById('orderDetailsModal')).show();
         };
     </script>
     <script src="js/auth-sync.js"></script>

@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const recent = orders.slice(0, 2);
                     let html = '';
                     recent.forEach(order => {
-                        const statusClass = order.status === 'Delivered' ? 'delivered' : 'processing';
+                        const statusClass = order.deliveryStatus === 'Delivered' ? 'delivered' : 'processing';
                         let itemsHtml = '';
 
                         order.products.forEach(item => {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 </div>
                                 <div class="text-end">
                                     <div class="fw-bold mb-1">$${order.totalAmount.toFixed(2)}</div>
-                                    <span class="order-status ${statusClass}">${order.status}</span>
+                                    <span class="order-status ${statusClass}">${order.deliveryStatus}</span>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mt-3">

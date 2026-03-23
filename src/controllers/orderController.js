@@ -34,7 +34,7 @@ exports.getMyOrders = async (req, res) => {
 exports.createOrder = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { addressId, paymentMethod, totalAmount } = req.body;
+        const { addressId, paymentMethod, totalAmount, couponCode, discountAmount } = req.body;
 
         if (!addressId || !paymentMethod || !totalAmount) {
             return res.status(400).json({ success: false, message: "Missing required order fields" });
@@ -91,8 +91,10 @@ exports.createOrder = async (req, res) => {
                 pincode: selectedAddress.pincode
             },
             paymentMethod: paymentMethod === 'razorpay' ? 'Razorpay' : (paymentMethod === 'wallet' ? 'Wallet' : 'COD'),
-            paymentStatus: paymentMethod === 'cod' ? 'Pending' : 'Pending', // Razorpay starts Pending until verify
-            deliveryStatus: 'Processing'
+            paymentStatus: paymentMethod === 'cod' ? 'Pending' : 'Pending', 
+            deliveryStatus: 'Processing',
+            couponCode: couponCode || null,
+            discountAmount: discountAmount || 0
         });
 
         await newOrder.save();

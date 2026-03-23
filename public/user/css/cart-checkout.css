@@ -66,3 +66,362 @@
     font-size: 0.8rem;
     letter-spacing: 0.5px;
 }
+
+/* Premium Order Summary Redesign */
+.summary-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    color: #1a1a1a;
+}
+
+.summary-header {
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #000;
+}
+
+.summary-product {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.summary-product-img {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f8f8f8;
+}
+
+.summary-product-info h6 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.summary-product-meta {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.summary-product-price {
+    text-align: right;
+    flex-grow: 1;
+}
+
+.current-price {
+    font-weight: 700;
+    display: block;
+}
+
+.original-price {
+    font-size: 0.75rem;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.remove-item-btn {
+    color: #ff4d4f;
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    justify-content: flex-end;
+}
+
+.coupon-section-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.coupon-applied-msg {
+    color: #2bca63;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.view-offers-link {
+    color: #0d6efd;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 15px 0;
+    text-transform: uppercase;
+}
+
+.price-breakdown {
+    border-top: 1px dashed #eee;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.price-row.discount-row {
+    color: #2bca63;
+}
+
+.price-row.total-saved-row {
+    color: #2bca63;
+    font-weight: 600;
+    border-top: 1px dashed #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.total-payable-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.total-payable-label {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.total-payable-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.savings-encouragement {
+    background-color: #f6ffed;
+    border: 1px solid #b7eb8f;
+    color: #52c41a;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-place-order-premium {
+    background: #000;
+    color: #fff;
+    width: 100%;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border: none;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: transform 0.2s;
+}
+
+.btn-place-order-premium:hover {
+    background: #222;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Order Details Modal Premium Design */
+.order-details-modal .modal-dialog {
+    max-width: 850px;
+}
+
+.order-details-modal .modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.order-details-modal .modal-header {
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding: 24px 30px !important;
+    background: #fff;
+}
+
+
+.order-details-modal .order-id-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.order-details-modal .order-meta {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.order-details-modal .modal-body {
+    padding: 24px;
+    background: #fdfdfd;
+}
+
+.order-details-section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #444;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Products in Modal */
+.detail-product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    gap: 10px;
+}
+
+.detail-product-item:last-child {
+    border-bottom: none;
+}
+
+
+.detail-product-img {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f8f8f8;
+    border: 1px solid #eee;
+}
+
+.detail-product-name-col {
+    flex-grow: 1;
+    padding-left: 15px;
+    min-width: 0; /* Prevents text from pushing flex container */
+}
+
+.detail-product-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.detail-product-meta {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.detail-product-total {
+    font-weight: 800;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+/* Information Blocks */
+.info-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #aaa;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.info-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* Billing in Modal */
+.billing-details-modal {
+    background: #fff;
+}
+
+.billing-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.billing-row.discount {
+    color: #ff4d4f;
+}
+
+.billing-row.free-ship {
+    color: #2bca63;
+    font-weight: 600;
+}
+
+.billing-row.total-saved {
+    color: #2bca63;
+    font-weight: 700;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+}
+
+.net-payable-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #000;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #000;
+}
+
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+.status-pending { background: #fffde6; color: #fa8c16; border: 1px solid #ffe58f; }
+.status-processing { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+.status-shipped { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
+.status-delivered { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+.status-cancelled { background: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
+.status-returned { background: #f0f5ff; color: #2f54eb; border: 1px solid #adc6ff; }
+

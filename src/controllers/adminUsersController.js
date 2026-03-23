@@ -34,10 +34,25 @@ const getAllUsers = async (req, res) => {
             .limit(limit);
 
         // Map data to match exactly what the frontend table expects
+        const Order = require("../models/Order");
+        const userIds = users.map(u => u._id);
+        const allOrders = await Order.find({ user: { $in: userIds } });
+
         const formattedUsers = users.map(user => {
             let status = 'Pending';
             if (user.isBlocked) status = 'Blocked';
             else if (user.isVerified) status = 'Active';
+
+            // Calculate Order Stats
+            const userOrders = allOrders.filter(o => o.user.toString() === user._id.toString());
+            const orderCount = userOrders.length;
+            const totalSpend = userOrders.reduce((sum, order) => {
+                // Sum only if not cancelled or returned
+                if (order.deliveryStatus !== 'Cancelled' && order.deliveryStatus !== 'Returned') {
+                    return sum + (order.totalAmount || 0);
+                }
+                return sum;
+            }, 0);
 
             return {
                 _id: user._id,
@@ -47,7 +62,9 @@ const getAllUsers = async (req, res) => {
                 phone: user.phone || 'N/A',
                 createdAt: user.createdAt,
                 status: status,
-                isBlocked: user.isBlocked
+                isBlocked: user.isBlocked,
+                orderCount: orderCount,
+                totalSpend: totalSpend
             };
         });
 
@@ -122,8 +139,52 @@ const deleteUser = async (req, res) => {
     }
 };
 
+// @desc    Get detailed user info including orders summary
+// @route   GET /api/admin/users/:id/details
+// @access  Private/Admin
+const getUserDetails = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId).select("-password -otp -otpExpiry");
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const Order = require("../models/Order");
+
+        // Fetch completed, total, canceled orders
+        const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
+        
+        const totalOrders = orders.length;
+        const completedOrders = orders.filter(o => o.deliveryStatus === 'Delivered').length;
+        const canceledOrders = orders.filter(o => o.deliveryStatus === 'Cancelled' || o.deliveryStatus === 'Returned').length;
+
+        // Last purchase date
+        let lastPurchaseDate = null;
+        if (orders.length > 0) {
+            lastPurchaseDate = orders[0].createdAt;
+        }
+
+        res.status(200).json({
+            success: true,
+            user,
+            stats: {
+                totalOrders,
+                completedOrders,
+                canceledOrders,
+                lastPurchaseDate
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching user details:", error);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+
 module.exports = {
     getAllUsers,
     toggleBlockUser,
-    deleteUser
+    deleteUser,
+    getUserDetails
 };

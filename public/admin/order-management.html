@@ -13,19 +13,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../user/css/cart-checkout.css">
 
-    <!-- SweetAlert2 Injection -->
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-
 </head>
 
-<body>
-
+<body class="bg-light">
     <div class="admin-wrapper">
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
+
                 <a href="dashboard.html" class="sidebar-brand">CERAMICO</a>
                 <div class="d-none d-lg-block">
                     <i class="bi bi-list-nested text-muted fs-4" style="cursor: pointer;"></i>
@@ -300,7 +299,100 @@
         </div>
     </div>
 
+    <!-- Order Details Modal -->
+    <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="order-id-title" id="modalOrderId">ORDER #103C6C96</h5>
+                        <div class="order-meta" id="modalOrderDate">Placed on 23 March 2026 at 13:51</div>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                        <button class="btn btn-light btn-sm" id="modalInvoiceBtn">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Invoice
+                        </button>
+                        <span class="status-badge" id="modalStatusBadge">PENDING</span>
+                        <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <!-- Left Column -->
+                        <div class="col-lg-7 border-end">
+                            <div class="order-details-section">
+                                <div class="order-details-section-title">
+                                    <i class="bi bi-bag-check"></i> ORDER ITEMS
+                                </div>
+                                <div id="modalItemsList">
+                                    <!-- Items will be injected here -->
+                                </div>
+                            </div>
+
+                            <div class="order-details-section mt-5">
+                                <div class="order-details-section-title">
+                                    <i class="bi bi-geo-alt"></i> SHIPPING INFORMATION
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="info-label">RECIPIENT</div>
+                                        <div class="info-value" id="modalRecipientName">Adil tt</div>
+                                        
+                                        <div class="info-label">ADDRESS</div>
+                                        <div class="info-value" id="modalAddress">jf ,bh d y, meenchanda, Kerala - 325610</div>
+                                        
+                                        <div class="info-label">PHONE</div>
+                                        <div class="info-value" id="modalPhone">+91 7034731397</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-5">
+                            <div class="order-details-section">
+                                <div class="order-details-section-title">BILLING DETAILS</div>
+                                <div class="billing-details-modal">
+                                    <div class="billing-row">
+                                        <span id="modalItemsCountLabel">Price (1 items)</span>
+                                        <span id="modalOriginalPrice">₹3999.00</span>
+                                    </div>
+                                    <div class="billing-row discount">
+                                        <span>Product Discount</span>
+                                        <span id="modalProductDiscount">-₹200.00</span>
+                                    </div>
+                                    <div class="billing-row">
+                                        <span>Shipping</span>
+                                        <span class="free-ship">FREE</span>
+                                    </div>
+                                    <div class="billing-row total-saved">
+                                        <span>Total Saved</span>
+                                        <span id="modalTotalSaved">₹200.00</span>
+                                    </div>
+                                    <div class="net-payable-row">
+                                        <span>Net Payable</span>
+                                        <span id="modalNetPayable">₹3799.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-details-section mt-5">
+                                <div class="order-details-section-title">PAYMENT INFO</div>
+                                <div class="info-label">METHOD</div>
+                                <div class="info-value" id="modalPaymentMethod">COD</div>
+                                
+                                <div class="info-label">PAYMENT STATUS</div>
+                                <div class="info-value mb-0" id="modalPaymentStatus">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebarClose = document.getElementById('sidebarClose');

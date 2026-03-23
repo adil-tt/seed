@@ -128,6 +128,11 @@ exports.loginUser = async (req, res) => {
       return res.status(403).json({ message: "Please verify your email before logging in." });
     }
 
+    // 3.5 Check if the user is blocked
+    if (user.isBlocked) {
+      return res.status(403).json({ message: "Your account has been blocked by the administrator." });
+    }
+
     // 4. Compare the typed password with the hashed password in the database
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {

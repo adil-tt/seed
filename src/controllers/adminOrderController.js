@@ -57,13 +57,20 @@ const getAllOrders = async (req, res) => {
             Order.countDocuments({ deliveryStatus: 'Cancelled' })
         ]);
 
+        const revenueAggregation = await Order.aggregate([
+            { $match: { paymentStatus: 'Completed' } },
+            { $group: { _id: null, totalRevenue: { $sum: '$totalAmount' } } }
+        ]);
+        const totalRevenue = revenueAggregation.length > 0 ? revenueAggregation[0].totalRevenue : 0;
+
         res.status(200).json({
             success: true,
             stats: {
                 totalOrders: totalCount,
                 newOrders: newCount,
                 completedOrders: completedCount,
-                canceledOrders: canceledCount
+                canceledOrders: canceledCount,
+                totalRevenue: totalRevenue
             },
             orders: orders,
             pagination: {
@@ -119,7 +126,50 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
+// @desc    Export orders to CSV
+// @route   GET /api/admin/orders/export
+// @access  Private/Admin
+const exportOrdersExcel = async (req, res) => {
+    try {
+        const { startDate, endDate } = req.query;
+        let query = {};
+        
+        if (startDate || endDate) {
+            query.createdAt = {};
+            if (startDate) query.createdAt.$gte = new Date(startDate);
+            if (endDate) {
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                query.createdAt.$lte = end;
+            }
+        }
+
+        const orders = await Order.find(query).populate('user', 'name email').sort({ createdAt: -1 });
+
+        // Generate CSV string
+        let csv = 'Order ID,Customer Name,Customer Email,Date,Total Amount,Payment Method,Payment Status,Delivery Status\n';
+        
+        orders.forEach(order => {
+            const customerName = order.user && order.user.name ? `"${order.user.name.replace(/"/g, '""')}"` : 'Unknown';
+            const customerEmail = order.user && order.user.email ? `"${order.user.email.replace(/"/g, '""')}"` : 'Unknown';
+            const date = new Date(order.createdAt).toLocaleDateString() + ' ' + new Date(order.createdAt).toLocaleTimeString();
+            const total = order.totalAmount.toFixed(2);
+            
+            csv += `"${order._id}",${customerName},${customerEmail},"${date}",${total},"${order.paymentMethod || 'N/A'}","${order.paymentStatus || 'Pending'}","${order.deliveryStatus || 'Pending'}"\n`;
+        });
+
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=sales_report.csv');
+        res.status(200).send(csv);
+
+    } catch (error) {
+        console.error("Export Error:", error);
+        res.status(500).json({ success: false, message: "Server Error during export" });
+    }
+};
+
 module.exports = {
     getAllOrders,
-    updateOrderStatus
+    updateOrderStatus,
+    exportOrdersExcel
 };

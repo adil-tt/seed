@@ -27,6 +27,7 @@ app.use("/api/wishlist", require("./routes/wishlistRoutes"));
 app.use("/api/address", require("./routes/addressRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/payment", require("./routes/paymentRoutes"))
+app.use("/api/coupons", require("./routes/couponRoutes"));
 app.use("/api/admin", require("./routes/admin.routes"));
 
 // Serve Frontend Static Files

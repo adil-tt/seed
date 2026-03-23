@@ -217,8 +217,9 @@
                                         class="bi bi-search text-muted"></i></span>
                                 <input type="text" class="form-control border-start-0 ps-0" placeholder="Search Coupon">
                             </div>
-                            <a href="add-coupon.html" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add
-                                Coupon</a>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#couponCampaignModal">
+                                <i class="bi bi-plus-lg me-1"></i> Add Coupon
+                            </button>
                         </div>
                     </div>
 
@@ -238,71 +239,9 @@
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="couponTableBody">
                                 <tr>
-                                    <td><span class="fw-bold">SUMMER25</span></td>
-                                    <td>Percentage</td>
-                                    <td>25%</td>
-                                    <td>$50.00</td>
-                                    <td>2025-08-31</td>
-                                    <td>1000</td>
-                                    <td>450</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold">WELCOME10</span></td>
-                                    <td>Flat</td>
-                                    <td>$10.00</td>
-                                    <td>$20.00</td>
-                                    <td>2025-12-31</td>
-                                    <td>Unlimited</td>
-                                    <td>125</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success">Active</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold">FLASH50</span></td>
-                                    <td>Percentage</td>
-                                    <td>50%</td>
-                                    <td>$100.00</td>
-                                    <td>2024-12-25</td>
-                                    <td>50</td>
-                                    <td>50</td>
-                                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary">Expired</span>
-                                    </td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fw-bold">VIP20</span></td>
-                                    <td>Percentage</td>
-                                    <td>20%</td>
-                                    <td>$200.00</td>
-                                    <td>2026-01-01</td>
-                                    <td>100</td>
-                                    <td>0</td>
-                                    <td><span class="badge bg-danger bg-opacity-10 text-danger">Disabled</span></td>
-                                    <td class="text-end">
-                                        <button class="btn btn-sm btn-white border"><i
-                                                class="bi bi-pencil"></i></button>
-                                        <button class="btn btn-sm btn-white border text-danger"><i
-                                                class="bi bi-trash"></i></button>
-                                    </td>
+                                    <td colspan="9" class="text-center py-4">Loading coupons...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -325,7 +264,150 @@
         </div>
     </div>
 
+    <!-- Create New Campaign Modal -->
+    <div class="modal fade" id="couponCampaignModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 py-3">
+                    <h5 class="modal-title fw-bold" id="couponModalTitle">Create New Campaign</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light bg-opacity-50">
+                    <form id="couponForm">
+                        <input type="hidden" id="couponId">
+                        <div class="row g-4">
+                            <!-- Left Column -->
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm rounded-3 mb-4 h-100">
+                                    <div class="card-body p-4">
+                                        <h6 class="text-muted small fw-bold text-uppercase mb-3">General Information</h6>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-medium">Coupon Title</label>
+                                            <input type="text" class="form-control" id="title" placeholder="E.g. Summer Kick-off Sale" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-medium">Coupon Code</label>
+                                            <input type="text" class="form-control" id="code" placeholder="E.g. SUMMER2024" style="text-transform: uppercase;" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-medium">Campaign Description</label>
+                                            <textarea class="form-control" id="description" rows="3" placeholder="Briefly describe this campaign for internal tracking and user visibility..."></textarea>
+                                        </div>
+
+                                        <h6 class="text-muted small fw-bold text-uppercase mt-4 mb-3">Targeting & Visibility</h6>
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-medium">Applicable On</label>
+                                            <select class="form-select" id="applicableOn">
+                                                <option value="Everywhere">Everywhere</option>
+                                                <option value="Category">Specific Categories</option>
+                                                <option value="Product">Specific Products</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-medium">Status</label>
+                                            <select class="form-select" id="status">
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="card bg-primary bg-opacity-10 border-0 p-3 mt-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input mt-1" type="checkbox" id="visibleToUsers" checked>
+                                                <label class="form-check-label ms-2" for="visibleToUsers">
+                                                    <span class="fw-bold d-block text-dark">Visible to Users?</span>
+                                                    <span class="small text-muted d-block mt-1">If enabled, this coupon will appear in the "Available Coupons" list in User Account & Checkout.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm rounded-3 mb-4 h-100">
+                                    <div class="card-body p-4">
+                                        <h6 class="text-muted small fw-bold text-uppercase mb-3">Reward Rules</h6>
+                                        
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Value Type</label>
+                                                <select class="form-select" id="valueType">
+                                                    <option value="Percentage">Percentage (%)</option>
+                                                    <option value="Fixed Amount">Fixed Amount</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Discount Value</label>
+                                                <input type="number" step="0.01" class="form-control" id="discountValue" placeholder="e.g. 20" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Min. Purchase (₹)</label>
+                                                <input type="number" step="0.01" class="form-control" id="minPurchase" placeholder="0">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Max. Cap (₹)</label>
+                                                <input type="number" step="0.01" class="form-control" id="maxCap" placeholder="Optional">
+                                            </div>
+                                        </div>
+
+                                        <div class="card bg-light border p-3 mb-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="allowOnSaleProducts">
+                                                <label class="form-check-label ms-2" for="allowOnSaleProducts">
+                                                    <span class="fw-bold small text-dark d-block mb-1">Allow on sale products?</span>
+                                                    <span class="small text-muted">If enabled, this coupon can be stacked on items already carrying a product discount.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <h6 class="text-muted small fw-bold text-uppercase mb-3">Usage Limits & Schedule</h6>
+                                        
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Total Limit</label>
+                                                <input type="number" class="form-control" id="totalLimit" placeholder="100">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Per User Limit</label>
+                                                <input type="number" class="form-control" id="perUserLimit" placeholder="1" value="1">
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Start Date</label>
+                                                <input type="date" class="form-control" id="startDate">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small fw-medium">Expiry Date</label>
+                                                <input type="date" class="form-control" id="expiryDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer px-4 py-3 border-top bg-white rounded-bottom-4">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Discard Changes</button>
+                    <button type="button" class="btn btn-primary px-4 shadow-sm" style="background-color: #4f46e5; border-color: #4f46e5;" id="btnSaveCoupon">Confirm & Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/coupon.js"></script>
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebarClose = document.getElementById('sidebarClose');
