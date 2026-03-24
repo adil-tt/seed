@@ -2,11 +2,32 @@ const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 const { admin } = require("../middleware/adminMiddleware");
-const { getAllUsers, toggleBlockUser, deleteUser, getUserDetails } = require("../controllers/adminUsersController");
-const { getAllOrders, updateOrderStatus, exportOrdersExcel } = require("../controllers/adminOrderController");
-const { getDashboardStats } = require("../controllers/adminDashboardController");
-const { createCoupon, getCoupons, updateCoupon, deleteCoupon } = require("../controllers/adminCouponController");
-const { createOffer, getOffers, updateOffer, deleteOffer } = require("../controllers/adminOfferController");
+
+// Modular Admin User Actions
+const getAllUsers = require("../controllers/admin-user/getAllUsers");
+const toggleBlockUser = require("../controllers/admin-user/toggleBlockUser");
+const deleteUser = require("../controllers/admin-user/deleteUser");
+const getUserDetails = require("../controllers/admin-user/getUserDetails");
+
+// Modular Admin Order Actions
+const getAllOrders = require("../controllers/admin-order/getAllOrders");
+const updateOrderStatus = require("../controllers/admin-order/updateOrderStatus");
+const exportOrdersExcel = require("../controllers/admin-order/exportOrdersExcel");
+
+// Modular Admin Dashboard Actions
+const getDashboardStats = require("../controllers/admin-dashboard/getDashboardStats");
+
+// Modular Admin Coupon Actions
+const createCoupon = require("../controllers/admin-coupon/createCoupon");
+const getCoupons = require("../controllers/admin-coupon/getCoupons");
+const updateCoupon = require("../controllers/admin-coupon/updateCoupon");
+const deleteCoupon = require("../controllers/admin-coupon/deleteCoupon");
+
+// Modular Admin Offer Actions
+const createOffer = require("../controllers/admin-offer/createOffer");
+const getOffers = require("../controllers/admin-offer/getOffers");
+const updateOffer = require("../controllers/admin-offer/updateOffer");
+const deleteOffer = require("../controllers/admin-offer/deleteOffer");
 
 // Protected Admin Routes
 router.get("/dashboard", protect, admin, getDashboardStats);

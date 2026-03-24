@@ -1,20 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const supplierController = require("../controllers/supplierController");
 
-// Create supplier
-router.post("/", supplierController.createSupplier);
+// Import modular actions from supplier subfolder
+const createSupplier = require("../controllers/supplier/createSupplier");
+const getSuppliers = require("../controllers/supplier/getSuppliers");
+const getSupplierById = require("../controllers/supplier/getSupplierById");
+const updateSupplier = require("../controllers/supplier/updateSupplier");
+const deleteSupplier = require("../controllers/supplier/deleteSupplier");
 
-// Get all suppliers
-router.get("/", supplierController.getSuppliers);
-
-// Get single supplier (for edit page)
-router.get("/:id", supplierController.getSupplierById);
-
-// Update supplier
-router.put("/:id", supplierController.updateSupplier);
-
-// Delete supplier
-router.delete("/:id", supplierController.deleteSupplier);
+router.post("/", createSupplier);
+router.get("/", getSuppliers);
+router.get("/:id", getSupplierById);
+router.put("/:id", updateSupplier);
+router.delete("/:id", deleteSupplier);
 
 module.exports = router;

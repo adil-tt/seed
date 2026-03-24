@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {
-    addAddress,
-    getUserAddresses,
-    setDefaultAddress,
-    deleteAddress
-} = require("../controllers/addressController");
+const addAddress = require("../controllers/address/addAddress");
+const getUserAddresses = require("../controllers/address/getUserAddresses");
+const setDefaultAddress = require("../controllers/address/setDefaultAddress");
+const deleteAddress = require("../controllers/address/deleteAddress");
 const { validateAddress } = require("../middleware/addressValidator");
 
 // Import the auth middleware

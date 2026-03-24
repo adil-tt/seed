@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
-const { 
-  createRazorpayOrder, 
-  verifyRazorpayPayment,
-  createWalletFundOrder,
-  verifyWalletFundPayment
-} = require("../controllers/paymentController");
+
+// Import modular actions from payment subfolder
+const createRazorpayOrder = require("../controllers/payment/createRazorpayOrder");
+const verifyRazorpayPayment = require("../controllers/payment/verifyRazorpayPayment");
+const createWalletFundOrder = require("../controllers/payment/createWalletFundOrder");
+const verifyWalletFundPayment = require("../controllers/payment/verifyWalletFundPayment");
 
 router.post("/create-order", protect, createRazorpayOrder);
 router.post("/verify-payment", protect, verifyRazorpayPayment);

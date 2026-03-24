@@ -1,4 +1,51 @@
 /* Product Page Styles */
+.shop-hero {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -76px; /* Offset body padding-top */
+    margin-bottom: 3rem;
+    color: #fff;
+}
+
+.shop-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.shop-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.shop-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    color: #fff !important;
+}
+
+.shop-hero .breadcrumb-item, 
+.shop-hero .breadcrumb-item a {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: none;
+}
+
+.shop-hero .breadcrumb-item.active {
+    color: #fff !important;
+}
+
 .sidebar {
     background-color: #fff;
     padding: 20px;

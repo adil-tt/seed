@@ -1,13 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const upload = require('../middleware/upload');
-const { uploadImages } = require('../controllers/uploadController');
+const upload = require("../middleware/upload"); // Multer config
+
+// Import modular action from upload subfolder
+const uploadImages = require("../controllers/upload/uploadImages");
 
 /**
- * ROUTE: Image Upload Route
- * POST /api/upload
- * Configured to accept up to 3 images per request under the field name 'images'.
+ * Route: POST /api/upload
+ * Multer handles file parsing, then uploadImages sends the response.
  */
-router.post('/', upload.array('images', 3), uploadImages);
+router.post("/", upload.array("images", 10), uploadImages);
 
 module.exports = router;

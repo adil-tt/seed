@@ -1,0 +1,134 @@
+/* Contact Page Specific Styles */
+
+.contact-hero {
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -76px; /* Offset body padding-top to start from top */
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 1;
+}
+
+.contact-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.contact-hero h1 {
+    font-size: 3.5rem;
+    letter-spacing: 4px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    color: #fff !important;
+}
+
+.contact-hero p {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.contact-section {
+    position: relative;
+    margin-top: -50px; /* Pull content up slightly */
+    z-index: 10;
+}
+
+.contact-card {
+    background: #fff;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.contact-info-side {
+    padding: 3rem;
+    border-right: 1px solid #f0f0f0;
+}
+
+.contact-form-side {
+    padding: 3rem;
+}
+
+.info-item {
+    margin-bottom: 2.5rem;
+}
+
+.info-icon {
+    font-size: 1.5rem;
+    color: #3b82f6; /* Matching the blue button in user's image */
+    margin-bottom: 0.5rem;
+}
+
+.info-label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+    color: #111;
+}
+
+.info-value {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-send {
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-send:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+@media (max-width: 991.98px) {
+    .contact-info-side {
+        border-right: none;
+        border-bottom: 1px solid #f0f0f0;
+    }
+}

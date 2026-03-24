@@ -1,6 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { getMyOrders, createOrder, cancelOrderItem, cancelOrder, returnOrder, downloadInvoice } = require("../controllers/orderController");
+
+// Import modular actions from order subfolder
+const getMyOrders = require("../controllers/order/getMyOrders");
+const createOrder = require("../controllers/order/createOrder");
+const cancelOrderItem = require("../controllers/order/cancelOrderItem");
+const cancelOrder = require("../controllers/order/cancelOrder");
+const returnOrder = require("../controllers/order/returnOrder");
+const downloadInvoice = require("../controllers/order/downloadInvoice");
+
 const { protect } = require("../middleware/authMiddleware");
 
 // Routes

@@ -1,27 +1,27 @@
-
 const express = require("express");
 const router = express.Router();
 
-// 1. Import ALL your controller functions 
-const {
-  registerUser,
-  verifyOtp,
-  loginUser,
-  forgotPassword,
-  resetPassword,
-  updateProfile
-} = require("../controllers/authController");
+// Import Auth Controller actions from subfolder
+const signup = require("../controllers/auth/signup");
+const verifyOtp = require("../controllers/auth/verifyOtp");
+const loginUser = require("../controllers/auth/loginUser");
+const forgotPassword = require("../controllers/auth/forgotPassword");
+const resetPassword = require("../controllers/auth/resetPassword");
 
-// 2. Import your new Auth Middleware
+// Import User Controller actions from subfolder
+const updateProfile = require("../controllers/user/updateProfile");
+const getProfile = require("../controllers/user/getProfile");
+
+// Import Auth Middleware
 const { protect } = require("../middleware/authMiddleware");
 
-// 3. Import Multer Upload Middleware for Profile Images
+// Import Multer Upload Middleware for Profile Images
 const upload = require("../middleware/upload");
 
 // ==========================================
 // PUBLIC ROUTES (No token required)
 // ==========================================
-router.post("/signup", registerUser);
+router.post("/signup", signup);
 router.post("/verify-otp", verifyOtp);
 router.post("/login", loginUser);
 router.post("/forgot-password", forgotPassword);
@@ -30,13 +30,7 @@ router.post("/reset-password", resetPassword);
 // ==========================================
 // PROTECTED ROUTES (Token REQUIRED!)
 // ==========================================
-// Example: A user requesting their own profile details
-router.get("/profile", protect, (req, res) => {
-  res.status(200).json({
-    message: "Secure route accessed successfully!",
-    user: req.user
-  });
-});
+router.get("/profile", protect, getProfile);
 
 // Update Profile route (handles text fields + profileImage upload)
 router.put("/profile", protect, upload.single("profileImage"), updateProfile);
