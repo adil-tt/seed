@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- REFRESH WALLET & PROFILE DATA ---
     async function loadWalletData() {
         try {
-            const res = await fetch("/api/auth/profile", {
+            const res = await fetch("http://localhost:5000/api/auth/profile", {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
 
                     // 1. Create Order
-                    const orderRes = await fetch("/api/payment/wallet/create-order", {
+                    const orderRes = await fetch("http://localhost:5000/api/payment/wallet/create-order", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             });
 
                             // 2. Verify Payment
-                            const verifyRes = await fetch("/api/payment/wallet/verify", {
+                            const verifyRes = await fetch("http://localhost:5000/api/payment/wallet/verify", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",

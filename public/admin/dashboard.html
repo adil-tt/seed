@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/admin-auth.js"></script>
+    <script src="js/admin-common.js"></script>
     <title>Dashboard - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -274,26 +276,26 @@
                             <!-- Metrics Strip: Used d-flex justify-content-between for equal spacing -->
                             <div class="d-flex justify-content-between flex-wrap mb-5 text-start gap-3">
                                 <div class="position-relative">
-                                    <h4 class="fw-bold mb-1">52k</h4>
-                                    <small class="text-secondary d-block mb-2">Lift Force</small>
+                                    <h4 class="fw-bold mb-1" id="metrics-revenue">$0</h4>
+                                    <small class="text-secondary d-block mb-2">Total Revenue</small>
                                     <div class="position-absolute bottom-0 start-0 bg-success rounded-pill"
                                         style="height: 3px; width: 40px;"></div>
                                 </div>
                                 <div>
-                                    <h4 class="fw-bold mb-1">3.5k</h4>
-                                    <small class="text-secondary">Power Draw</small>
+                                    <h4 class="fw-bold mb-1" id="metrics-orders">0</h4>
+                                    <small class="text-secondary">Total Orders</small>
                                 </div>
                                 <div>
-                                    <h4 class="fw-bold mb-1">2.5k</h4>
-                                    <small class="text-secondary">Field Stability</small>
+                                    <h4 class="fw-bold mb-1" id="metrics-avg-value">$0</h4>
+                                    <small class="text-secondary">Avg. Order Value</small>
                                 </div>
                                 <div>
-                                    <h4 class="fw-bold mb-1">0.5k</h4>
-                                    <small class="text-secondary">Flux Variance</small>
+                                    <h4 class="fw-bold mb-1" id="metrics-pending">0</h4>
+                                    <small class="text-secondary">Pending Orders</small>
                                 </div>
                                 <div>
-                                    <h4 class="fw-bold mb-1">250k</h4>
-                                    <small class="text-secondary">Net Efficiency</small>
+                                    <h4 class="fw-bold mb-1" id="metrics-canceled">0</h4>
+                                    <small class="text-secondary">Canceled</small>
                                 </div>
                             </div>
 

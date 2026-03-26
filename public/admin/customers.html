@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/admin-auth.js"></script>
+    <script src="js/admin-common.js"></script>
     <title>Customers - Ceramico Admin</title>
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -186,7 +188,7 @@
                                 <h6 class="fw-bold fs-6 mb-0">Total Customer</h6>
                                 <i class="bi bi-three-dots-vertical text-muted"></i>
                             </div>
-                            <h3 class="fw-bold mb-1">45,230</h3>
+                            <h3 id="customer-total" class="fw-bold mb-1">0</h3>
                             <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 14.4% <span
                                     class="text-muted">Last 7 days</span></p>
                         </div>
@@ -195,7 +197,7 @@
                                 <h6 class="fw-bold fs-6 mb-0">Active Customer</h6>
                                 <i class="bi bi-three-dots-vertical text-muted"></i>
                             </div>
-                            <h3 class="fw-bold mb-1">11,400</h3>
+                            <h3 id="customer-active" class="fw-bold mb-1">0</h3>
                             <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 25% <span
                                     class="text-muted">Last 7 days</span></p>
                         </div>
@@ -204,7 +206,7 @@
                                 <h6 class="fw-bold fs-6 mb-0">New Customer</h6>
                                 <i class="bi bi-three-dots-vertical text-muted"></i>
                             </div>
-                            <h3 class="fw-bold mb-1">2,370</h3>
+                            <h3 id="customer-new" class="fw-bold mb-1">0</h3>
                             <p class="text-success small mb-0"><i class="bi bi-arrow-up-short"></i> 28% <span
                                     class="text-muted">Last 7 days</span></p>
                         </div>

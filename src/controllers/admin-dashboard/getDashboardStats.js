@@ -37,6 +37,24 @@ const getDashboardStats = async (req, res, next) => {
       { $limit: 3 }
     ]);
 
+    // Weekly Sales Aggregation (for the chart)
+    const weeklySalesAggregation = await Order.aggregate([
+      { $match: { deliveryStatus: { $ne: "Cancelled" } } },
+      {
+        $group: {
+          _id: { $dayOfWeek: "$createdAt" },
+          totalSales: { $sum: "$totalAmount" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    // Map aggregation results to Sun-Sat array (1=Sun, 2=Mon... 7=Sat)
+    const weeklySales = new Array(7).fill(0);
+    weeklySalesAggregation.forEach(item => {
+      weeklySales[item._id - 1] = item.totalSales;
+    });
+
     res.status(200).json({
       success: true,
       metrics: {
@@ -46,7 +64,8 @@ const getDashboardStats = async (req, res, next) => {
         canceled: canceledCount
       },
       recentTransactions,
-      topProducts: topProductsAggregation
+      topProducts: topProductsAggregation,
+      weeklySales
     });
 
   } catch (error) {

@@ -9,34 +9,30 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 2. Health Check Route (Great for testing if the server is alive)
+// 2. Health Check Route
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Ceramico API is running successfully!" });
 });
 
 // 3. Routes
-app.use("/api/auth", require("./routes/auth.routes"));
-app.use("/api/products", require("./routes/productRoutes"))
-app.use("/api/suppliers", require("./routes/supplierRoutes"))
-app.use("/api/purchases", require("./routes/purchaseRoutes"))
-app.use("/api/upload", require("./routes/uploadRoutes"));
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-app.use("/api/categories", require("./routes/categoryRoutes"));
-app.use("/api/cart", require("./routes/cartRoutes"));
-app.use("/api/wishlist", require("./routes/wishlistRoutes"));
-app.use("/api/address", require("./routes/addressRoutes"));
-app.use("/api/orders", require("./routes/orderRoutes"));
-app.use("/api/payment", require("./routes/paymentRoutes"))
-app.use("/api/coupons", require("./routes/couponRoutes"));
-app.use("/api/offers", require("./routes/offerRoutes"));
-app.use("/api/admin", require("./routes/admin.routes"));
+const apiRoutes = require("./routes/api.routes");
+app.use("/api", apiRoutes);
 
-// Serve Frontend Static Files
+// 4. Static Files
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.static(path.join(__dirname, "../public")));
-// 4. Global Error Handling Middleware (Catches unhandled errors)
+
+// 5. 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// 6. Global Error Handler
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err.stack);
-  res.status(500).json({ message: "Something went wrong on the server!" });
+  res.status(err.status || 500).json({
+    message: err.message || "Something went wrong",
+  });
 });
 
 module.exports = app;

@@ -45,7 +45,7 @@ async function fetchUsers() {
             search: searchQuery
         });
 
-        const response = await fetch(`http://localhost:5000/api/admin/users?${params.toString()}`, {
+        const response = await fetch(`/api/admin/users?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -63,6 +63,14 @@ async function fetchUsers() {
             allUsersData = data.users;
             renderUsers(data.users);
             renderPagination(data.pagination);
+            
+            // Populate summary stats if available
+            if (data.summary) {
+                updateSummaryStats(data.summary);
+                if (window.updateCustomerChart) {
+                    window.updateCustomerChart(data.summary.weeklyRegistrations);
+                }
+            }
 
             // Auto-select first user if none selected
             if (data.users.length > 0 && !selectedUser) {
@@ -76,6 +84,20 @@ async function fetchUsers() {
             tbody.innerHTML = `<tr><td colspan='7' class='text-center py-4 text-danger'><i class="bi bi-exclamation-triangle"></i> Error loading customers: ${error.message} <br> <a href="login.html" class="btn btn-sm btn-outline-primary mt-2">Go to Login</a></td></tr>`;
         }
     }
+}
+
+function updateSummaryStats(summary) {
+    const totalEl = document.getElementById('customer-total');
+    const activeEl = document.getElementById('customer-active');
+    const newEl = document.getElementById('customer-new');
+    
+    if (totalEl) totalEl.textContent = summary.total.toLocaleString();
+    if (activeEl) activeEl.textContent = summary.active.toLocaleString();
+    if (newEl) newEl.textContent = summary.new.toLocaleString();
+
+    // Also update the chart metrics header if they exist
+    const chartActive = document.querySelector('.col-lg-9 h4:nth-of-type(1)');
+    if (chartActive) chartActive.textContent = (summary.active >= 1000 ? (summary.active / 1000).toFixed(1) + 'k' : summary.active);
 }
 
 function renderUsers(users) {
@@ -216,12 +238,12 @@ async function updateSidePanel(user) {
 
     try {
         const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/admin/users/${user._id}/details`, {
+        const response = await fetch(`/api/admin/users/${user._id}/details`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
         
-        if (res.ok) {
-            const data = await res.json();
+        if (response.ok) {
+            const data = await response.json();
             const fullUser = data.user;
             const stats = data.stats;
 
@@ -273,7 +295,7 @@ async function handleBlockUser() {
     if (!result.isConfirmed) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/admin/users/${selectedUser._id}/block`, {
+        const response = await fetch(`/api/admin/users/${selectedUser._id}/block`, {
             method: 'PUT',
             headers: { "Authorization": `Bearer ${token}` }
         });

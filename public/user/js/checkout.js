@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const price = product.price || 0;
             const oldPrice = product.oldPrice || price; // Assumed field
             const qty = item.quantity || 1;
-            
+
             subtotal += (price * qty);
             totalOriginalPrice += (oldPrice * qty);
             itemsCount += qty;
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const productDiscount = totalOriginalPrice - subtotal;
         let couponDiscount = 0;
-        
+
         if (appliedCoupon) {
             if (appliedCoupon.valueType === 'Percentage') {
                 couponDiscount = (subtotal * (appliedCoupon.discountValue / 100));
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function applyCouponCore(code) {
         const coupon = availableCoupons.find(c => c.code === code);
         if (!coupon) return Swal.fire({ text: "Invalid or expired coupon", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 });
-        
+
         // Check minimum purchase if applicable
         const subtotal = cartItems.reduce((acc, item) => acc + ((item.product?.price || item.price) * (item.quantity || 1)), 0);
         if (coupon.minPurchase && subtotal < coupon.minPurchase) {
@@ -338,12 +338,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 btn.addEventListener('click', (e) => {
                     const code = e.target.getAttribute('data-code');
                     const modal = bootstrap.Modal.getInstance(document.getElementById('couponsModal'));
-                    if(modal) modal.hide();
+                    if (modal) modal.hide();
                     applyCouponCore(code);
                 });
             });
         }
-        
+
         const myModal = new bootstrap.Modal(document.getElementById('couponsModal'));
         myModal.show();
     }

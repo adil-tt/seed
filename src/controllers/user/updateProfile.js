@@ -13,7 +13,7 @@ const updateProfile = async (req, res, next) => {
     if (phone !== undefined) updateData.phone = phone;
 
     if (req.file) {
-      updateData.profileImage = req.file.filename;
+      updateData.profileImage = `/uploads/${req.file.filename}`;
     }
 
     const updatedUser = await User.findByIdAndUpdate(

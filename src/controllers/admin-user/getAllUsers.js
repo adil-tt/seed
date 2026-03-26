@@ -49,7 +49,6 @@ const getAllUsers = async (req, res, next) => {
         }
         return sum;
       }, 0);
-
       return {
         _id: user._id,
         firstName: user.firstName || user.name,
@@ -64,9 +63,35 @@ const getAllUsers = async (req, res, next) => {
       };
     });
 
+    // Summary Stats
+    const totalCount = await User.countDocuments({ role: { $ne: 'admin' } });
+    const activeCount = await User.countDocuments({ role: { $ne: 'admin' }, isVerified: true, isBlocked: false });
+    const newCount = await User.countDocuments({ 
+        role: { $ne: 'admin' }, 
+        createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } 
+    });
+
+    // Weekly Registrations Aggregation (for the chart)
+    const weeklyRegAggregation = await User.aggregate([
+        { $match: { role: { $ne: 'admin' } } },
+        { $group: { _id: { $dayOfWeek: "$createdAt" }, count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }
+    ]);
+
+    const weeklyRegistrations = new Array(7).fill(0);
+    weeklyRegAggregation.forEach(item => {
+        weeklyRegistrations[item._id - 1] = item.count;
+    });
+
     res.status(200).json({
       success: true,
       users: formattedUsers,
+      summary: {
+        total: totalCount,
+        active: activeCount,
+        new: newCount,
+        weeklyRegistrations
+      },
       pagination: {
         totalUsers,
         totalPages,

@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 1. Fetch Active Offers first
     try {
-        const offRes = await fetch("/api/offers/active");
+        const offRes = await fetch("http://localhost:5000/api/offers/active");
         if (offRes.ok) {
             const offData = await offRes.json();
             activeOffers = offData.offers || [];
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // 2. Fetch Product Details
-        const response = await fetch(`/api/products/${productId}`);
+        const response = await fetch(`http://localhost:5000/api/products/${productId}`);
         if (!response.ok) throw new Error("Failed to load product details");
 
         const product = await response.json();
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const pid = addToCartBtn.getAttribute('data-id');
 
             try {
-                const res = await fetch("/api/cart/add", {
+                const res = await fetch("http://localhost:5000/api/cart/add", {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                     body: JSON.stringify({ productId: pid, quantity: qty })

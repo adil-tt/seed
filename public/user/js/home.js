@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const carouselIndicators = document.getElementById("carousel-indicators");
 
     try {
-        const offResponse = await fetch("/api/offers/active");
+        const offResponse = await fetch("http://localhost:5000/api/offers/active");
         if (offResponse.ok) {
             const offData = await offResponse.json();
             activeOffers = offData.offers || [];
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const productsContainer = document.getElementById("home-products");
     if (productsContainer) {
         try {
-            const response = await fetch("/api/products");
+            const response = await fetch("http://localhost:5000/api/products");
             if (response.ok) {
                 const products = await response.json();
                 const latestProducts = products.slice(0, 8);
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const categoriesContainer = document.getElementById("home-categories");
     if (categoriesContainer) {
         try {
-            const catResponse = await fetch("/api/categories?status=active");
+            const catResponse = await fetch("http://localhost:5000/api/categories?status=active");
             if (catResponse.ok) {
                 const catData = await catResponse.json();
                 const categories = catData.categories || [];

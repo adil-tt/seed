@@ -17,7 +17,7 @@
 
     <!-- SweetAlert2 Injection -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
 
 </head>
 
@@ -113,388 +113,426 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            // 1. Authentication Check
-            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-            if (!token) {
-                window.location.href = "login.html"; // Redirect if not logged in
-                return;
-            }
+    let currentHistoryPage = 1;
 
-            try {
-                // 2. Fetch User Orders Data
-                const response = await fetch("http://localhost:5000/api/orders/my", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
+    document.addEventListener("DOMContentLoaded", () => {
+    fetchOrders(1);
+    });
 
-                const data = await response.json();
+    async function fetchOrders(page = 1) {
+    currentHistoryPage = page;
+    const ordersContainer = document.getElementById("ordersContainer");
+    ordersContainer.innerHTML = `
+    <div class="text-center py-5">
+        <span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span> Loading
+        orders...
+    </div>
+    `;
 
-                if (!response.ok) {
-                    throw new Error(data.message || "Failed to fetch orders");
+    // 1. Authentication Check
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+    if (!token) {
+    window.location.href = "login.html";
+    return;
+    }
+
+    try {
+    // 2. Fetch User Orders Data
+    const response = await fetch(`http://localhost:5000/api/orders/my?page=${page}&limit=3`, {
+    method: "GET",
+    headers: {
+    "Authorization": `Bearer ${token}`
+    }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch orders");
+    }
+
+    if (data.user) {
+    const userNameEl = document.querySelector(".user-profile-summary h5");
+    const userEmailEl = document.querySelector(".user-profile-summary small");
+    if (userNameEl) userNameEl.innerText = data.user.name;
+    if (userEmailEl) userEmailEl.innerText = data.user.email;
+    }
+
+    const ordersList = data.orders || [];
+    ordersContainer.innerHTML = '';
+
+    if (ordersList.length === 0) {
+    ordersContainer.innerHTML = `
+    <div class="text-center py-5 bg-white rounded shadow-sm">
+        <i class="bi bi-box2-heart display-1 text-muted opacity-50 mb-3"></i>
+        <h5 class="text-secondary">You have not placed any orders yet.</h5>
+        <a href="product.html" class="btn btn-outline-primary mt-2">Start Shopping</a>
+    </div>
+    `;
+    return;
+    }
+
+    let ordersHTML = "";
+    ordersList.forEach(order => {
+    const orderDate = new Date(order.createdAt).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric'
+    });
+
+    let badgeColor = "bg-primary";
+    if (order.deliveryStatus === "Delivered") badgeColor = "bg-success";
+    if (order.deliveryStatus === "Cancelled" || order.deliveryStatus === "Returned") badgeColor = "bg-danger";
+
+    let statusFooter = '';
+    if (order.deliveryStatus === 'Delivered') {
+    statusFooter = '<i class="bi bi-check-circle-fill text-success me-2"></i> Shipment Delivered';
+    } else if (order.deliveryStatus === 'Cancelled') {
+    statusFooter = '<i class="bi bi-x-circle-fill text-danger me-2"></i> Order Cancelled';
+    } else if (order.deliveryStatus === 'Returned') {
+    statusFooter = '<i class="bi bi-arrow-return-left text-warning me-2"></i> Order Returned';
+    } else if (order.trackingId) {
+    statusFooter = `<i class="bi bi-truck me-2"></i> Track Order: ${order.trackingId}`;
+    } else {
+    statusFooter = '<i class="bi bi-box me-2"></i> Processing...';
+    }
+
+    let productsHTML = `<div class="d-flex gap-2 overflow-auto py-1 mb-2">`;
+        if (order.products && order.products.length > 0) {
+        order.products.forEach(item => {
+        const imgSrc = item.image && !item.image.startsWith('http') && !item.image.startsWith('images/')
+        ? `/uploads/${item.image}`
+        : (item.image || 'images/placeholder.jpg');
+
+        productsHTML += `
+        <div class="border rounded p-1 text-center" style="min-width: 80px; background: #fafafa;">
+            <img src="${imgSrc}" alt="${item.name}" class="img-fluid rounded mb-1"
+                style="height: 40px; object-fit: cover;">
+            <p class="mb-0 text-truncate" style="max-width: 70px; font-size: 9px;" title="${item.name}">${item.name}</p>
+            <small class="text-muted" style="font-size: 8px;">Qty: ${item.quantity}</small>
+        </div>
+        `;
+        });
+        }
+        productsHTML += `
+    </div>`;
+
+    ordersHTML += `
+    <div class="order-item-card bg-white mb-2 rounded shadow-sm p-2">
+        <div class="order-header d-flex justify-content-between align-items-center mb-1">
+            <div class="d-flex align-items-center gap-2">
+                <div class="p-1 bg-light rounded text-center">
+                    <i class="bi bi-box-seam fs-5 text-secondary"></i>
+                </div>
+                <div>
+                    <span class="fw-bold d-block" style="font-size: 12px;">Order #${order._id.substring(0,
+                        8).toUpperCase()}</span>
+                    <small class="text-muted" style="font-size: 10px;">${orderDate}</small>
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="fw-bold" style="font-size: 13px;">₹${order.totalAmount}</div>
+                <span class="badge ${badgeColor}"
+                    style="font-size: 9px; padding: 2px 5px;">${order.deliveryStatus}</span>
+            </div>
+        </div>
+
+        <div class="border-bottom pb-1 mb-1">
+            ${productsHTML}
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center bg-light p-1 rounded">
+            <div class="small text-muted" style="font-size: 10px;">
+                ${statusFooter}
+            </div>
+            <div class="d-flex gap-1">
+                <button onclick="viewOrderDetails('${order._id}')" class="btn btn-xs btn-dark py-0 px-2"
+                    style="font-size: 10px; height: 22px;"><i class="bi bi-eye"></i> Details</button>
+                <button onclick="downloadInvoice('${order._id}')" class="btn btn-xs btn-outline-secondary py-0 px-2"
+                    style="font-size: 10px; height: 22px;"><i class="bi bi-download"></i></button>
+                ${order.deliveryStatus === 'Delivered'
+                ? `<button onclick="confirmReturnOrder('${order._id}')" class="btn btn-xs btn-outline-primary py-0 px-2"
+                    style="font-size: 10px; height: 22px;"><i class="bi bi-arrow-return-left"></i></button>`
+                : `<button onclick="confirmCancelOrder('${order._id}')" class="btn btn-xs btn-outline-danger py-0 px-2"
+                    style="font-size: 10px; height: 22px;"><i class="bi bi-x-circle"></i></button>`
                 }
+            </div>
+        </div>
+    </div>
+    `;
+    });
 
-                // 3. Update User Profile Panel Dynamically
-                if (data.user) {
-                    const userNameEl = document.querySelector(".user-profile-summary h5");
-                    const userEmailEl = document.querySelector(".user-profile-summary small");
-                    if (userNameEl) userNameEl.innerText = data.user.name;
-                    if (userEmailEl) userEmailEl.innerText = data.user.email;
-                }
+    ordersContainer.innerHTML = ordersHTML;
+    window.allOrders = ordersList; // Replace with current page orders for details view
 
-                // 4. Handle Order Rendering
-                const ordersContainer = document.getElementById("ordersContainer");
-                const ordersList = data.orders || [];
+    if (data.pagination && data.pagination.totalPages > 1) {
+    renderPagination(data.pagination);
+    }
 
-                // Clear the loading spinner
-                ordersContainer.innerHTML = '';
+    } catch (error) {
+    console.error("Error loading order history:", error);
+    const msg = error.message || (typeof error === 'object' ? JSON.stringify(error) : error);
+    ordersContainer.innerHTML = `<div class="alert alert-danger text-center small">Error: ${msg}</div>`;
+    }
+    }
 
-                // 5. Empty State Check
-                if (ordersList.length === 0) {
-                    ordersContainer.innerHTML = `
-                        <div class="text-center py-5 bg-white rounded shadow-sm">
-                            <i class="bi bi-box2-heart display-1 text-muted opacity-50 mb-3"></i>
-                            <h5 class="text-secondary">You have not placed any orders yet.</h5>
-                            <p class="text-muted small">Once you buy something, it will appear here!</p>
-                            <a href="product.html" class="btn btn-outline-primary mt-2">Start Shopping</a>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // 6. Loop and Render Each Order Card
-                let ordersHTML = "";
-
-                ordersList.forEach(order => {
-                    // Format the date uniquely
-                    const orderDate = new Date(order.createdAt).toLocaleDateString('en-GB', {
-                        day: 'numeric', month: 'short', year: 'numeric'
-                    });
-
-                    // Status Badge Formatting
-                    let badgeColor = "bg-primary";
-                    if (order.deliveryStatus === "Delivered") badgeColor = "bg-success";
-                    if (order.deliveryStatus === "Cancelled" || order.deliveryStatus === "Returned") badgeColor = "bg-danger";
-
-                    // Products Loop within the Order
-                    let productsHTML = `<div class="d-flex gap-3 overflow-auto py-2 mb-3">`;
-                    if (order.products && order.products.length > 0) {
-                        order.products.forEach(item => {
-                            const imgSrc = item.image && !item.image.startsWith('http') && !item.image.startsWith('images/')
-                                ? `http://localhost:5000/uploads/${item.image}`
-                                : (item.image || 'images/placeholder.jpg');
-
-                            productsHTML += `
-                                <div class="border rounded p-2 text-center" style="min-width: 120px;">
-                                    <img src="${imgSrc}" alt="${item.name}" class="img-fluid rounded mb-2" style="height: 60px; object-fit: cover;">
-                                    <p class="small mb-0 text-truncate" style="max-width: 100px;" title="${item.name}">${item.name}</p>
-                                    <small class="text-muted">Qty: ${item.quantity}</small>
-                                </div>
-                            `;
-                        });
-                    }
-                    productsHTML += `</div>`;
-
-                    // Order Card Assembly
-                    ordersHTML += `
-                        <div class="order-item-card bg-white mb-4 rounded shadow-sm p-4">
-                            <div class="order-header d-flex justify-content-between align-items-center mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="p-3 bg-light rounded text-center">
-                                        <i class="bi bi-box-seam fs-4 text-secondary"></i>
-                                    </div>
-                                    <div>
-                                        <span class="fw-bold d-block">Order #${order._id.substring(0, 8).toUpperCase()}</span>
-                                        <small class="text-muted">Placed on ${orderDate}</small>
-                                    </div>
-                                </div>
-                                <div class="text-end">
-                                    <div class="text-muted small">Total</div>
-                                    <div class="fw-bold fs-5">₹${order.totalAmount}</div>
-                                    <span class="badge ${badgeColor} mt-1 d-inline-block">${order.deliveryStatus}</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Embedded Products -->
-                            <div class="border-bottom pb-3 mb-3">
-                                ${productsHTML}
-                            </div>
-                            
-                            <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded">
-                                <div class="small text-muted">
-                                    ${order.trackingId ? `<i class="bi bi-truck me-2"></i> Track Order: ${order.trackingId}` : '<i class="bi bi-box me-2"></i> Processing...'}
-                                </div>
-                                <div class="d-flex gap-2">
-                                    <button onclick="viewOrderDetails('${order._id}')" class="btn btn-sm btn-dark"><i class="bi bi-eye me-1"></i> View Details</button>
-                                    <button onclick="downloadInvoice('${order._id}')" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i> Invoice</button>
-                                    ${order.deliveryStatus === 'Delivered'
-                            ? `<button onclick="confirmReturnOrder('${order._id}')" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-return-left me-1"></i> Return</button>`
-                            : `<button onclick="confirmCancelOrder('${order._id}')" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle me-1"></i> Cancel</button>`
-                        }
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                ordersContainer.innerHTML = ordersHTML;
-                window.allOrders = ordersList; // Store for details view
-
-            } catch (error) {
-                console.error("Error loading order history:", error);
-                document.getElementById("ordersContainer").innerHTML = `
-                    <div class="alert alert-danger text-center">
-                        Could not load your orders. Please try again later.<br>
-                        <small>${error.message}</small>
-                    </div>
-                `;
-            }
+    function renderPagination(pagination) {
+    let pagesHTML = '';
+    for (let i = 1; i <= pagination.totalPages; i++) { const isActive=(i===pagination.currentPage ? 'active' : '' );
+        pagesHTML +='<li class="page-item ' + isActive + '">'
+        + '<a class="page-link" href="javascript:void(0)" onclick="fetchOrders(' + i + ')">' + i + '</a>' + '</li>' ; }
+        const prevPage=pagination.currentPage - 1; const nextPage=pagination.currentPage + 1; const
+        isPrevDisabled=(pagination.currentPage===1 ? 'disabled' : '' ); const
+        isNextDisabled=(pagination.currentPage===pagination.totalPages ? 'disabled' : '' ); let
+        paginationHTML='<div class="d-flex justify-content-center mt-3 mb-2">' + '<nav aria-label="Order pagination">'
+        + '<ul class="pagination pagination-sm mb-0">' + '<li class="page-item ' + isPrevDisabled + '">'
+        + '<a class="page-link" href="javascript:void(0)" onclick="fetchOrders(' + prevPage + ')">Prev</a>' + '</li>' +
+        pagesHTML + '<li class="page-item ' + isNextDisabled + '">'
+        + '<a class="page-link" href="javascript:void(0)" onclick="fetchOrders(' + nextPage + ')">Next</a>' + '</li>'
+        + '</ul>' + '</nav>' + '</div>' ; document.getElementById("ordersContainer").insertAdjacentHTML('beforeend',
+        paginationHTML); } window.downloadInvoice=async (orderId)=> {
+        try {
+        Swal.fire({
+        title: 'Generating PDF...',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading() }
         });
 
-        window.downloadInvoice = async (orderId) => {
-            try {
-                Swal.fire({
-                    title: 'Generating PDF...',
-                    text: 'Please wait...',
-                    allowOutsideClick: false,
-                    didOpen: () => { Swal.showLoading() }
-                });
-                
-                const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-                const res = await fetch(`http://localhost:5000/api/orders/${orderId}/invoice`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                
-                if (!res.ok) throw new Error("Could not download invoice");
-                
-                const blob = await res.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = `invoice_${orderId}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                
-                Swal.close();
-            } catch (error) {
-                Swal.fire('Error', error.message, 'error');
-            }
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/invoice`, {
+        headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!res.ok) throw new Error("Could not download invoice");
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `invoice_${orderId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        Swal.close();
+        } catch (error) {
+        Swal.fire('Error', error.message, 'error');
+        }
         };
 
         window.confirmCancelOrder = (orderId) => {
-            Swal.fire({
-                title: 'Cancel Order?',
-                text: "Are you sure you want to cancel this entire order?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, cancel it!'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-                        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/cancel`, {
-                            method: 'PUT',
-                            headers: { "Authorization": `Bearer ${token}` }
-                        });
-                        const data = await res.json();
-                        if (data.success) {
-                            Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success').then(() => {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire('Error', data.message || 'Failed to cancel', 'error');
-                        }
-                    } catch (err) {
-                        Swal.fire('Error', 'Server error', 'error');
-                    }
-                }
-            });
+        Swal.fire({
+        title: 'Cancel Order?',
+        text: "Are you sure you want to cancel this entire order?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, cancel it!'
+        }).then(async (result) => {
+        if (result.isConfirmed) {
+        try {
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/cancel`, {
+        method: 'PUT',
+        headers: { "Authorization": `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+        Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success').then(() => {
+        window.location.reload();
+        });
+        } else {
+        Swal.fire('Error', data.message || 'Failed to cancel', 'error');
+        }
+        } catch (err) {
+        Swal.fire('Error', 'Server error', 'error');
+        }
+        }
+        });
         };
 
         window.confirmReturnOrder = (orderId) => {
-            Swal.fire({
-                title: 'Return Order',
-                html: `
-                    <select id="return-reason" class="swal2-input" style="max-width: 100%;">
-                        <option value="" disabled selected>Select a reason for return...</option>
-                        <option value="Damaged/Defective Product">Damaged or Defective Product</option>
-                        <option value="Wrong Item Received">Received Wrong Item</option>
-                        <option value="Quality Issue">Quality Issue</option>
-                        <option value="Changed My Mind">Changed My Mind</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <textarea id="return-details" class="swal2-textarea" placeholder="Provide more details..." style="max-width: 100%;"></textarea>
-                `,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#1e3a8a',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Submit Return',
-                preConfirm: () => {
-                    const reason = document.getElementById('return-reason').value;
-                    const details = document.getElementById('return-details').value;
-                    if (!reason) {
-                        Swal.showValidationMessage('Please select a return reason');
-                        return false;
-                    }
-                    return { reason, details };
-                }
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-                        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/return`, {
-                            method: 'PUT',
-                            headers: { 
-                                "Authorization": `Bearer ${token}`,
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(result.value)
-                        });
-                        const data = await res.json();
-                        if (data.success) {
-                            Swal.fire('Returned!', 'Your return has been processed and your wallet credited.', 'success').then(() => {
-                                window.location.href = 'my-returns.html';
-                            });
-                        } else {
-                            Swal.fire('Error', data.message || 'Failed to return', 'error');
-                        }
-                    } catch (err) {
-                        Swal.fire('Error', 'Server error', 'error');
-                    }
-                }
-            });
+        Swal.fire({
+        title: 'Return Order',
+        html: `
+        <select id="return-reason" class="swal2-input" style="max-width: 100%;">
+            <option value="" disabled selected>Select a reason for return...</option>
+            <option value="Damaged/Defective Product">Damaged or Defective Product</option>
+            <option value="Wrong Item Received">Received Wrong Item</option>
+            <option value="Quality Issue">Quality Issue</option>
+            <option value="Changed My Mind">Changed My Mind</option>
+            <option value="Other">Other</option>
+        </select>
+        <textarea id="return-details" class="swal2-textarea" placeholder="Provide more details..."
+            style="max-width: 100%;"></textarea>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#1e3a8a',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Submit Return',
+        preConfirm: () => {
+        const reason = document.getElementById('return-reason').value;
+        const details = document.getElementById('return-details').value;
+        if (!reason) {
+        Swal.showValidationMessage('Please select a return reason');
+        return false;
+        }
+        return { reason, details };
+        }
+        }).then(async (result) => {
+        if (result.isConfirmed) {
+        try {
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/return`, {
+        method: 'PUT',
+        headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify(result.value)
+        });
+        const data = await res.json();
+        if (data.success) {
+        Swal.fire('Returned!', 'Your return has been processed and your wallet credited.', 'success').then(() => {
+        window.location.href = 'my-returns.html';
+        });
+        } else {
+        Swal.fire('Error', data.message || 'Failed to return', 'error');
+        }
+        } catch (err) {
+        Swal.fire('Error', 'Server error', 'error');
+        }
+        }
+        });
         };
-    </script>
-    <!-- Order Details Modal -->
-    <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header d-flex justify-content-between align-items-start border-0 pb-0">
-                    <div>
-                        <h5 class="order-id-title" id="modalOrderId">ORDER #103C6C96</h5>
-                        <div class="order-meta" id="modalOrderDate">Placed on 23 March 2026 at 13:51</div>
-                    </div>
-                    <div class="d-flex gap-2 align-items-center">
-                        <button class="btn btn-light btn-sm fw-bold border" id="modalInvoiceBtn">
-                            <i class="bi bi-file-earmark-pdf me-1"></i> Invoice
-                        </button>
-                        <span class="status-badge" id="modalStatusBadge">PENDING</span>
-                        <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                </div>
-                <div class="modal-body pt-4">
-                    <div class="row g-4">
-                        <!-- Left Column -->
-                        <div class="col-lg-7 border-end">
-                            <div class="order-details-section">
-                                <div class="order-details-section-title">
-                                    <i class="bi bi-bag-check"></i> ORDER ITEMS
-                                </div>
-                                <div id="modalItemsList" class="pe-lg-3">
-                                    <!-- Items will be injected here -->
-                                </div>
-                            </div>
-
-                            <div class="order-details-section mt-5">
-                                <div class="order-details-section-title">
-                                    <i class="bi bi-geo-alt"></i> SHIPPING INFORMATION
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="info-label">RECIPIENT</div>
-                                        <div class="info-value" id="modalRecipientName">Adil tt</div>
-                                        
-                                        <div class="info-label">ADDRESS</div>
-                                        <div class="info-value" id="modalAddress">jf ,bh d y, meenchanda, Kerala - 325610</div>
-                                        
-                                        <div class="info-label">PHONE</div>
-                                        <div class="info-value" id="modalPhone">+91 7034731397</div>
-                                    </div>
-                                </div>
-                            </div>
+        </script>
+        <!-- Order Details Modal -->
+        <div class="modal fade order-details-modal" id="orderDetailsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-start border-0 pb-0">
+                        <div>
+                            <h5 class="order-id-title" id="modalOrderId">ORDER #103C6C96</h5>
+                            <div class="order-meta" id="modalOrderDate">Placed on 23 March 2026 at 13:51</div>
                         </div>
+                        <div class="d-flex gap-2 align-items-center">
+                            <button class="btn btn-light btn-sm fw-bold border" id="modalInvoiceBtn">
+                                <i class="bi bi-file-earmark-pdf me-1"></i> Invoice
+                            </button>
+                            <span class="status-badge" id="modalStatusBadge">PENDING</span>
+                            <button type="button" class="btn-close ms-2" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="modal-body pt-4">
+                        <div class="row g-4">
+                            <!-- Left Column -->
+                            <div class="col-lg-7 border-end">
+                                <div class="order-details-section">
+                                    <div class="order-details-section-title">
+                                        <i class="bi bi-bag-check"></i> ORDER ITEMS
+                                    </div>
+                                    <div id="modalItemsList" class="pe-lg-3">
+                                        <!-- Items will be injected here -->
+                                    </div>
+                                </div>
 
-                        <!-- Right Column -->
-                        <div class="col-lg-5">
-                            <div class="order-details-section">
-                                <div class="order-details-section-title">BILLING DETAILS</div>
-                                <div class="billing-details-modal rounded-3 p-3 bg-white border">
-                                    <div class="billing-row">
-                                        <span id="modalItemsCountLabel">Price (1 items)</span>
-                                        <span id="modalOriginalPrice">₹3999.00</span>
+                                <div class="order-details-section mt-5">
+                                    <div class="order-details-section-title">
+                                        <i class="bi bi-geo-alt"></i> SHIPPING INFORMATION
                                     </div>
-                                    <div class="billing-row discount">
-                                        <span>Product Discount</span>
-                                        <span id="modalProductDiscount">-₹200.00</span>
-                                    </div>
-                                    <div class="billing-row">
-                                        <span>Shipping</span>
-                                        <span class="free-ship">FREE</span>
-                                    </div>
-                                    <div class="billing-row total-saved">
-                                        <span>Total Saved</span>
-                                        <span id="modalTotalSaved">₹200.00</span>
-                                    </div>
-                                    <div class="net-payable-row">
-                                        <span>Net Payable</span>
-                                        <span id="modalNetPayable">₹3799.00</span>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="info-label">RECIPIENT</div>
+                                            <div class="info-value" id="modalRecipientName">Adil tt</div>
+
+                                            <div class="info-label">ADDRESS</div>
+                                            <div class="info-value" id="modalAddress">jf ,bh d y, meenchanda, Kerala -
+                                                325610</div>
+
+                                            <div class="info-label">PHONE</div>
+                                            <div class="info-value" id="modalPhone">+91 7034731397</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="order-details-section mt-5 px-1">
-                                <div class="order-details-section-title">PAYMENT INFO</div>
-                                <div class="info-label">METHOD</div>
-                                <div class="info-value" id="modalPaymentMethod">COD</div>
-                                
-                                <div class="info-label">PAYMENT STATUS</div>
-                                <div class="info-value mb-0" id="modalPaymentStatus">Pending</div>
+                            <!-- Right Column -->
+                            <div class="col-lg-5">
+                                <div class="order-details-section">
+                                    <div class="order-details-section-title">BILLING DETAILS</div>
+                                    <div class="billing-details-modal rounded-3 p-3 bg-white border">
+                                        <div class="billing-row">
+                                            <span id="modalItemsCountLabel">Price (1 items)</span>
+                                            <span id="modalOriginalPrice">₹3999.00</span>
+                                        </div>
+                                        <div class="billing-row discount">
+                                            <span>Product Discount</span>
+                                            <span id="modalProductDiscount">-₹200.00</span>
+                                        </div>
+                                        <div class="billing-row">
+                                            <span>Shipping</span>
+                                            <span class="free-ship">FREE</span>
+                                        </div>
+                                        <div class="billing-row total-saved">
+                                            <span>Total Saved</span>
+                                            <span id="modalTotalSaved">₹200.00</span>
+                                        </div>
+                                        <div class="net-payable-row">
+                                            <span>Net Payable</span>
+                                            <span id="modalNetPayable">₹3799.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="order-details-section mt-5 px-1">
+                                    <div class="order-details-section-title">PAYMENT INFO</div>
+                                    <div class="info-label">METHOD</div>
+                                    <div class="info-value" id="modalPaymentMethod">COD</div>
+
+                                    <div class="info-label">PAYMENT STATUS</div>
+                                    <div class="info-value mb-0" id="modalPaymentStatus">Pending</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Custom CSS for Checkout/Summary can be shared if needed, but I'll add the necessary logic to JS -->
-    <link rel="stylesheet" href="css/cart-checkout.css">
+        <!-- Custom CSS for Checkout/Summary can be shared if needed, but I'll add the necessary logic to JS -->
+        <link rel="stylesheet" href="css/cart-checkout.css">
 
-    <script>
-        window.viewOrderDetails = function(orderId) {
-            const order = window.allOrders.find(o => o._id === orderId);
-            if (!order) return;
+        <script>
+            window.viewOrderDetails = function (orderId) {
+                const order = window.allOrders.find(o => o._id === orderId);
+                if (!order) return;
 
-            document.getElementById('modalOrderId').textContent = `ORDER #${order._id.substring(0, 8).toUpperCase()}`;
-            const dateObj = new Date(order.createdAt);
-            document.getElementById('modalOrderDate').textContent = `Placed on ${dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} at ${dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+                document.getElementById('modalOrderId').textContent = `ORDER #${order._id.substring(0, 8).toUpperCase()}`;
+                const dateObj = new Date(order.createdAt);
+                document.getElementById('modalOrderDate').textContent = `Placed on ${dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} at ${dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
 
-            const statusBadge = document.getElementById('modalStatusBadge');
-            statusBadge.textContent = order.deliveryStatus.toUpperCase();
-            statusBadge.className = `status-badge status-${order.deliveryStatus.toLowerCase().replace(/\s+/g, '-')}`;
+                const statusBadge = document.getElementById('modalStatusBadge');
+                statusBadge.textContent = order.deliveryStatus.toUpperCase();
+                statusBadge.className = `status-badge status-${order.deliveryStatus.toLowerCase().replace(/\s+/g, '-')}`;
 
-            document.getElementById('modalInvoiceBtn').onclick = () => downloadInvoice(order._id);
+                document.getElementById('modalInvoiceBtn').onclick = () => downloadInvoice(order._id);
 
-            const itemsList = document.getElementById('modalItemsList');
-            itemsList.innerHTML = '';
-            let totalOriginal = 0;
-            let itemsCount = 0;
+                const itemsList = document.getElementById('modalItemsList');
+                itemsList.innerHTML = '';
+                let totalOriginal = 0;
+                let itemsCount = 0;
 
-            order.products.forEach(item => {
-                const price = item.price;
-                const oldPrice = item.product?.oldPrice || price; 
-                totalOriginal += (oldPrice * item.quantity);
-                itemsCount += item.quantity;
+                order.products.forEach(item => {
+                    const price = item.price;
+                    const oldPrice = item.product?.oldPrice || price;
+                    totalOriginal += (oldPrice * item.quantity);
+                    itemsCount += item.quantity;
 
-                const img = item.image ? `http://localhost:5000/uploads/${item.image.split('\\').pop().split('/').pop()}` : 'images/ceramic-cup.jpg';
-                itemsList.insertAdjacentHTML('beforeend', `
+                    const img = item.image ? `http://localhost:5000/uploads/${item.image.split('\\').pop().split('/').pop()}` : 'images/ceramic-cup.jpg';
+                    itemsList.insertAdjacentHTML('beforeend', `
                     <div class="detail-product-item">
                         <div class="d-flex align-items-center">
                             <img src="${img}" class="detail-product-img" onerror="this.src='images/ceramic-cup.jpg'">
@@ -506,27 +544,27 @@
                         <div class="detail-product-total">₹${(price * item.quantity).toFixed(2)}</div>
                     </div>
                 `);
-            });
+                });
 
-            const addr = order.shippingAddress;
-            document.getElementById('modalRecipientName').textContent = addr.fullName;
-            document.getElementById('modalAddress').textContent = `${addr.house}, ${addr.street}, ${addr.landmark ? addr.landmark + ', ' : ''}${addr.city}, ${addr.state} - ${addr.pincode}`;
-            document.getElementById('modalPhone').textContent = addr.phone;
+                const addr = order.shippingAddress;
+                document.getElementById('modalRecipientName').textContent = addr.fullName;
+                document.getElementById('modalAddress').textContent = `${addr.house}, ${addr.street}, ${addr.landmark ? addr.landmark + ', ' : ''}${addr.city}, ${addr.state} - ${addr.pincode}`;
+                document.getElementById('modalPhone').textContent = addr.phone;
 
-            const displayDiscount = order.discountAmount || (totalOriginal - order.totalAmount);
-            document.getElementById('modalItemsCountLabel').textContent = `Price (${itemsCount} items)`;
-            document.getElementById('modalOriginalPrice').textContent = `₹${totalOriginal.toFixed(2)}`;
-            document.getElementById('modalProductDiscount').textContent = `-₹${displayDiscount.toFixed(2)}`;
-            document.getElementById('modalTotalSaved').textContent = `₹${displayDiscount.toFixed(2)}`;
-            document.getElementById('modalNetPayable').textContent = `₹${order.totalAmount.toFixed(2)}`;
+                const displayDiscount = order.discountAmount || (totalOriginal - order.totalAmount);
+                document.getElementById('modalItemsCountLabel').textContent = `Price (${itemsCount} items)`;
+                document.getElementById('modalOriginalPrice').textContent = `₹${totalOriginal.toFixed(2)}`;
+                document.getElementById('modalProductDiscount').textContent = `-₹${displayDiscount.toFixed(2)}`;
+                document.getElementById('modalTotalSaved').textContent = `₹${displayDiscount.toFixed(2)}`;
+                document.getElementById('modalNetPayable').textContent = `₹${order.totalAmount.toFixed(2)}`;
 
-            document.getElementById('modalPaymentMethod').textContent = order.paymentMethod;
-            document.getElementById('modalPaymentStatus').textContent = order.paymentStatus;
+                document.getElementById('modalPaymentMethod').textContent = order.paymentMethod;
+                document.getElementById('modalPaymentStatus').textContent = order.paymentStatus;
 
-            new bootstrap.Modal(document.getElementById('orderDetailsModal')).show();
-        };
-    </script>
-    <script src="js/auth-sync.js"></script>
+                new bootstrap.Modal(document.getElementById('orderDetailsModal')).show();
+            };
+        </script>
+        <script src="js/auth-sync.js"></script>
 </body>
 
 </html>

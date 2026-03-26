@@ -24,73 +24,48 @@ document.addEventListener('click', function (event) {
 });
 
 
+let salesChart;
+
 // Charts Initialization
 document.addEventListener('DOMContentLoaded', function () {
-    fetchDashboardData();
-
-    // 1. Weekly Sales Chart (Line)
     const ctxSales = document.getElementById('salesChart').getContext('2d');
-
-    // Create gradient
     const gradientSales = ctxSales.createLinearGradient(0, 0, 0, 400);
-    gradientSales.addColorStop(0, 'rgba(25, 135, 84, 0.4)');   // Top: semi-transparent green
-    gradientSales.addColorStop(1, 'rgba(25, 135, 84, 0)');     // Bottom: transparent
+    gradientSales.addColorStop(0, 'rgba(25, 135, 84, 0.4)');
+    gradientSales.addColorStop(1, 'rgba(25, 135, 84, 0)');
 
-    new Chart(ctxSales, {
+    salesChart = new Chart(ctxSales, {
         type: 'line',
         data: {
             labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             datasets: [{
-                label: 'Metric',
-                // Curve data
-                data: [15000, 32000, 20000, 48000, 30000, 40000, 38000],
+                label: 'Sales ($)',
+                data: [0, 0, 0, 0, 0, 0, 0], // Initial empty data
                 borderColor: '#198754',
                 backgroundColor: gradientSales,
                 borderWidth: 3,
-
-                // Point Styles
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#198754',
                 pointBorderWidth: 2,
                 pointRadius: 6,
                 pointHoverRadius: 8,
-                pointHoverBackgroundColor: '#ffffff',
-                pointHoverBorderColor: '#198754',
-
                 fill: true,
-                tension: 0.4 // Spline/Area chart effect
+                tension: 0.4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
                     backgroundColor: '#fff',
                     titleColor: '#212529',
                     bodyColor: '#212529',
-                    titleFont: {
-                        size: 14,
-                        weight: 'bold'
-                    },
-                    bodyFont: {
-                        size: 14
-                    },
                     borderColor: '#dee2e6',
                     borderWidth: 1,
-                    padding: 12,
-                    boxPadding: 6,
-                    usePointStyle: true,
                     callbacks: {
                         label: function (context) {
-                            return (context.parsed.y / 1000) + 'k';
+                            return '$' + context.parsed.y.toLocaleString();
                         }
                     }
                 }
@@ -98,52 +73,25 @@ document.addEventListener('DOMContentLoaded', function () {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 50000,
-                    grid: {
-                        borderDash: [], // Solid lines as per default/request (or default dashed)
-                        color: '#f0f0f0',
-                        drawBorder: false
-                    },
                     ticks: {
-                        stepSize: 5000, // 0k, 5k, 10k...
-                        font: {
-                            size: 12,
-                            family: "'Outfit', sans-serif"
-                        },
-                        color: '#999',
-                        padding: 10,
                         callback: function (value) {
-                            return (value / 1000) + 'k';
+                            return value >= 1000 ? (value / 1000) + 'k' : value;
                         }
                     }
-                },
-                x: {
-                    grid: {
-                        display: false,
-                        drawBorder: false
-                    },
-                    ticks: {
-                        font: {
-                            size: 12,
-                            family: "'Outfit', sans-serif"
-                        },
-                        color: '#999',
-                        padding: 10
-                    }
-                }
-            },
-            layout: {
-                padding: {
-                    left: 0,
-                    right: 0,
-                    top: 20,
-                    bottom: 0
                 }
             }
         }
     });
 
+    fetchDashboardData();
 });
+
+function updateSalesChart(weeklySales) {
+    if (salesChart && weeklySales) {
+        salesChart.data.datasets[0].data = weeklySales;
+        salesChart.update();
+    }
+}
 
 async function fetchDashboardData() {
     try {
@@ -170,16 +118,25 @@ async function fetchDashboardData() {
         if (data.success) {
             // Populate metrics
             document.getElementById('total-sales').innerText = `$${data.metrics.totalSales.toLocaleString()}`;
+            document.getElementById('metrics-revenue').innerText = `$${data.metrics.totalSales.toLocaleString()}`;
 
             // Format total orders (e.g., 10.7K if > 1000)
             let ordersDisplay = data.metrics.totalOrders;
+            const rawOrders = ordersDisplay;
             if (ordersDisplay >= 1000) {
                 ordersDisplay = (ordersDisplay / 1000).toFixed(1) + 'K';
             }
             document.getElementById('total-orders').innerText = ordersDisplay;
+            document.getElementById('metrics-orders').innerText = rawOrders;
 
             document.getElementById('total-pending').innerText = data.metrics.pending;
+            document.getElementById('metrics-pending').innerText = data.metrics.pending;
+            
             document.getElementById('total-canceled').innerText = data.metrics.canceled;
+            document.getElementById('metrics-canceled').innerText = data.metrics.canceled;
+
+            const avgValue = rawOrders > 0 ? (data.metrics.totalSales / rawOrders) : 0;
+            document.getElementById('metrics-avg-value').innerText = `$${avgValue.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
 
             // Populate transactions
             const tbody = document.getElementById('transactions-tbody');
@@ -247,6 +204,11 @@ async function fetchDashboardData() {
                 }
             } else {
                 productsContainer.innerHTML = '<div class="text-center py-4 text-muted">No top products found</div>';
+            }
+
+            // Update sales chart
+            if (data.weeklySales) {
+                updateSalesChart(data.weeklySales);
             }
         }
     } catch (error) {

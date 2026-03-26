@@ -24,7 +24,7 @@ async function fetchCoupons() {
         const token = sessionStorage.getItem("token") || localStorage.getItem("token");
         if (!token) return window.location.href = "login.html";
 
-        const res = await fetch("/api/admin/coupons", {
+        const res = await fetch("http://localhost:5000/api/admin/coupons", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (newQty > maxStock) {
                     Swal.fire({ text: `Only ${maxStock} items available`, icon: 'warning', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-e.target.value = maxStock;
+                    e.target.value = maxStock;
                     return;
                 }
 
@@ -193,8 +193,8 @@ window.removeFromCart = async (productId) => {
         } else {
             const data = await response.json();
             Swal.fire({ text: data.message || "Failed to remove item", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
-                    }
-                } catch (err) {
+        }
+    } catch (err) {
         console.error("Remove from cart error:", err);
         Swal.fire({ text: "Failed to remove item", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
     }
