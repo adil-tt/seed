@@ -29,6 +29,10 @@ const getOffers = require("../controllers/admin-offer/getOffers");
 const updateOffer = require("../controllers/admin-offer/updateOffer");
 const deleteOffer = require("../controllers/admin-offer/deleteOffer");
 
+// Modular Admin Message Actions
+const getMessages = require("../controllers/admin-message/getMessages");
+const replyMessage = require("../controllers/admin-message/replyMessage");
+
 // Protected Admin Routes
 router.get("/dashboard", protect, admin, getDashboardStats);
 
@@ -52,5 +56,9 @@ router.get("/offers", protect, admin, getOffers);
 router.post("/offers", protect, admin, createOffer);
 router.put("/offers/:id", protect, admin, updateOffer);
 router.delete("/offers/:id", protect, admin, deleteOffer);
+
+// Admin Message Routes
+router.get("/messages", protect, admin, getMessages);
+router.post("/messages/:id/reply", protect, admin, replyMessage);
 
 module.exports = router;

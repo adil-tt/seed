@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchTargets(type) {
         targetId.innerHTML = '<option value="">Loading...</option>';
         try {
-            const endpoint = type === 'Category' ? '/api/categories?limit=100' : '/api/products';
+            const endpoint = type === 'Category' ? 'http://localhost:5000/api/categories?limit=100' : 'http://localhost:5000/api/products';
             const res = await fetch(endpoint);
             
             if (!res.ok) throw new Error(`Server returned ${res.status}`);
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function loadOfferData(id) {
         try {
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-            const res = await fetch(`/api/admin/offers`, {
+            const res = await fetch(`http://localhost:5000/api/admin/offers`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const formData = new FormData();
                 formData.append('images', bannerInput.files[0]);
                 
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+                const uploadRes = await fetch('http://localhost:5000/api/upload', { method: 'POST', body: formData });
                 const uploadData = await uploadRes.json();
                 if (!uploadData.success && !uploadData.files) throw new Error('Image upload failed');
                 bannerImagePath = uploadData.files[0].path;
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
 
             const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-            const url = isEditing ? `/api/admin/offers/${offerId}` : '/api/admin/offers';
+            const url = isEditing ? `http://localhost:5000/api/admin/offers/${offerId}` : 'http://localhost:5000/api/admin/offers';
             const method = isEditing ? 'PUT' : 'POST';
 
             const res = await fetch(url, {

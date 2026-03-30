@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorAlert.textContent = "";
             }
 
-            const email = document.getElementById("emailInput").value.trim();
-            const password = document.getElementById("passwordInput").value.trim();
+            const email = document.getElementById("emailInput").value.trim().toLowerCase();
+            const password = document.getElementById("passwordInput").value;
             const submitBtn = loginForm.querySelector("button[type='submit']");
 
             if (!email || !password) {

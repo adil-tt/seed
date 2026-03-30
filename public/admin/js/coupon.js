@@ -125,7 +125,7 @@ async function saveCoupon() {
 
     try {
         const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-        const url = isEditing ? `/api/admin/coupons/${couponId}` : "/api/admin/coupons";
+        const url = isEditing ? `http://localhost:5000/api/admin/coupons/${couponId}` : "http://localhost:5000/api/admin/coupons";
         const method = isEditing ? "PUT" : "POST";
         
         const saveBtn = document.getElementById("btnSaveCoupon");
@@ -211,7 +211,7 @@ window.deleteCoupon = async function(id) {
     if (result.isConfirmed) {
         try {
             const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-            const res = await fetch(`/api/admin/coupons/${id}`, {
+            const res = await fetch(`http://localhost:5000/api/admin/coupons/${id}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });

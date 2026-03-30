@@ -100,7 +100,7 @@ window.deleteOffer = async function(id) {
     if (result.isConfirmed) {
         try {
             const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-            const res = await fetch(`/api/admin/offers/${id}`, {
+            const res = await fetch(`http://localhost:5000/api/admin/offers/${id}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });

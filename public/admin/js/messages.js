@@ -1,69 +1,38 @@
-// Mock data for messages
-let messages = [
-    {
-        id: 1,
-        userName: "Alice Johnson",
-        email: "alice@example.com",
-        subject: "Product Inquiry",
-        message: "Hello, I'm interested in the Blue Ceramic Vase. Do you offer bulk discounts for 20+ units? Please let me know the pricing.",
-        date: "2025-02-20",
-        status: "Unread",
-        reply: null,
-        replyDate: null
-    },
-    {
-        id: 2,
-        userName: "Bob Smith",
-        email: "bob.smith@email.com",
-        subject: "Shipping Delay",
-        message: "My order #ORD-5542 has been stuck in processing for 3 days. Can you provide an update on the shipping status?",
-        date: "2025-02-19",
-        status: "Replied",
-        reply: "Hello Bob, we apologize for the delay. Your order has been shipped today. You should receive a tracking link shortly.",
-        replyDate: "2025-02-19 14:30"
-    },
-    {
-        id: 3,
-        userName: "Charlie Brown",
-        email: "charlie@web.com",
-        subject: "Custom Design",
-        message: "I love your artisan mugs! Do you take custom orders for wedding favors? Looking for 50 mugs with initials.",
-        date: "2025-02-18",
-        status: "Unread",
-        reply: null,
-        replyDate: null
-    },
-    {
-        id: 4,
-        userName: "Diana Ross",
-        email: "diana@records.com",
-        subject: "Return Policy",
-        message: "I received my plate but it has a small chip. What is your return or replacement policy for damaged items?",
-        date: "2025-02-17",
-        status: "Unread",
-        reply: null,
-        replyDate: null
-    },
-    {
-        id: 5,
-        userName: "Edward Norton",
-        email: "ed@fightclub.com",
-        subject: "Account Issue",
-        message: "I can't seem to reset my password. The link says it's expired immediately. Can you help?",
-        date: "2025-02-16",
-        status: "Replied",
-        reply: "Hi Edward, we've reset your account manually. Please check your inbox for a new secure link valid for 24 hours.",
-        replyDate: "2025-02-17 09:15"
-    }
-];
-
+let messages = [];
 let currentMessageId = null;
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
-    renderTable();
-    updateUnreadCount();
+    fetchMessages();
 });
+
+// Fetch messages from backend
+async function fetchMessages() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            Swal.fire({ text: "Authentication required", icon: 'error' });
+            window.location.href = "login.html";
+            return;
+        }
+
+        const response = await fetch('/api/admin/messages', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        if (data.success) {
+            messages = data.messages;
+            renderTable();
+            updateUnreadCount();
+        } else {
+            console.error("Failed to fetch messages:", data.message);
+        }
+    } catch (error) {
+        console.error("Error fetching messages:", error);
+    }
+}
 
 // Render the messages table
 function renderTable() {
@@ -76,15 +45,18 @@ function renderTable() {
         const row = document.createElement('tr');
         const statusClass = msg.status === 'Unread' ? 'status-unread' : 'status-replied';
 
+        const dateObj = new Date(msg.createdAt);
+        const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         row.innerHTML = `
-            <td>${msg.userName}</td>
+            <td>${msg.name}</td>
             <td class="small text-secondary">${msg.email}</td>
             <td class="fw-bold small">${msg.subject}</td>
             <td class="small text-muted msg-preview">${msg.message}</td>
-            <td class="small">${msg.date}</td>
+            <td class="small">${dateStr}</td>
             <td><span class="badge ${msg.status === 'Unread' ? 'bg-primary bg-opacity-10 text-primary' : 'bg-success bg-opacity-10 text-success'} rounded-pill px-3">${msg.status}</span></td>
             <td class="text-end">
-                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="viewMessage(${msg.id})">View</button>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="viewMessage('${msg._id}')">View</button>
             </td>
         `;
         tableBody.appendChild(row);
@@ -103,14 +75,17 @@ function updateUnreadCount() {
 
 // Open modal and populate data
 function viewMessage(id) {
-    const msg = messages.find(m => m.id === id);
+    const msg = messages.find(m => m._id === id);
     if (!msg) return;
 
     currentMessageId = id;
 
-    document.getElementById('modalUserName').textContent = msg.userName;
+    const dateObj = new Date(msg.createdAt);
+    const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    document.getElementById('modalUserName').textContent = msg.name;
     document.getElementById('modalUserEmail').textContent = msg.email;
-    document.getElementById('modalDate').textContent = msg.date;
+    document.getElementById('modalDate').textContent = dateStr;
     document.getElementById('modalSubject').textContent = msg.subject;
     document.getElementById('modalFullMessage').textContent = msg.message;
 
@@ -121,7 +96,11 @@ function viewMessage(id) {
     if (msg.status === 'Replied') {
         replySection.style.display = 'none';
         repliedSection.style.display = 'block';
-        document.getElementById('repliedInfo').textContent = `Sent on ${msg.replyDate}`;
+        
+        const replyDateObj = new Date(msg.replyDate);
+        const replyDateStr = replyDateObj.toLocaleDateString() + ' ' + replyDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        document.getElementById('repliedInfo').textContent = `Sent on ${replyDateStr}`;
         document.getElementById('sentReplyContent').textContent = msg.reply;
     } else {
         replySection.style.display = 'block';
@@ -134,37 +113,49 @@ function viewMessage(id) {
 }
 
 // Handle reply submission
-document.getElementById('sendReplyBtn')?.addEventListener('click', () => {
+document.getElementById('sendReplyBtn')?.addEventListener('click', async () => {
     const replyText = document.getElementById('replyTextarea').value.trim();
     if (!replyText) {
         Swal.fire({ text: "Please enter a reply message.", icon: 'info' });
         return;
     }
 
-    const index = messages.findIndex(m => m.id === currentMessageId);
-    if (index !== -1) {
-        // Mocking backend update
-        const now = new Date();
-        const timestamp = now.toISOString().split('T')[0] + ' ' + now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    const btn = document.getElementById('sendReplyBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Sending...';
+    btn.disabled = true;
 
-        messages[index].status = 'Replied';
-        messages[index].reply = replyText;
-        messages[index].replyDate = timestamp;
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/admin/messages/${currentMessageId}/reply`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reply: replyText })
+        });
 
-        // Mocking email notification
-        console.log(`[Backend Simulation] Sending email to ${messages[index].email}...`);
-        console.log(`Email Content: ${replyText}`);
+        const data = await response.json();
 
-        // Update UI
-        renderTable();
-        updateUnreadCount();
+        if (data.success) {
+            Swal.fire({ text: `Reply sent successfully!`, icon: 'success' });
+            
+            // Hide modal
+            const modalElement = document.getElementById('messageModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
 
-        // Hide modal
-        const modalElement = document.getElementById('messageModal');
-        const modal = bootstrap.Modal.getInstance(modalElement);
-        modal.hide();
-
-        // Show success toast (optional, alert for now)
-        Swal.fire({ text: `Reply sent to ${messages[index].userName} successfully! Status updated.`, icon: 'info' });
+            // Refresh messages
+            fetchMessages();
+        } else {
+            Swal.fire({ text: data.message || "Failed to send reply", icon: 'error' });
+        }
+    } catch (error) {
+        console.error("Error sending reply:", error);
+        Swal.fire({ text: "An error occurred while sending the reply", icon: 'error' });
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     }
 });

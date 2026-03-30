@@ -7,7 +7,8 @@ const bcrypt = require("bcryptjs");
  */
 const loginUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const email = req.body.email ? req.body.email.toLowerCase() : "";
+    const { password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });

@@ -59,7 +59,7 @@ async function generateReport() {
         if (fromDate) params.append("startDate", fromDate);
         if (toDate) params.append("endDate", toDate);
 
-        const response = await fetch(`/api/admin/orders/export?${params.toString()}`, {
+        const response = await fetch(`http://localhost:5000/api/admin/orders/export?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -110,7 +110,7 @@ async function fetchTransactions() {
             search: searchQuery
         });
 
-        const response = await fetch(`/api/admin/orders?${params.toString()}`, {
+        const response = await fetch(`http://localhost:5000/api/admin/orders?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
