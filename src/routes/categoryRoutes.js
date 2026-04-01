@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const uploadCategory = require("../middleware/uploadMiddleware");
+const { protect } = require("../middleware/authMiddleware");
+const { admin } = require("../middleware/adminMiddleware");
 
 // Import modular actions
 const createCategory = require("../controllers/category/createCategory");
@@ -10,10 +12,10 @@ const updateCategory = require("../controllers/category/updateCategory");
 const deleteCategory = require("../controllers/category/deleteCategory");
 
 // Routes
-router.post("/", uploadCategory.single("image"), createCategory);
+router.post("/", protect, admin, uploadCategory.single("image"), createCategory);
 router.get("/", getCategories);
 router.get("/:id", getCategoryById);
-router.put("/:id", uploadCategory.single("image"), updateCategory);
-router.delete("/:id", deleteCategory);
+router.put("/:id", protect, admin, uploadCategory.single("image"), updateCategory);
+router.delete("/:id", protect, admin, deleteCategory);
 
 module.exports = router;

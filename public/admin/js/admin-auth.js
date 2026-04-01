@@ -7,8 +7,7 @@
     const token = localStorage.getItem("token");
 
     if (!token) {
-        // window.location.href = "login.html";
-        console.warn("No token found, authentication redirect disabled for development.");
+        window.location.href = "login.html";
         return;
     }
 
@@ -25,10 +24,9 @@
                 localStorage.setItem("adminData", JSON.stringify(data.user));
             } else {
                 // Not an admin or invalid token
-                // window.location.href = "login.html";
-                console.warn("Invalid or unauthorized admin token, redirection disabled.");
                 localStorage.removeItem("token");
                 localStorage.removeItem("adminData");
+                window.location.href = "login.html";
             }
         })
         .catch(err => {
