@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/user/home.html"));
+  res.redirect("/user/home.html");
 });
 
 // 3. Routes
