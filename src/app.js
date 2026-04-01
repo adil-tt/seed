@@ -10,8 +10,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 2. Health Check Route
+// app.get("/", (req, res) => {
+//   res.status(200).json({ message: "Ceramico API is running successfully!" });
+// });
+
+
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Ceramico API is running successfully!" });
+  res.sendFile(path.join(__dirname, "../public/user/home.html"));
 });
 
 // 3. Routes
