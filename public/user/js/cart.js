@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!cartTableBody) return;
 
     try {
-        const response = await fetch("http://localhost:5000/api/cart", {
+        const response = await fetch("/api/cart", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const product = cartItem.product || cartItem;
 
             const imageUrl = product.images && product.images.length > 0
-                ? `http://localhost:5000/uploads/${product.images[0]}`
+                ? `/uploads/${product.images[0]}`
                 : "images/ceramic-cup.jpg";
 
             const price = product.price || 0;
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
                 try {
-                    const updateRes = await fetch(`http://localhost:5000/api/cart/update/${productId}`, {
+                    const updateRes = await fetch(`/api/cart/update/${productId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ window.removeFromCart = async (productId) => {
     if (!confirm("Remove item from cart?")) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/cart/${productId}`, {
+        const response = await fetch(`/api/cart/${productId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`

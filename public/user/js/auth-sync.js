@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Fetch the latest live profile data from MongoDB
-        const response = await fetch("http://localhost:5000/api/auth/profile", {
+        const response = await fetch("/api/auth/profile", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (avatarContainer) {
                 if (user.profileImage) {
                     // Inject uploaded image
-                    avatarContainer.innerHTML = `<img src="http://localhost:5000/uploads/${user.profileImage}" class="rounded-circle object-fit-cover shadow-sm border border-white border-2" style="width: 100%; height: 100%;" alt="Profile Avatar">`;
+                    avatarContainer.innerHTML = `<img src="/uploads/${user.profileImage}" class="rounded-circle object-fit-cover shadow-sm border border-white border-2" style="width: 100%; height: 100%;" alt="Profile Avatar">`;
                     avatarContainer.style.background = 'transparent'; // Remove generic grey circle bg if it exists
                 } else {
                     // Fallback letter avatar

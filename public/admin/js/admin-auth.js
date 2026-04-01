@@ -13,7 +13,7 @@
     }
 
     // Verify token and role on every page load
-    fetch("http://localhost:5000/api/auth/profile", {
+    fetch("/api/auth/profile", {
         headers: {
             "Authorization": `Bearer ${token}`
         }

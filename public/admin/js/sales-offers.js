@@ -18,7 +18,7 @@ async function fetchOffers() {
         const token = sessionStorage.getItem("token") || localStorage.getItem("token");
         if (!token) return window.location.href = "login.html";
 
-        const res = await fetch("http://localhost:5000/api/admin/offers", {
+        const res = await fetch("/api/admin/offers", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -100,7 +100,7 @@ window.deleteOffer = async function(id) {
     if (result.isConfirmed) {
         try {
             const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-            const res = await fetch(`http://localhost:5000/api/admin/offers/${id}`, {
+            const res = await fetch(`/api/admin/offers/${id}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });

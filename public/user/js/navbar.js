@@ -84,7 +84,7 @@ async function syncProfile() {
     if (!token) return;
 
     try {
-        const response = await fetch("http://localhost:5000/api/auth/profile", {
+        const response = await fetch("/api/auth/profile", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -167,7 +167,7 @@ function setupSearch() {
             }
             
             try {
-                const response = await fetch("http://localhost:5000/api/products");
+                const response = await fetch("/api/products");
                 if (response.ok) {
                     let products = await response.json();
                     if(products.data) products = products.data;

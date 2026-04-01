@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function loadSuppliers() {
         try {
-            const res = await fetch('http://localhost:5000/api/suppliers');
+            const res = await fetch('/api/suppliers');
             const suppliers = await res.json();
 
             if (suppliers.length === 0) {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!confirm("Are you sure you want to delete this supplier?")) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/suppliers/${id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/suppliers/${id}`, { method: 'DELETE' });
             if (res.ok) {
                 loadSuppliers();
             } else {

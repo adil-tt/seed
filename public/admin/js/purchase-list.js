@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function loadSuppliers() {
         try {
-            const res = await fetch('http://localhost:5000/api/suppliers');
+            const res = await fetch('/api/suppliers');
             suppliers = await res.json();
         } catch (error) {
             console.error("Load suppliers error:", error);
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function loadPurchases() {
         try {
-            const res = await fetch('http://localhost:5000/api/purchases');
+            const res = await fetch('/api/purchases');
             purchases = await res.json();
 
             renderPurchases();
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (formValues) {
             try {
-                const res = await fetch(`http://localhost:5000/api/purchases/${id}`, {
+                const res = await fetch(`/api/purchases/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formValues)

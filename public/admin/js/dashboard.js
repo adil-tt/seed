@@ -102,7 +102,7 @@ async function fetchDashboardData() {
             return;
         }
 
-        const response = await fetch('http://localhost:5000/api/admin/dashboard', {
+        const response = await fetch('/api/admin/dashboard', {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -181,7 +181,7 @@ async function fetchDashboardData() {
                 data.topProducts.forEach((product) => {
                     let imageSrc = product.image ? `/${product.image.replace(/\\\\/g, '/')}` : 'images/default-product.png';
                     // To handle backend path with uploads correctly like order-management.js
-                    imageSrc = product.image ? `http://localhost:5000/uploads/${product.image.split('\\\\').pop().split('/').pop()}` : 'images/default-product.png';
+                    imageSrc = product.image ? `/uploads/${product.image.split('\\\\').pop().split('/').pop()}` : 'images/default-product.png';
 
                     const div = document.createElement('div');
                     div.className = 'd-flex align-items-center mb-3 pb-3 border-bottom';

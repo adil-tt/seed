@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Fetch cart tally
-            const cartRes = await fetch("http://localhost:5000/api/cart", {
+            const cartRes = await fetch("/api/cart", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (cartRes.ok) {
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Fetch wishlist tally
-            const wlRes = await fetch("http://localhost:5000/api/wishlist", {
+            const wlRes = await fetch("/api/wishlist", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (wlRes.ok) {
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...`;
                 btn.disabled = true;
 
-                const response = await fetch("http://localhost:5000/api/cart/add", {
+                const response = await fetch("/api/cart/add", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 btn.disabled = true;
 
-                const response = await fetch(`http://localhost:5000/api/wishlist/${productId}`, {
+                const response = await fetch(`/api/wishlist/${productId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Temporary loading state
                 btn.disabled = true;
 
-                const response = await fetch("http://localhost:5000/api/wishlist/add", {
+                const response = await fetch("/api/wishlist/add", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Moving...`;
                 btn.disabled = true;
 
-                const response = await fetch("http://localhost:5000/api/wishlist/move-to-cart", {
+                const response = await fetch("/api/wishlist/move-to-cart", {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Token:", token);
 
     try {
-        const response = await fetch("http://localhost:5000/api/wishlist", {
+        const response = await fetch("/api/wishlist", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -355,7 +355,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!product || !product._id) return ''; // Skip invalid/deleted products
 
             const imageUrl = product.images && product.images.length > 0
-                ? `http://localhost:5000/uploads/${product.images[0]}`
+                ? `/uploads/${product.images[0]}`
                 : "images/ceramic-cup.jpg";
 
             const price = product.price ? product.price.toFixed(2) : "0.00";

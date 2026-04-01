@@ -59,7 +59,7 @@ async function generateReport() {
         if (fromDate) params.append("startDate", fromDate);
         if (toDate) params.append("endDate", toDate);
 
-        const response = await fetch(`http://localhost:5000/api/admin/orders/export?${params.toString()}`, {
+        const response = await fetch(`/api/admin/orders/export?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -110,7 +110,7 @@ async function fetchTransactions() {
             search: searchQuery
         });
 
-        const response = await fetch(`http://localhost:5000/api/admin/orders?${params.toString()}`, {
+        const response = await fetch(`/api/admin/orders?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -278,7 +278,7 @@ window.viewOrderDetails = function (orderId) {
         order.products.forEach(item => {
             // safely handle varying path separators without relying on deep escaping
             const imagePath = item.image ? item.image.replace(/\\/g, '/').split('/').pop() : '';
-            const img = item.image ? `http://localhost:5000/uploads/${imagePath}` : 'images/default-product.png';
+            const img = item.image ? `/uploads/${imagePath}` : 'images/default-product.png';
             const price = item.price || 0;
             const tr = document.createElement('tr');
             tr.innerHTML = `

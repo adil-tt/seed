@@ -58,7 +58,7 @@ async function fetchOrders() {
             search: searchQuery
         });
 
-        const response = await fetch(`http://localhost:5000/api/admin/orders?${params.toString()}`, {
+        const response = await fetch(`/api/admin/orders?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -120,7 +120,7 @@ function renderOrders(orders) {
         // We will just show the first product in the table for preview if there are multiple.
         const mainProduct = order.products && order.products.length > 0 ? order.products[0] : null;
         const productName = mainProduct ? mainProduct.name : 'Unknown Product';
-        const productImg = mainProduct && mainProduct.image ? `http://localhost:5000/uploads/${mainProduct.image.split('\\').pop().split('/').pop()}` : 'images/default-product.png';
+        const productImg = mainProduct && mainProduct.image ? `/uploads/${mainProduct.image.split('\\').pop().split('/').pop()}` : 'images/default-product.png';
         const productExtra = order.products.length > 1 ? ` <span class="badge bg-secondary ms-1">+${order.products.length - 1} more</span>` : '';
 
         const shortId = `#ORD-${order._id.toString().slice(-6).toUpperCase()}`;
@@ -222,7 +222,7 @@ window.changeOrderStatus = async function (orderId, newStatus) {
     }
 
     try {
-        const response = await fetch(`http://localhost:5000/api/admin/orders/${orderId}/status`, {
+        const response = await fetch(`/api/admin/orders/${orderId}/status`, {
             method: 'PUT',
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -279,7 +279,7 @@ window.viewOrderDetails = function(orderId) {
         totalOriginal += (oldPrice * qty);
         itemsCount += qty;
 
-        const img = item.image ? `http://localhost:5000/uploads/${item.image.split('\\').pop().split('/').pop()}` : 'images/ceramic-cup.jpg';
+        const img = item.image ? `/uploads/${item.image.split('\\').pop().split('/').pop()}` : 'images/ceramic-cup.jpg';
         
         const itemHtml = `
             <div class="detail-product-item">
@@ -328,7 +328,7 @@ window.downloadInvoice = async (orderId) => {
     try {
         Swal.fire({ title: 'Generating PDF...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
         const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/orders/${orderId}/invoice`, {
+        const res = await fetch(`/api/orders/${orderId}/invoice`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("Could not download invoice");

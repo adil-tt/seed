@@ -45,7 +45,7 @@ async function fetchUsers() {
             search: searchQuery
         });
 
-        const response = await fetch(`http://localhost:5000/api/admin/users?${params.toString()}`, {
+        const response = await fetch(`/api/admin/users?${params.toString()}`, {
             method: 'GET',
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -238,7 +238,7 @@ async function updateSidePanel(user) {
 
     try {
         const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-        const response = await fetch(`http://localhost:5000/api/admin/users/${user._id}/details`, {
+        const response = await fetch(`/api/admin/users/${user._id}/details`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
         
@@ -295,7 +295,7 @@ async function handleBlockUser() {
     if (!result.isConfirmed) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/admin/users/${selectedUser._id}/block`, {
+        const response = await fetch(`/api/admin/users/${selectedUser._id}/block`, {
             method: 'PUT',
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -330,7 +330,7 @@ async function deleteUser(userId) {
     if (!result.isConfirmed) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+        const response = await fetch(`/api/admin/users/${userId}`, {
             method: 'DELETE',
             headers: { "Authorization": `Bearer ${token}` }
         });

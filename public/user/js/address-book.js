@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Fetch addresses
     try {
-        const response = await fetch("http://localhost:5000/api/address/my", {
+        const response = await fetch("/api/address/my", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 window.setDefaultAddress = async (id) => {
     const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     try {
-        const response = await fetch(`http://localhost:5000/api/address/${id}/default`, {
+        const response = await fetch(`/api/address/${id}/default`, {
             method: "PUT",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -102,7 +102,7 @@ window.deleteAddress = async (id) => {
     if (!confirm("Are you sure you want to delete this address?")) return;
     const token = sessionStorage.getItem("token") || localStorage.getItem("token");
     try {
-        const response = await fetch(`http://localhost:5000/api/address/${id}`, {
+        const response = await fetch(`/api/address/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`

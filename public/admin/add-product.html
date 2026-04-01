@@ -274,7 +274,7 @@
         async function loadCategories() {
             try {
                 // Fetch active categories with a high limit to get all of them
-                const response = await fetch("http://localhost:5000/api/categories?status=active&limit=1000");
+                const response = await fetch("/api/categories?status=active&limit=1000");
                 const data = await response.json();
                 const categories = data.categories || [];
 
@@ -316,7 +316,7 @@
 
         async function fetchProductData(id) {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/${id}`);
+                const response = await fetch(`/api/products/${id}`);
                 const product = await response.json();
 
                 if (response.ok) {
@@ -342,7 +342,7 @@
                         previewContainer.innerHTML = "";
                         product.images.forEach(imgName => {
                             const img = document.createElement("img");
-                            img.src = `http://localhost:5000/uploads/${imgName}`;
+                            img.src = `/uploads/${imgName}`;
                             img.classList.add("img-thumbnail");
                             img.style.width = "100px";
                             img.style.height = "100px";
@@ -361,7 +361,7 @@
 
             const formData = new FormData(form);
             const method = productId ? "PUT" : "POST";
-            const url = productId ? `http://localhost:5000/api/products/${productId}` : "http://localhost:5000/api/products";
+            const url = productId ? `/api/products/${productId}` : "/api/products";
 
             try {
                 const response = await fetch(url, {

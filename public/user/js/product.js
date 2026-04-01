@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // 0. Fetch Active Offers for displacement
-        const offResponse = await fetch("http://localhost:5000/api/offers/active");
+        const offResponse = await fetch("/api/offers/active");
         if (offResponse.ok) {
             const offData = await offResponse.json();
             activeOffers = offData.offers || [];
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // 1. Fetch Categories
         if (categoryList) {
-            const catResponse = await fetch("http://localhost:5000/api/categories?status=active");
+            const catResponse = await fetch("/api/categories?status=active");
             if (catResponse.ok) {
                 const catData = await catResponse.json();
                 const categories = catData.categories || [];
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // 2. Fetch Products
-        const response = await fetch("http://localhost:5000/api/products");
+        const response = await fetch("/api/products");
         if (!response.ok) throw new Error("Failed to fetch products");
 
         allProducts = await response.json(); // Store permanently
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (btn) btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...';
 
         try {
-            const response = await fetch("http://localhost:5000/api/cart/add", {
+            const response = await fetch("/api/cart/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

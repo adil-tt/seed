@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!token) return;
 
         try {
-            const res = await fetch("http://localhost:5000/api/auth/profile", {
+            const res = await fetch("/api/auth/profile", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             const data = await res.json();
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             saveProfileBtn.disabled = true;
             saveProfileBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Saving...';
 
-            const res = await fetch("http://localhost:5000/api/auth/profile", {
+            const res = await fetch("/api/auth/profile", {
                 method: "PUT",
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData

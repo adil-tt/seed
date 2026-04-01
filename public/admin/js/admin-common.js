@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (sidebarAvatar && admin.profileImage) {
                 sidebarAvatar.src = admin.profileImage.startsWith("http") 
                     ? admin.profileImage 
-                    : `http://localhost:5000${admin.profileImage}`;
+                    : `${admin.profileImage}`;
             }
 
             // Header Dropdown Update
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (headerAvatar && admin.profileImage) {
                 headerAvatar.src = admin.profileImage.startsWith("http") 
                     ? admin.profileImage 
-                    : `http://localhost:5000${admin.profileImage}`;
+                    : `${admin.profileImage}`;
             }
             if (headerName) {
                 headerName.textContent = admin.firstName || "Admin";

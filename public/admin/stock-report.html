@@ -254,7 +254,7 @@
 
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/products");
+                const response = await fetch("/api/products");
                 const products = await response.json();
 
                 // Calculate Stats
@@ -296,7 +296,7 @@
 
                     const sku = product._id ? product._id.toString().substring(18).toUpperCase() : 'N/A';
                     const categoryName = product.category ? product.category.name : 'Uncategorized';
-                    const imageSrc = (product.images && product.images.length > 0) ? `http://localhost:5000/uploads/${product.images[0]}` : 'images/ceramic-cup.jpg';
+                    const imageSrc = (product.images && product.images.length > 0) ? `/uploads/${product.images[0]}` : 'images/ceramic-cup.jpg';
                     const lastUpdated = new Date(product.updatedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
                     const row = document.createElement("tr");

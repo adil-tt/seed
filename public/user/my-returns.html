@@ -103,7 +103,7 @@
             }
 
             try {
-                const response = await fetch("http://localhost:5000/api/orders/my", {
+                const response = await fetch("/api/orders/my", {
                     method: "GET",
                     headers: { "Authorization": `Bearer ${token}` }
                 });
@@ -139,7 +139,7 @@
                     if (order.products && order.products.length > 0) {
                         order.products.forEach(item => {
                             const imgSrc = item.image && !item.image.startsWith('http') && !item.image.startsWith('images/')
-                                ? `http://localhost:5000/uploads/${item.image}`
+                                ? `/uploads/${item.image}`
                                 : (item.image || 'images/placeholder.jpg');
 
                             productsHTML += `

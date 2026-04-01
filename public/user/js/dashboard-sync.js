@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // Fetch Orders
-        const ordersRes = await fetch("http://localhost:5000/api/orders/my", {
+        const ordersRes = await fetch("/api/orders/my", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         order.products.forEach(item => {
                             const img = item.image
-                                ? `http://localhost:5000/uploads/${item.image}`
+                                ? `/uploads/${item.image}`
                                 : 'images/ceramic-cup.jpg';
                             itemsHtml += `<img src="${img}" class="order-product-thumb" alt="Product">`;
                         });
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Fetch Addresses
-        const addressRes = await fetch("http://localhost:5000/api/address/my", {
+        const addressRes = await fetch("/api/address/my", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

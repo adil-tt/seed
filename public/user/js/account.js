@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- 1. LOAD USER DATA ---
     async function loadUserData() {
         try {
-            const response = await fetch('http://localhost:5000/api/auth/profile', {
+            const response = await fetch('/api/auth/profile', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Populate avatar if exists
             if (user.profileImage) {
-                imagePreview.src = `http://localhost:5000/uploads/${user.profileImage}`;
+                imagePreview.src = `/uploads/${user.profileImage}`;
             } else if (user.name || user.firstName) {
                 // Initial fallback using ui-avatars
                 const initial = user.firstName || user.name;
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     formData.append('profileImage', imageInput.files[0]);
                 }
 
-                const updateResponse = await fetch('http://localhost:5000/api/auth/profile', {
+                const updateResponse = await fetch('/api/auth/profile', {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`

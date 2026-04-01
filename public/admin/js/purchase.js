@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 1. FETCH INITIAL DATA
     try {
         const [supRes, prodRes] = await Promise.all([
-            fetch('http://localhost:5000/api/suppliers'),
-            fetch('http://localhost:5000/api/products')
+            fetch('/api/suppliers'),
+            fetch('/api/products')
         ]);
         suppliers = await supRes.json();
         products = await prodRes.json();
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             };
 
             try {
-                const res = await fetch('http://localhost:5000/api/purchases', {
+                const res = await fetch('/api/purchases', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)

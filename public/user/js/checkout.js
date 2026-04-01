@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
            FETCH DELIVERY ADDRESSES
         ========================= */
 
-        const addressRes = await fetch("http://localhost:5000/api/address/my", {
+        const addressRes = await fetch("/api/address/my", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
            FETCH CART & SUMMARY
         ========================= */
 
-        const cartRes = await fetch("http://localhost:5000/api/cart", {
+        const cartRes = await fetch("/api/cart", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || "cod";
 
                 try {
-                    const orderRes = await fetch("http://localhost:5000/api/orders", {
+                    const orderRes = await fetch("/api/orders", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             itemsCount += qty;
 
             const img = product.images && product.images.length > 0
-                ? `http://localhost:5000/uploads/${product.images[0]}`
+                ? `/uploads/${product.images[0]}`
                 : "images/placeholder.jpg";
 
             phtml += `
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function loadCoupons() {
         try {
-            const res = await fetch("http://localhost:5000/api/coupons/available");
+            const res = await fetch("/api/coupons/available");
             const data = await res.json();
             if (data.success) availableCoupons = data.coupons || [];
         } catch (err) { console.error("Coupon fetch error", err); }
@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function openRazorpay(orderId, amount) {
     const token = sessionStorage.getItem("token") || localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:5000/api/payment/create-order", {
+    const res = await fetch("/api/payment/create-order", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -376,7 +376,7 @@ async function openRazorpay(orderId, amount) {
         order_id: data.order.id,
         handler: async function (response) {
             try {
-                const verifyRes = await fetch("http://localhost:5000/api/payment/verify-payment", {
+                const verifyRes = await fetch("/api/payment/verify-payment", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
