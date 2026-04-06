@@ -65,34 +65,15 @@
         <div class="row">
             <!-- Gallery -->
             <div class="col-lg-6 mb-4" id="product-images">
-                <div class="product-gallery-main">
-                    <img src="images/ceramic-cup.jpg" id="mainImage" class="w-100" alt="Product Main">
-                </div>
-                <div class="product-gallery-thumbs">
-                    <img src="images/ceramic-cup.jpg" class="thumb-img active" onclick="changeImage(this)"
-                        alt="Thumb 1">
-                    <img src="images/ceramic-cup.jpg" class="thumb-img" onclick="changeImage(this)" alt="Thumb 2">
-                    <img src="images/ceramic-cup.jpg" class="thumb-img" onclick="changeImage(this)" alt="Thumb 3">
-                </div>
+                <div class="product-gallery-main skeleton skeleton-img w-100 rounded" style="min-height: 400px; background-color: #eee;"></div>
             </div>
 
             <!-- Info -->
             <div class="col-lg-6">
-                <h1 class="mb-2" id="product-name">Minimalist Dinner Plate</h1>
-                <div class="mb-3">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-half text-warning"></i>
-                    <span class="text-muted ms-2">(12 Reviews)</span>
-                </div>
-                <div class="product-price-large" id="product-price">$24.00</div>
-                <p class="text-secondary mb-4" id="product-description">
-                    Hand-thrown ceramic dinner plate with a matte white glaze. Durable, dishwasher safe, and perfect for
-                    everyday use.
-                    Each piece is unique and features subtle irregularities that celebrate the handmade process.
-                </p>
+                <h1 class="mb-2 skeleton skeleton-text" id="product-name" style="height: 3rem; width: 80%;"></h1>
+                <div class="mb-3 skeleton skeleton-text" style="width: 30%; height: 1.5rem;" id="product-rating-placeholder"></div>
+                <div class="product-price-large skeleton skeleton-text" id="product-price" style="height: 2.5rem; width: 40%; margin-bottom: 20px;"></div>
+                <p class="text-secondary mb-4 skeleton skeleton-text" id="product-description" style="height: 4rem; width: 100%;"></p>
 
 
 
@@ -109,10 +90,9 @@
                 </div>
 
                 <ul class="list-unstyled text-secondary small">
-                    <li><span class="fw-bold text-dark">SKU:</span> <span id="product-sku">CER-PL-001</span></li>
-                    <li><span class="fw-bold text-dark">Category:</span> <span id="product-category">Plates, Dinner
-                            Sets</span></li>
-                    <li><span class="fw-bold text-dark">Tags:</span> Minimalist, Handmade, White</li>
+                    <li class="skeleton skeleton-text" style="width: 50%;"><span class="fw-bold text-dark">SKU:</span> <span id="product-sku"></span></li>
+                    <li class="skeleton skeleton-text" style="width: 70%; margin-top: 5px;"><span class="fw-bold text-dark">Category:</span> <span id="product-category"></span></li>
+                    <li class="skeleton skeleton-text" style="width: 60%; margin-top: 5px;"><span class="fw-bold text-dark">Tags:</span> <span id="product-tags"></span></li>
                 </ul>
             </div>
         </div>
@@ -132,23 +112,14 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="desc" role="tabpanel">
-                <p>This minimalist dinner plate is crafted from high-quality stoneware clay, fired at 1200°C for maximum
-                    durability. The matte glaze provides a smooth, tactile finish that is pleasing to the touch. The
-                    slight rim ensures that sauces and dressings stay on the plate.</p>
-                <p>Dimensions: 10.5 inches diameter.</p>
+                <div id="desc-placeholder" class="skeleton skeleton-text" style="height: 6rem; width: 100%;"></div>
             </div>
             <div class="tab-pane fade" id="reviews" role="tabpanel">
                 <div class="review-item d-flex">
-                    <div class="review-avatar"><i class="bi bi-person-fill"></i></div>
-                    <div>
-                        <h6 class="mb-1">Jane Doe</h6>
-                        <div class="mb-2 text-warning small">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                class="bi bi-star-fill"></i>
-                        </div>
-                        <p class="text-secondary mb-0">Absolutely love these plates! They are heavy, sturdy, and look
-                            beautiful on my table.</p>
+                    <div class="review-avatar skeleton" style="border-radius: 50%; width: 50px; height: 50px;"></div>
+                    <div class="w-100 ms-3">
+                        <div class="skeleton skeleton-text" style="width: 30%;"></div>
+                        <div class="skeleton skeleton-text" style="width: 80%; height: 2rem;"></div>
                     </div>
                 </div>
                 <!-- Add Review Form -->

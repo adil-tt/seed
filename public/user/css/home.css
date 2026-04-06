@@ -185,16 +185,22 @@
 /* Hero Banner & Mobile Overrides                             */
 /* ========================================================== */
 @media (max-width: 768px) {
-    /* Modify carousel container */
+    /* Modify carousel container to avoid forcing display on inactive slides */
     .carousel-item {
         height: auto;
         min-height: 100vh; /* Better containment */
-        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 80px 15px 40px 15px;
+        padding: 100px 15px 40px 15px;
         text-align: center;
+    }
+    
+    /* Only apply flex when the slide is meant to be visible */
+    .carousel-item.active,
+    .carousel-item-next,
+    .carousel-item-prev {
+        display: flex !important;
     }
 
     .banner-content {

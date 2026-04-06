@@ -61,7 +61,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const product = await response.json();
 
-        // 3. Update DOM Elements
+        // 3. Clear Skeletons & Update DOM Elements
+        document.querySelectorAll('.skeleton').forEach(el => {
+            el.classList.remove('skeleton', 'skeleton-text', 'skeleton-img');
+            // We optionally clear the inline style. For some elements, we keep it if needed.
+            if (el.id !== 'product-price') el.removeAttribute('style'); 
+        });
+
         const nameEl = document.getElementById("product-name");
         const priceEl = document.getElementById("product-price");
         const descEl = document.getElementById("product-description");
@@ -96,6 +102,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (descEl) descEl.textContent = product.description || "No description available.";
         if (categoryEl) categoryEl.textContent = product.category ? (product.category.name || product.category) : "Uncategorized";
         if (skuEl) skuEl.textContent = product.sku || product._id.toString().substring(18).toUpperCase();
+        
+        const tagsEl = document.getElementById("product-tags");
+        if (tagsEl) tagsEl.textContent = "Minimalist, Handmade";
+
+        const ratingEl = document.getElementById("product-rating-placeholder");
+        if (ratingEl) {
+            ratingEl.innerHTML = `
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-half text-warning"></i>
+                <span class="text-muted ms-2">(12 Reviews)</span>
+            `;
+        }
+
+        const descPlaceholder = document.getElementById("desc-placeholder");
+        if(descPlaceholder) {
+            descPlaceholder.innerHTML = `<p>${product.description || "No description available."}</p>`;
+        }
 
         maxStock = product.stock || 0;
 

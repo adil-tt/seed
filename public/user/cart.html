@@ -76,39 +76,13 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="images/ceramic-cup.jpg" alt="Product" class="cart-img">
-                                        <div>
-                                            <h6 class="mb-0">Minimalist Dinner Plate</h6>
-                                            <small class="text-secondary">Color: White</small>
-                                        </div>
-                                    </div>
+                        <tbody id="cart-item-list">
+                            <!-- Populated dynamically -->
+                            <tr id="cart-skeleton-loader">
+                                <td colspan="5" class="text-center py-4">
+                                    <div class="skeleton skeleton-text" style="height: 3rem; width: 100%;"></div>
+                                    <div class="skeleton skeleton-text" style="height: 3rem; width: 100%;"></div>
                                 </td>
-                                <td>$24.00</td>
-                                <td><input type="number" class="form-control" value="2" min="1" style="width: 70px;">
-                                </td>
-                                <td>$48.00</td>
-                                <td><a href="#" class="text-danger"><i class="bi bi-trash"></i></a></td>
-                            </tr>
-                            <!-- More items... -->
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="images/ceramic-cup.jpg" alt="Product" class="cart-img">
-                                        <div>
-                                            <h6 class="mb-0">Artisan Coffee Mug</h6>
-                                            <small class="text-secondary">Color: Brown</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>$16.00</td>
-                                <td><input type="number" class="form-control" value="1" min="1" style="width: 70px;">
-                                </td>
-                                <td>$16.00</td>
-                                <td><a href="#" class="text-danger"><i class="bi bi-trash"></i></a></td>
                             </tr>
                         </tbody>
                     </table>
