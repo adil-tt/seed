@@ -180,3 +180,74 @@
 .category-card:hover h3 {
     color: var(--primary-color);
 }
+
+/* ========================================================== */
+/* Hero Banner & Mobile Overrides                             */
+/* ========================================================== */
+@media (max-width: 768px) {
+    /* Modify carousel container */
+    .carousel-item {
+        height: auto;
+        min-height: 100vh; /* Better containment */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 80px 15px 40px 15px;
+        text-align: center;
+    }
+
+    .banner-content {
+        padding-left: 0;
+        max-width: 100%;
+        margin: 0 auto;
+        align-items: center; /* Center the flex children (badges/btns) */
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        order: 2; /* Put text below the timer naturally */
+    }
+
+    .banner-title {
+        font-size: 2.2rem;
+    }
+
+    .banner-description {
+        font-size: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .banner-btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+
+    /* Undo absolute positioning of the timer so it doesn't overlap text */
+    .countdown-container {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 0 auto 30px auto; /* Margin bottom separating it from text */
+        width: 100%;
+        max-width: 380px;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px;
+        order: 1; /* Appear above the text */
+    }
+
+    .countdown-box {
+        min-width: 50px;
+    }
+
+    .countdown-box .number {
+        font-size: 1.5rem;
+    }
+
+    .countdown-divider {
+        font-size: 1.2rem;
+        padding-top: 4px;
+    }
+}

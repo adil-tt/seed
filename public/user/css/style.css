@@ -424,6 +424,11 @@ footer a:hover {
         padding-top: 60px; /* Reduced padding for smaller navbar */
     }
 
+    /* Overall Section Padding */
+    section {
+        padding: 40px 15px !important; /* Balanced mobile padding */
+    }
+
     /* Navbar Collapse Container */
     .navbar-collapse {
         background-color: #ffffff;
