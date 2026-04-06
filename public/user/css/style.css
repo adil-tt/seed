@@ -411,3 +411,82 @@ footer a:hover {
     color: #888;
     font-size: 0.9rem;
 }
+
+/* ========================================================== */
+/*                   Global Responsive Tweaks                 */
+/* ========================================================== */
+@media (max-width: 768px) {
+    /* Prevent Horizontal Overflow */
+    body {
+        overflow-x: hidden;
+        width: 100%;
+        margin: 0;
+        padding-top: 60px; /* Reduced padding for smaller navbar */
+    }
+
+    /* Navbar Collapse Container */
+    .navbar-collapse {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        margin-top: 10px;
+    }
+
+    /* Ensure flex lists stack cleanly */
+    .navbar-collapse .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .navbar-collapse .navbar-icons {
+        justify-content: flex-start !important;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .navbar-icons .icon-link {
+        margin-left: 0;
+        margin-right: 15px;
+        font-size: 1.5rem; /* Better tap target */
+        padding: 8px; /* Touch target space */
+    }
+
+    #authContainer {
+        width: 100%;
+        justify-content: stretch !important;
+    }
+    
+    #authContainer a, #authContainer button {
+        width: 100%;
+        margin-bottom: 5px;
+        margin-right: 0 !important;
+    }
+
+    /* Scaling Typography */
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.3rem; }
+    h4 { font-size: 1.2rem; }
+    
+    /* Touch Friendly Buttons and Inputs */
+    .btn, .form-control, .form-select {
+        min-height: 44px;
+    }
+
+    /* Protect Images from Overflow */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Adjust Pricing size */
+    .product-price-large {
+        font-size: 1.5rem !important; /* Tone down massive scaling */
+    }
+    .original-price { font-size: 1rem !important; }
+    .discounted-price { font-size: 1.5rem !important; }
+}
