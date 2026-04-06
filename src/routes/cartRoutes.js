@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { protect } = require("../middleware/authMiddleware");
+const protect  = require("../middleware/authMiddleware");
+const userOnly = require("../middleware/userMiddleware");
 
 // Import modular actions from cart subfolder
 const getCart = require("../controllers/cart/getCart");
@@ -9,9 +10,9 @@ const updateCartQuantity = require("../controllers/cart/updateCartQuantity");
 const removeFromCart = require("../controllers/cart/removeFromCart");
 
 // Routes
-router.get("/", protect, getCart);
-router.post("/add", protect, addToCart);
-router.put("/update/:productId", protect, updateCartQuantity);
-router.delete("/:productId", protect, removeFromCart);
+router.get("/", protect, userOnly, getCart);
+router.post("/add", protect, userOnly, addToCart);
+router.put("/update/:productId", protect, userOnly, updateCartQuantity);
+router.delete("/:productId", protect, userOnly, removeFromCart);
 
 module.exports = router;

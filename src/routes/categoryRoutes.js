@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const uploadCategory = require("../middleware/uploadMiddleware");
-const { protect } = require("../middleware/authMiddleware");
-const { admin } = require("../middleware/adminMiddleware");
+const  protect  = require("../middleware/authMiddleware");
+const  admin  = require("../middleware/adminMiddleware");
 
 // Import modular actions
 const createCategory = require("../controllers/category/createCategory");

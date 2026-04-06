@@ -11,27 +11,34 @@
         return;
     }
 
-    // Verify token and role on every page load
-    fetch("/api/auth/profile", {
-        headers: {
-            "Authorization": `Bearer ${token}`
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (e) {
+            return null;
         }
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.user && data.user.role === "admin") {
-                // Authorized
-                localStorage.setItem("adminData", JSON.stringify(data.user));
-            } else {
-                // Not an admin or invalid token
-                localStorage.removeItem("token");
-                localStorage.removeItem("adminData");
-                window.location.href = "login.html";
-            }
-        })
-        .catch(err => {
-            console.error("Auth check failed:", err);
-            // If network error, maybe don't redirect immediately to allow offline use if needed,
-            // but for security, usually best to redirect if verification fails.
-        });
+    }
+
+    const decoded = parseJwt(token);
+
+    if (!decoded || !decoded.role || decoded.role !== "admin") {
+        console.error("Not an admin or invalid token");
+        localStorage.removeItem("token");
+        localStorage.removeItem("adminData");
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (decoded.exp && (decoded.exp * 1000) < Date.now()) {
+        console.error("Token expired");
+        localStorage.removeItem("token");
+        localStorage.removeItem("adminData");
+        window.location.href = "login.html";
+        return;
+    }
 })();

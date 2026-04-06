@@ -8,12 +8,13 @@ const { validateAddress } = require("../middleware/addressValidator");
 
 // Import the auth middleware
 // Note: assuming it's exported as `protect` from authMiddleware (or the respective file used globally in other routes)
-const { protect } = require("../middleware/authMiddleware");
+const  protect  = require("../middleware/authMiddleware");
+const userOnly = require("../middleware/userMiddleware");
 
 // Routes
-router.post("/add", protect, validateAddress, addAddress);
-router.get("/my", protect, getUserAddresses);
-router.put("/:id/default", protect, setDefaultAddress);
-router.delete("/:id", protect, deleteAddress);
+router.post("/add", protect, userOnly, validateAddress, addAddress);
+router.get("/my", protect, userOnly, getUserAddresses);
+router.put("/:id/default", protect, userOnly, setDefaultAddress);
+router.delete("/:id", protect, userOnly, deleteAddress);
 
 module.exports = router;

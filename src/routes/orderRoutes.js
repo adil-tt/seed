@@ -9,16 +9,17 @@ const cancelOrder = require("../controllers/order/cancelOrder");
 const returnOrder = require("../controllers/order/returnOrder");
 const downloadInvoice = require("../controllers/order/downloadInvoice");
 
-const { protect } = require("../middleware/authMiddleware");
+const  protect = require("../middleware/authMiddleware");
+const userOnly = require("../middleware/userMiddleware");
 
 // Routes
-router.get("/my", protect, getMyOrders);
-router.post("/", protect, createOrder);
+router.get("/my", protect, userOnly, getMyOrders);
+router.post("/", protect, userOnly, createOrder);
 
 // Order item actions and invoicing
-router.put("/:orderId/cancel-item/:productId", protect, cancelOrderItem);
-router.put("/:orderId/cancel", protect, cancelOrder);
-router.put("/:orderId/return", protect, returnOrder);
-router.get("/:orderId/invoice", protect, downloadInvoice);
+router.put("/:orderId/cancel-item/:productId", protect, userOnly, cancelOrderItem);
+router.put("/:orderId/cancel", protect, userOnly, cancelOrder);
+router.put("/:orderId/return", protect, userOnly, returnOrder);
+router.get("/:orderId/invoice", protect, userOnly, downloadInvoice);
 
 module.exports = router;

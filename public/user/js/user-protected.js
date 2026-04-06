@@ -1,6 +1,6 @@
 /**
  * user-protected.js
- * Included in private user pages to ensure only logged-in users can access them.
+ * Strictly protects user pages from unauthorized access, including Guests and Admins.
  */
 
 (function () {
@@ -11,23 +11,26 @@
         return;
     }
 
-    // Verify token is still valid with the backend
-    fetch("/api/auth/profile", {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
-    .then(res => {
-        if (!res.ok) {
-            // Token is invalid, expired, or user is blocked
-            sessionStorage.removeItem("token");
+    try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+
+        if (payload.exp * 1000 < Date.now()) {
             localStorage.removeItem("token");
-            sessionStorage.removeItem("user");
-            localStorage.removeItem("user");
+            sessionStorage.removeItem("token");
             window.location.href = "login.html";
+            return;
         }
-    })
-    .catch(err => {
-        console.error("Auth check failed:", err);
-    });
+
+        if (payload.role === "admin") {
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
+            window.location.href = "login.html";
+            return;
+        }
+
+    } catch (err) {
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        window.location.href = "login.html";
+    }
 })();

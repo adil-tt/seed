@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { protect } = require("../middleware/authMiddleware");
-const { admin } = require("../middleware/adminMiddleware");
+const  protect = require("../middleware/authMiddleware");
+const  admin  = require("../middleware/adminMiddleware");
 
 // Modular Admin User Actions
 const getAllUsers = require("../controllers/admin-user/getAllUsers");
