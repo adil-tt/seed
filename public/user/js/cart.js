@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             cartTableBody.innerHTML = "<tr><td colspan='5' class='text-center py-4'>Your cart is empty.</td></tr>";
             // Update Totals
             document.querySelectorAll('.cart-summary .fw-bold').forEach(el => {
-                if (el.textContent.includes('$')) el.textContent = '$0.00';
+                if (el.textContent.includes('$') || el.textContent.includes('₹')) el.textContent = '₹0.00';
             });
             return;
         }
@@ -81,11 +81,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                             </div>
                         </div>
                     </td>
-                    <td class="align-middle">$${price.toFixed(2)}</td>
+                    <td class="align-middle">₹${price.toFixed(2)}</td>
                     <td class="align-middle">
                         <input type="number" class="form-control cart-qty-input" data-product-id="${product._id}" data-stock="${stock}" value="${quantity}" min="1" max="${stock}" style="width: 70px;" ${stock === 0 ? 'disabled' : ''}>
                     </td>
-                    <td class="align-middle fw-medium">$${subtotal.toFixed(2)}</td>
+                    <td class="align-middle fw-medium">₹${subtotal.toFixed(2)}</td>
                     <td class="align-middle"><button class="btn text-danger bg-transparent border-0 p-0" onclick="removeFromCart('${product._id}')"><i class="bi bi-trash fs-5"></i></button></td>
                 </tr>
             `;
@@ -94,8 +94,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Update Summary Totals
         const summaryValues = document.querySelectorAll('.cart-summary .fw-bold');
         if (summaryValues.length >= 2) {
-            summaryValues[0].textContent = `$${subtotalTotal.toFixed(2)}`; // Subtotal
-            summaryValues[1].textContent = `$${subtotalTotal.toFixed(2)}`; // Total
+            summaryValues[0].textContent = `₹${subtotalTotal.toFixed(2)}`; // Subtotal
+            summaryValues[1].textContent = `₹${subtotalTotal.toFixed(2)}`; // Total
         }
 
         const checkoutBtn = document.querySelector('a[href="checkout.html"]');

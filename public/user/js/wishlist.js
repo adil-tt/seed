@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 <h6 class="wishlist-title mb-1">${product.name}</h6>
                                 <p class="text-muted small mb-2">Category: ${categoryName}</p>
                                 <div class="d-flex justify-content-between align-items-center mb-3 mt-2">
-                                    <span class="wishlist-price fw-bold">$${price}</span>
+                                    <span class="wishlist-price fw-bold">₹${price}</span>
                                 </div>
                             </div>
                         </a>

@@ -494,6 +494,52 @@ footer a:hover {
     }
     .original-price { font-size: 1rem !important; }
     .discounted-price { font-size: 1.5rem !important; }
+
+    /* Fix Product Card Mobile View */
+    .product-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-img-wrapper {
+        aspect-ratio: auto;
+        display: flex;
+        flex-direction: column;
+        background-color: transparent;
+    }
+    
+    .product-img-wrapper > a {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        display: block;
+        background-color: var(--light-bg);
+    }
+
+    .product-actions {
+        position: static;
+        bottom: auto;
+        background: transparent;
+        padding: 10px 5px 0 5px;
+        display: flex;
+        gap: 8px;
+        opacity: 1;
+        transform: none;
+    }
+
+    .product-actions .btn {
+        min-height: 40px;
+        flex: 1; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+    }
+
+    .product-info {
+        flex-grow: 1;
+        padding: 10px !important;
+    }
 }
 
 /* ========================================================== */

@@ -64,12 +64,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         // 3. Clear Skeletons & Update DOM Elements
         document.querySelectorAll('.skeleton').forEach(el => {
             el.classList.remove('skeleton', 'skeleton-text', 'skeleton-img');
-            // We optionally clear the inline style. For some elements, we keep it if needed.
-            if (el.id !== 'product-price') el.removeAttribute('style'); 
+            el.removeAttribute('style'); 
         });
 
         const nameEl = document.getElementById("product-name");
         const priceEl = document.getElementById("product-price");
+        if (priceEl) priceEl.style.marginBottom = "20px"; // Ensure spacing is kept without restricting height
         const descEl = document.getElementById("product-description");
         const categoryEl = document.getElementById("product-category");
         const skuEl = document.getElementById("product-sku");
@@ -148,6 +148,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             renderGallery(product);
         }
 
+        // Fetch and display related products
+        await loadRelatedProducts(product);
+
     } catch (error) {
         console.error("Error loading single product:", error);
         if (document.getElementById("product-name")) document.getElementById("product-name").textContent = "Error loading product.";
@@ -221,6 +224,103 @@ document.addEventListener("DOMContentLoaded", async () => {
             imagesHtml = `<div class="product-gallery-main mb-3"><img src="images/ceramic-cup.jpg" id="mainImage" class="w-100 rounded shadow-sm" alt="No image"></div>`;
         }
         document.getElementById("product-images").innerHTML = imagesHtml + thumbsHtml;
+    }
+
+    async function loadRelatedProducts(currentProduct) {
+        const relatedContainer = document.getElementById("related-products");
+        if (!relatedContainer) return;
+
+        try {
+            // Fetch all active products
+            const response = await fetch("/api/products");
+            if (!response.ok) throw new Error("Failed to load products");
+            
+            let allProducts = await response.json();
+            
+            // Filter by active status, exclude current product
+            let related = allProducts.filter(p => p.status === 'active' && p._id !== currentProduct._id);
+            
+            // Prioritize matching category
+            if (currentProduct.categories && currentProduct.categories.length > 0) {
+                const currentCatIds = currentProduct.categories.map(c => typeof c === 'object' ? c._id : c);
+                const categoryMatches = related.filter(p => {
+                    if (!p.categories) return false;
+                    return p.categories.some(c => {
+                        const catId = typeof c === 'object' ? c._id : c;
+                        return currentCatIds.includes(catId);
+                    });
+                });
+                
+                // Use category matches if available, otherwise just fallback to other active products
+                if (categoryMatches.length > 0) {
+                    related = categoryMatches;
+                }
+            }
+
+            // Limit to 4 products max for display
+            related = related.slice(0, 4);
+
+            if (related.length === 0) {
+                relatedContainer.innerHTML = "<p class='col-12 text-muted px-3'>No related products found.</p>";
+                return;
+            }
+
+            // Render related products dynamically using consistent product-card layout
+            relatedContainer.innerHTML = related.map(product => {
+                const { hasDiscount, discountedPrice, originalPrice, activeOffer } = calculateDiscount(product, activeOffers);
+                const imageUrl = product.images && product.images.length > 0
+                    ? `/uploads/${product.images[0]}`
+                    : "images/ceramic-cup.jpg";
+
+                const displayOriginal = originalPrice.toFixed(2);
+                const displayDiscounted = discountedPrice.toFixed(2);
+
+                let priceHTML = `<div class="product-price">₹${displayOriginal}</div>`;
+                if (hasDiscount) {
+                    const badgeText = activeOffer.discountType === 'Percentage' 
+                        ? `${activeOffer.discountValue}% OFF` 
+                        : `₹${activeOffer.discountValue} OFF`;
+                    priceHTML = `
+                        <div class="product-price-wrapper">
+                            <span class="original-price text-muted text-decoration-line-through me-2">₹${displayOriginal}</span>
+                            <span class="discounted-price fw-bold text-danger">₹${displayDiscounted}</span>
+                            <div class="discount-label-mini">${badgeText}</div>
+                        </div>
+                    `;
+                }
+
+                const isOutOfStock = product.stock === 0;
+
+                return `
+                    <div class="col-lg-3 col-md-4 col-6 mb-4">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <a href="single-product.html?id=${product._id}" class="d-block w-100 h-100">
+                                    <img src="${imageUrl}" class="product-img" alt="${product.name}">
+                                </a>
+                                <div class="product-actions" style="${isOutOfStock ? 'opacity: 0.5;' : ''}">
+                                    ${isOutOfStock
+                                        ? `<button class="btn btn-sm btn-secondary" disabled>Out of Stock</button>`
+                                        : `<button class="btn btn-sm btn-dark add-to-cart" data-id="${product._id}"><i class="bi bi-cart-plus"></i> Add</button>`
+                                    }
+                                    <button class="btn btn-sm btn-outline-dark add-to-wishlist" data-id="${product._id}">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="product-info p-3">
+                                <h3 class="product-title m-0 mb-1"><a href="single-product.html?id=${product._id}">${product.name}</a></h3>
+                                ${priceHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+        } catch (error) {
+            console.error("Error loading related products:", error);
+            relatedContainer.innerHTML = "<p class='col-12 text-danger px-3'>Failed to load related products.</p>";
+        }
     }
 
     // Add to Cart

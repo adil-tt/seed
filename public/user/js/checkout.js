@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="summary-product-price">
                     <span class="current-price">₹${price.toFixed(2)}</span>
                     ${oldPrice > price ? `<span class="original-price">₹${oldPrice.toFixed(2)}</span>` : ""}
-                    <a href="#" class="remove-item-btn small"><i class="bi bi-trash"></i> Remove</a>
+                    <a href="#" class="remove-item-btn small text-danger text-decoration-none" data-id="${product._id}"><i class="bi bi-trash border border-danger text-danger p-1 rounded me-1"></i> Remove</a>
                 </div>
             </div>`;
         });
@@ -296,6 +296,48 @@ document.addEventListener("DOMContentLoaded", async () => {
                 showOffersModal();
             });
         }
+
+        // Remove item from checkout explicitly
+        document.querySelectorAll('.remove-item-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const productId = e.currentTarget.getAttribute('data-id');
+                if (!confirm("Remove item from your order?")) return;
+                
+                try {
+                    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+                    e.currentTarget.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+                    
+                    const response = await fetch(`/api/cart/${productId}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    
+                    if (response.ok) {
+                        Swal.fire({ text: "Item removed", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 });
+                        
+                        const cartRes = await fetch("/api/cart", { headers: { "Authorization": `Bearer ${token}` } });
+                        if (cartRes.ok) {
+                            const cartData = await cartRes.json();
+                            cartItems = Array.isArray(cartData) ? cartData : cartData.items || [];
+                            if (cartItems.length === 0) {
+                                document.getElementById('orderSummaryContainer').innerHTML = `<div class="text-center py-5 fw-bold text-uppercase">YOUR CART IS EMPTY</div>`;
+                            } else {
+                                renderSummary();
+                            }
+                        }
+                    } else {
+                        const data = await response.json();
+                        Swal.fire({ text: data.message || "Failed to remove item", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                        renderSummary();
+                    }
+                } catch (err) {
+                    console.error("Remove from checkout error:", err);
+                    Swal.fire({ text: "Failed to remove item", icon: 'error', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                    renderSummary();
+                }
+            });
+        });
     }
 
     function applyCouponCore(code) {
