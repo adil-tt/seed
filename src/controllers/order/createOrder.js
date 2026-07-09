@@ -42,6 +42,12 @@ const createOrder = async (req, res, next) => {
       quantity: item.quantity
     }));
 
+    if (paymentMethod === 'wallet') {
+      if ((user.walletBalance || 0) < totalAmount) {
+        return res.status(400).json({ success: false, message: "Insufficient wallet balance" });
+      }
+    }
+
     const newOrder = new Order({
       user: userId,
       products: orderProducts,
@@ -57,11 +63,21 @@ const createOrder = async (req, res, next) => {
         pincode: selectedAddress.pincode
       },
       paymentMethod: paymentMethod === 'razorpay' ? 'Razorpay' : (paymentMethod === 'wallet' ? 'Wallet' : 'COD'),
-      paymentStatus: 'Pending',
+      paymentStatus: paymentMethod === 'wallet' ? 'Completed' : 'Pending',
       deliveryStatus: 'Processing',
       couponCode: couponCode || null,
       discountAmount: discountAmount || 0
     });
+
+    if (paymentMethod === 'wallet') {
+      user.walletBalance -= totalAmount;
+      user.walletTransactions.push({
+        amount: totalAmount,
+        type: 'debit',
+        description: `Order Payment (#${newOrder._id.toString().substring(18).toUpperCase()})`,
+        date: new Date()
+      });
+    }
 
     await newOrder.save();
 

@@ -25,6 +25,37 @@ const getAllOrders = async (req, res, next) => {
       }
     }
 
+    if (search) {
+      query.$or = [
+        { 'shippingAddress.fullName': { $regex: search, $options: 'i' } }
+      ];
+      
+      const regexMatchArg = search.replace(/^#?ORD-/i, '');
+      if (regexMatchArg) {
+          query.$or.push({
+            $expr: {
+              $regexMatch: {
+                input: { $toString: '$_id' },
+                regex: regexMatchArg,
+                options: 'i'
+              }
+            }
+          });
+      }
+    }
+
+    if (req.query.date) {
+      const selectedDate = new Date(req.query.date);
+      if (!isNaN(selectedDate.getTime())) {
+        const startOfDay = new Date(selectedDate.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(selectedDate.setHours(23, 59, 59, 999));
+        query.createdAt = {
+          $gte: startOfDay,
+          $lte: endOfDay
+        };
+      }
+    }
+
     const totalOrdersFiltered = await Order.countDocuments(query);
     const totalPages = Math.ceil(totalOrdersFiltered / limit);
 

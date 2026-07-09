@@ -9,8 +9,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function loadSuppliers() {
         try {
-            const res = await fetch('/api/suppliers');
-            suppliers = await res.json();
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+            const res = await fetch('/api/suppliers', {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) {
+                suppliers = await res.json();
+            }
         } catch (error) {
             console.error("Load suppliers error:", error);
         }
@@ -18,10 +23,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function loadPurchases() {
         try {
-            const res = await fetch('/api/purchases');
-            purchases = await res.json();
-
-            renderPurchases();
+            const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+            const res = await fetch('/api/purchases', {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (res.ok) {
+                purchases = await res.json();
+                renderPurchases();
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Failed to load purchase history: Unauthorized</td></tr>';
+            }
         } catch (error) {
             console.error("Load error:", error);
             tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Failed to load purchase history</td></tr>';
@@ -153,9 +164,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (formValues) {
             try {
+                const token = sessionStorage.getItem("token") || localStorage.getItem("token");
                 const res = await fetch(`/api/purchases/${id}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: JSON.stringify(formValues)
                 });
 

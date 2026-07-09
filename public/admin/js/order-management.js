@@ -8,6 +8,7 @@ let currentPage = 1;
 const limit = 10;
 let searchQuery = "";
 let currentStatusFilter = "All";
+let dateFilterVal = "";
 let allOrders = []; // To store fetched orders for details view
 
 
@@ -40,6 +41,31 @@ function setupEventListeners() {
             });
         });
     }
+
+    const dateFilter = document.getElementById('dateFilter');
+    if (dateFilter) {
+        dateFilter.addEventListener('change', (e) => {
+            dateFilterVal = e.target.value;
+            currentPage = 1;
+            fetchOrders();
+        });
+    }
+
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', () => {
+            searchQuery = "";
+            currentStatusFilter = "All";
+            dateFilterVal = "";
+            if (searchInput) searchInput.value = "";
+            if (dateFilter) dateFilter.value = "";
+            filterTabs.forEach(t => t.classList.remove('active'));
+            const allTab = document.querySelector('.filter-tab[data-status="All"]');
+            if (allTab) allTab.classList.add('active');
+            currentPage = 1;
+            fetchOrders();
+        });
+    }
 }
 
 async function fetchOrders() {
@@ -55,7 +81,8 @@ async function fetchOrders() {
             page: currentPage,
             limit: limit,
             status: currentStatusFilter,
-            search: searchQuery
+            search: searchQuery,
+            date: dateFilterVal
         });
 
         const response = await fetch(`/api/admin/orders?${params.toString()}`, {
@@ -156,6 +183,7 @@ function renderOrders(orders) {
             <td><input class="form-check-input" type="checkbox"></td>
             <td>${(currentPage - 1) * limit + index + 1}</td>
             <td class="fw-bold">${shortId}</td>
+            <td><div class="fw-bold small text-capitalize">${order.shippingAddress?.fullName || order.user?.name || 'Unknown'}</div></td>
             <td>
                 <div class="d-flex align-items-center">
                     <img src="${productImg}" class="product-img-small me-2 rounded" style="object-fit:cover; width:40px; height:40px;" alt="Product" onerror="this.src='images/ceramic-cup.jpg'">
@@ -163,7 +191,7 @@ function renderOrders(orders) {
                 </div>
             </td>
             <td>${dateStr}</td>
-            <td>$${order.totalAmount.toFixed(2)}</td>
+            <td>₹${order.totalAmount.toFixed(2)}</td>
             <td><span class="${paymentClass} small fw-bold"><i class="bi ${paymentIcon}" style="font-size: 6px;"></i> ${paymentText}</span></td>
             <td>
                 <div class="d-flex align-items-center gap-2">

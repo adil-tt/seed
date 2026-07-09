@@ -16,44 +16,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     let availableCoupons = [];
     let finalTotalAmount = 0;
     let cartItems = [];
-
+    let userWalletBalance = 0;
     try {
 
         /* =========================
-           FETCH DELIVERY ADDRESSES
+           START INITIAL LOADS
         ========================= */
+        await loadAddresses();
 
-        const addressRes = await fetch("/api/address/my", {
+        // End initial loads
+
+        /* =========================
+           FETCH PROFILE / WALLET
+        ========================= */
+        const profileRes = await fetch("/api/auth/profile", {
             headers: { "Authorization": `Bearer ${token}` }
         });
-
-        if (addressRes.ok) {
-            const addressData = await addressRes.json();
-            addresses = addressData.addresses || [];
-
-            if (addresses.length > 0) {
-                let html = `<div class="d-flex flex-column gap-3">`;
-                addresses.forEach((addr, idx) => {
-                    const checked = addr.isDefault || idx === 0 ? "checked" : "";
-                    html += `
-                    <div class="border rounded p-3 bg-white shadow-xs">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="selectedShippingAddress" value="${addr._id}" id="addr_${addr._id}" ${checked}>
-                            <label class="form-check-label fw-bold small text-uppercase" for="addr_${addr._id}">
-                                ${addr.fullName} <span class="badge bg-light text-dark border ms-2 fw-normal">${addr.addressType || 'HOME'}</span>
-                            </label>
-                            <div class="ps-1 pt-2 small text-muted">
-                                ${addr.house}, ${addr.street}, ${addr.city}, ${addr.state} - ${addr.pincode}<br>
-                                <span class="fw-bold">Phone:</span> ${addr.phone}
-                            </div>
-                        </div>
-                    </div>`;
-                });
-                html += `</div>`;
-                addressContainer.innerHTML = html;
-            } else {
-                addressContainer.innerHTML = `<div class="text-center p-4 bg-light rounded small fw-bold">NO ADDRESS FOUND</div>`;
-            }
+        if (profileRes.ok) {
+            const profileData = await profileRes.json();
+            userWalletBalance = profileData.user?.walletBalance || 0;
         }
 
         /* =========================
@@ -108,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const orderData = await orderRes.json();
                     if (!orderRes.ok) return Swal.fire({ text: orderData.message || "Order failed", icon: 'error' });
 
-                    if (paymentMethod === "cod") {
+                    if (paymentMethod === "cod" || paymentMethod === "wallet") {
                         Swal.fire({ text: "Order placed successfully!", icon: 'success' });
                         window.location.href = "order-success.html";
                     } else if (paymentMethod === "razorpay") {
@@ -178,6 +159,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         const shipping = 0; // FREE as per design
         finalTotalAmount = subtotal - couponDiscount + shipping;
         const totalSaved = productDiscount + couponDiscount;
+
+        const walletBadge = document.getElementById('walletBalanceBadge');
+        if (walletBadge) walletBadge.innerText = `₹${userWalletBalance.toFixed(2)}`;
+
+        const walletRadio = document.getElementById('wallet');
+        const walletWrap = walletRadio?.closest('.payment-card-wrap');
+        if (walletRadio) {
+            if (userWalletBalance >= finalTotalAmount) {
+                walletRadio.disabled = false;
+                if (walletWrap) {
+                    walletWrap.classList.remove('opacity-75', 'bg-light');
+                    walletWrap.classList.add('bg-white');
+                }
+            } else {
+                walletRadio.disabled = true;
+                if (walletRadio.checked) document.getElementById('cod').checked = true;
+                if (walletWrap) {
+                    walletWrap.classList.add('opacity-75', 'bg-light');
+                    walletWrap.classList.remove('bg-white');
+                }
+            }
+        }
 
         let couponHtml = "";
         if (appliedCoupon) {
@@ -388,6 +391,126 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const myModal = new bootstrap.Modal(document.getElementById('couponsModal'));
         myModal.show();
+    }
+
+    /* =========================
+       FETCH PROFILES ADDRESSES
+    ========================= */
+    async function loadAddresses(forceSelectedId = null) {
+        try {
+            const addressRes = await fetch("/api/address/my", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (addressRes.ok) {
+                const addressData = await addressRes.json();
+                addresses = addressData.addresses || [];
+
+                if (addresses.length > 0) {
+                    let html = `<div class="d-flex flex-column gap-3">`;
+                    addresses.forEach((addr, idx) => {
+                        let checked = "";
+                        if (forceSelectedId) {
+                            checked = (addr._id === forceSelectedId) ? "checked" : "";
+                        } else {
+                            checked = (addr.isDefault || idx === 0) ? "checked" : "";
+                        }
+
+                        html += `
+                        <div class="border rounded p-3 bg-white shadow-xs">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="selectedShippingAddress" value="${addr._id}" id="addr_${addr._id}" ${checked}>
+                                <label class="form-check-label fw-bold small text-uppercase" for="addr_${addr._id}">
+                                    ${addr.fullName} <span class="badge bg-light text-dark border ms-2 fw-normal">${addr.addressType || 'HOME'}</span>
+                                </label>
+                                <div class="ps-1 pt-2 small text-muted">
+                                    ${addr.house}, ${addr.street}, ${addr.city}, ${addr.state} - ${addr.pincode}<br>
+                                    <span class="fw-bold">Phone:</span> ${addr.phone}
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    html += `</div>`;
+                    addressContainer.innerHTML = html;
+                } else {
+                    addressContainer.innerHTML = `<div class="text-center p-4 bg-light rounded small fw-bold">NO ADDRESS FOUND</div>`;
+                }
+            }
+        } catch(e) {
+            console.error("Error loading addresses:", e);
+        }
+    }
+
+    /* =========================
+       ADD NEW ADDRESS LOGIC
+    ========================= */
+    const addAddressForm = document.getElementById("addAddressForm");
+    if (addAddressForm) {
+        addAddressForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById("saveAddressBtn");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Saving...`;
+            btn.disabled = true;
+
+            const formData = new FormData(addAddressForm);
+            const payload = {
+                fullName: formData.get("fullName").trim(),
+                phone: formData.get("phone").trim(),
+                house: formData.get("house").trim(),
+                street: formData.get("street").trim(),
+                city: formData.get("city").trim(),
+                state: formData.get("state").trim(),
+                pincode: formData.get("pincode").trim(),
+                country: formData.get("country") || "India",
+                landmark: formData.get("landmark").trim(),
+                addressType: formData.get("addressType") || "HOME",
+                isDefault: document.getElementById("isDefaultAddress").checked
+            };
+
+            try {
+                const res = await fetch("/api/address/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                
+                if (res.ok) {
+                    // Success
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addAddressModal'));
+                    if (modal) modal.hide();
+                    
+                    Swal.fire({ text: "Address added successfully!", icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                    
+                    addAddressForm.reset();
+                    
+                    // Reload addresses and force select the newly added one
+                    // Assuming the newly added address is the last one in the returned data array or the only one that's new
+                    // Let's just find the newly added address ID. The backend returns full array in data.addresses
+                    if (data.addresses && data.addresses.length > 0) {
+                        const newAddr = data.addresses[data.addresses.length - 1]; // Because push is used in backend
+                        await loadAddresses(newAddr._id);
+                    } else {
+                        await loadAddresses();
+                    }
+
+                } else {
+                    Swal.fire({ text: data.message || "Failed to add address", icon: 'error' });
+                }
+            } catch (err) {
+                console.error("Add address error:", err);
+                Swal.fire({ text: "Server error while adding address", icon: 'error' });
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
     }
 
 });
