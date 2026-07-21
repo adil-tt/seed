@@ -17,5 +17,6 @@ router.use("/coupons", require("./couponRoutes"));
 router.use("/offers", require("./offerRoutes"));
 router.use("/admin", require("./admin.routes"));
 router.use("/contact", require("./contactRoutes"));
+router.use("/reviews", require("./reviewRoutes"));
 
 module.exports = router;

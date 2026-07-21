@@ -115,30 +115,50 @@
                 <div id="desc-placeholder" class="skeleton skeleton-text" style="height: 6rem; width: 100%;"></div>
             </div>
             <div class="tab-pane fade" id="reviews" role="tabpanel">
-                <div class="review-item d-flex">
-                    <div class="review-avatar skeleton" style="border-radius: 50%; width: 50px; height: 50px;"></div>
-                    <div class="w-100 ms-3">
-                        <div class="skeleton skeleton-text" style="width: 30%;"></div>
-                        <div class="skeleton skeleton-text" style="width: 80%; height: 2rem;"></div>
+                <!-- Reviews List Container -->
+                <div id="reviews-list-container">
+                    <div class="review-item d-flex">
+                        <div class="review-avatar skeleton" style="border-radius: 50%; width: 50px; height: 50px;"></div>
+                        <div class="w-100 ms-3">
+                            <div class="skeleton skeleton-text" style="width: 30%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 80%; height: 2rem;"></div>
+                        </div>
                     </div>
                 </div>
                 <!-- Add Review Form -->
-                <div class="mt-4">
-                    <h5>Write a Review</h5>
-                    <form>
+                <div class="mt-4" id="review-form-container" style="display: none;">
+                    <h5 id="review-form-title">Write a Review</h5>
+                    <form id="review-form" novalidate>
+                        <input type="hidden" id="review-rating" value="0">
+                        <input type="hidden" id="review-id" value="">
                         <div class="mb-3">
-                            <label class="form-label">Rating</label>
-                            <select class="form-select w-auto">
-                                <option>5 Stars</option>
-                                <option>4 Stars</option>
-                                <option>3 Stars</option>
-                            </select>
+                            <label class="form-label">Rating <span class="text-danger">*</span></label>
+                            <div id="star-rating-container" class="fs-4 text-warning" style="cursor: pointer;">
+                                <i class="bi bi-star star-icon" data-value="1"></i>
+                                <i class="bi bi-star star-icon" data-value="2"></i>
+                                <i class="bi bi-star star-icon" data-value="3"></i>
+                                <i class="bi bi-star star-icon" data-value="4"></i>
+                                <i class="bi bi-star star-icon" data-value="5"></i>
+                            </div>
+                            <div class="invalid-feedback d-block" id="rating-error" style="display: none;">Please select a rating.</div>
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" rows="3" placeholder="Your review..."></textarea>
+                            <label class="form-label">Review <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="review-text" rows="3" placeholder="Your review..." minlength="10" maxlength="500" required></textarea>
+                            <div class="invalid-feedback d-block" id="review-text-error" style="display: none;">Review must be between 10 and 500 characters.</div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                        <button type="submit" class="btn btn-primary" id="submit-review-btn">
+                            <span class="spinner-border spinner-border-sm d-none" id="review-spinner" role="status" aria-hidden="true"></span>
+                            <span id="review-btn-text">Submit Review</span>
+                        </button>
                     </form>
+                </div>
+                
+                <div class="mt-4 alert alert-info" id="review-login-msg" style="display: none;">
+                    Please <a href="login.html" class="alert-link">login</a> to write a review.
+                </div>
+                <div class="mt-4 alert alert-warning" id="review-unverified-msg" style="display: none;">
+                    Only verified buyers can review this product.
                 </div>
             </div>
         </div>

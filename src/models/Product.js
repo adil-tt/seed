@@ -29,6 +29,14 @@ const productSchema = new mongoose.Schema({
     stock: {
         type: Number,
         default: 0
+    },
+    averageRating: {
+        type: Number,
+        default: 0
+    },
+    reviewCount: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 

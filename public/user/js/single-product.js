@@ -108,13 +108,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const ratingEl = document.getElementById("product-rating-placeholder");
         if (ratingEl) {
+            const avgRating = product.averageRating || 0;
+            const revCount = product.reviewCount || 0;
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= avgRating) {
+                    starsHtml += `<i class="bi bi-star-fill text-warning"></i>`;
+                } else if (i - 0.5 <= avgRating) {
+                    starsHtml += `<i class="bi bi-star-half text-warning"></i>`;
+                } else {
+                    starsHtml += `<i class="bi bi-star text-warning"></i>`;
+                }
+            }
             ratingEl.innerHTML = `
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-fill text-warning"></i>
-                <i class="bi bi-star-half text-warning"></i>
-                <span class="text-muted ms-2">(12 Reviews)</span>
+                <span class="fs-5 me-2">${starsHtml}</span>
+                <span class="fw-bold">${avgRating.toFixed(1)}</span>
+                <span class="text-muted ms-2">(${revCount} Reviews)</span>
             `;
         }
 
@@ -350,4 +359,235 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch (e) { console.error(e); }
         });
     }
+});
+
+// --- PRODUCT REVIEWS LOGIC ---
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get("id");
+    if (!productId) return;
+
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const reviewsListContainer = document.getElementById("reviews-list-container");
+    const reviewsTabBtn = document.getElementById("reviews-tab");
+    
+    // Form Elements
+    const formContainer = document.getElementById("review-form-container");
+    const reviewForm = document.getElementById("review-form");
+    const formTitle = document.getElementById("review-form-title");
+    const ratingInput = document.getElementById("review-rating");
+    const reviewIdInput = document.getElementById("review-id");
+    const starIcons = document.querySelectorAll(".star-icon");
+    const reviewTextInput = document.getElementById("review-text");
+    const submitBtnText = document.getElementById("review-btn-text");
+    const spinner = document.getElementById("review-spinner");
+    
+    // Message Elements
+    const loginMsg = document.getElementById("review-login-msg");
+    const unverifiedMsg = document.getElementById("review-unverified-msg");
+
+    // Validation Elements
+    const ratingError = document.getElementById("rating-error");
+    const textError = document.getElementById("review-text-error");
+
+    let userExistingReview = null;
+
+    // 1. Fetch all reviews for this product
+    async function fetchReviews() {
+        try {
+            const res = await fetch(`/api/reviews/${productId}`);
+            if (res.ok) {
+                const data = await res.json();
+                renderReviews(data.reviews, data.total);
+            }
+        } catch (e) {
+            console.error("Error fetching reviews:", e);
+        }
+    }
+
+    function renderReviews(reviews, totalCount) {
+        if (reviewsTabBtn) reviewsTabBtn.textContent = `Reviews (${totalCount})`;
+        
+        if (!reviews || reviews.length === 0) {
+            reviewsListContainer.innerHTML = `<p class="text-muted">No reviews yet. Be the first to review this product.</p>`;
+            return;
+        }
+
+        let html = '';
+        reviews.forEach(review => {
+            const d = new Date(review.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            let stars = '';
+            for(let i=1; i<=5; i++) {
+                stars += `<i class="bi bi-star${i <= review.rating ? '-fill text-warning' : ' text-muted'}"></i>`;
+            }
+            
+            let avatar = 'images/default-avatar.png';
+            if (review.user && review.user.profileImage) {
+                avatar = `/uploads/${review.user.profileImage}`;
+            }
+
+            html += `
+                <div class="review-item d-flex mb-4 border-bottom pb-3">
+                    <img src="${avatar}" alt="Avatar" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
+                    <div class="w-100 ms-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold">${review.user ? (review.user.firstName ? review.user.firstName + ' ' + review.user.lastName : review.user.name) : 'Anonymous'}</h6>
+                            <small class="text-muted">${d}</small>
+                        </div>
+                        <div class="mb-2">
+                            ${stars}
+                        </div>
+                        <p class="mb-0 text-secondary">${review.review}</p>
+                    </div>
+                </div>
+            `;
+        });
+        reviewsListContainer.innerHTML = html;
+    }
+
+    // 2. Check User Eligibility to Review
+    async function checkEligibility() {
+        if (!token) {
+            if(loginMsg) loginMsg.style.display = 'block';
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/reviews/${productId}/user-status`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                
+                if (!data.hasPurchased) {
+                    if(unverifiedMsg) unverifiedMsg.style.display = 'block';
+                } else {
+                    if(formContainer) formContainer.style.display = 'block';
+                    if (data.existingReview) {
+                        userExistingReview = data.existingReview;
+                        prefillForm(data.existingReview);
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Error checking eligibility:", e);
+        }
+    }
+
+    function prefillForm(review) {
+        if(formTitle) formTitle.textContent = "Update Your Review";
+        if(submitBtnText) submitBtnText.textContent = "Update Review";
+        if(reviewIdInput) reviewIdInput.value = review._id;
+        if(reviewTextInput) reviewTextInput.value = review.review;
+        if(ratingInput) ratingInput.value = review.rating;
+        
+        if(starIcons) {
+            starIcons.forEach(star => {
+                const val = parseInt(star.getAttribute("data-value"));
+                if (val <= review.rating) {
+                    star.classList.remove('bi-star');
+                    star.classList.add('bi-star-fill');
+                } else {
+                    star.classList.remove('bi-star-fill');
+                    star.classList.add('bi-star');
+                }
+            });
+        }
+    }
+
+    // 3. Star Rating Interaction
+    if (starIcons) {
+        starIcons.forEach(star => {
+            star.addEventListener('click', (e) => {
+                const val = parseInt(e.target.getAttribute("data-value"));
+                if(ratingInput) ratingInput.value = val;
+                if(ratingError) ratingError.style.display = 'none';
+
+                starIcons.forEach(s => {
+                    const sVal = parseInt(s.getAttribute("data-value"));
+                    if (sVal <= val) {
+                        s.classList.remove('bi-star');
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+        });
+    }
+
+    // 4. Form Submission
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if(ratingError) ratingError.style.display = 'none';
+            if(textError) textError.style.display = 'none';
+            
+            const rating = parseInt(ratingInput.value);
+            const text = reviewTextInput.value.trim();
+            
+            let isValid = true;
+            
+            if (rating < 1 || rating > 5) {
+                if(ratingError) ratingError.style.display = 'block';
+                isValid = false;
+            }
+            if (text.length < 10 || text.length > 500) {
+                if(textError) textError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+
+            // Loading state
+            if(submitBtnText) submitBtnText.textContent = "Submitting...";
+            if(spinner) spinner.classList.remove('d-none');
+            const submitBtn = document.getElementById("submit-review-btn");
+            if(submitBtn) submitBtn.disabled = true;
+
+            const isUpdate = !!userExistingReview;
+            const url = isUpdate ? `/api/reviews/${userExistingReview._id}` : `/api/reviews/${productId}`;
+            const method = isUpdate ? "PUT" : "POST";
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ rating, review: text })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    Swal.fire({ text: data.message, icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+                    userExistingReview = data.review;
+                    prefillForm(data.review);
+                    fetchReviews(); // Refresh list
+                    
+                    // Reload the page to reflect average rating changes? 
+                    // Or we can dynamically update product info, but a reload might be simpler to ensure full state sync
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    Swal.fire({ text: data.message || "Failed to submit review.", icon: 'error' });
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({ text: "An error occurred.", icon: 'error' });
+            } finally {
+                if(submitBtnText) submitBtnText.textContent = isUpdate ? "Update Review" : "Submit Review";
+                if(spinner) spinner.classList.add('d-none');
+                if(submitBtn) submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // Init
+    fetchReviews();
+    checkEligibility();
 });
